@@ -1,14 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
-
-AUTHOR = 'Avinal'
+HIDE_AUTHORS = True
 SITENAME = 'The Interstellar Twilight'
 SITEURL = 'https://avinal.github.io'
 THEME = 'alchemy'
 PATH = 'content'
 SITEIMAGE = '/images/profile.jpg width=150 height=150'
 TIMEZONE = 'Asia/Kolkata'
-
 DEFAULT_LANG = 'en'
 
 # Feed generation is usually not desired when developing
@@ -43,6 +41,8 @@ EXTRA_PATH_METADATA = {
     'extras/safari-pinned-tab.svg': {'path': 'safari-pinned-tab.svg'},
 }
 
+RFG_FAVICONS = True
+
 # icons
 ICONS = [
     ('github', "https://github.com/avinal"),
@@ -52,3 +52,5 @@ ICONS = [
 ]
 
 DEFAULT_PAGINATION = 10
+
+PYGMENTS_STYLE = 'monokai'
