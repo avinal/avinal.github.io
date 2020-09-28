@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*- #
 
 AUTHOR = 'Avinal'
-SITENAME = 'The Intesteller Twillight'
+SITENAME = 'The Interstellar Twilight'
 SITEURL = ''
-
+THEME = 'alchemy'
 PATH = 'content'
-
+SITEIMAGE = '/images/profile.jpg width=150 height=150'
 TIMEZONE = 'Asia/Kolkata'
 
 DEFAULT_LANG = 'en'
@@ -19,16 +19,10 @@ AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 # Blogroll
-LINKS = (('Pelican', 'https://getpelican.com/'),
-         ('Python.org', 'https://www.python.org/'),
-         ('Jinja2', 'https://palletsprojects.com/p/jinja/'),
-         ('You can modify those links in your config file', '#'),)
+LINKS = (('GitHub', 'https://github.com/avinal'),
+         ('LinkedIn', ''),)
 
-# Social widget
-SOCIAL = (('You can add links in your config file', '#'),
-          ('Another social link', '#'),)
 
 DEFAULT_PAGINATION = 10
 
-# Uncomment following line if you want document-relative URLs when developing
-#RELATIVE_URLS = True
+
