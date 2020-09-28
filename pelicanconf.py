@@ -17,11 +17,11 @@ AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 
-# URL Flexibility
-ARTICLE_URL = 'posts/{category}/{slug}/'
-ARTICLE_SAVE_AS = 'posts/{category}/{slug}.html'
-PAGE_URL = 'pages/{slug}/'
-PAGE_SAVE_AS = 'pages/{slug}.html'
+# # URL Flexibility
+ARTICLE_URL = 'posts/{category}/{slug}.html'
+ARTICLE_SAVE_AS = ARTICLE_URL
+PAGE_URL = 'pages/{slug}.html'
+PAGE_SAVE_AS = PAGE_URL
 
 # static content setting
 STATIC_PATHS = ['extras', 'images']
