@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # install tools
-sudo apt-get update && apt-get install -y git make python3 python3-pip 
+sudo apt-get install -y git make python3 python3-pip python3-setuptools
 
 # setup github config
 git config user.email "185067@nith.ac.in"
