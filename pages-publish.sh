@@ -12,7 +12,7 @@ echo "git config added"
 sudo pip3 install -r requirements.txt
 
 # pelican commands
-sudo pelican-themes --install /themes/alchemy --verbose
+sudo make theme
 
 # publish to github pages
 sudo make github
