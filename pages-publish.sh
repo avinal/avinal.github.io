@@ -9,10 +9,10 @@ git config user.name "avinal"
 echo "git config added"
 
 # install dependencies
-pip3 install -r requirements.txt
+sudo pip3 install -r requirements.txt
 
 # pelican commands
-pelican-themes --install /themes/alchemy --verbose
+sudo pelican-themes --install /themes/alchemy --verbose
 
 # publish to github pages
-make github
+sudo make github
