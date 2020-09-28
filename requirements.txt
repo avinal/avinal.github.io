@@ -1,4 +1,3 @@
 pelican
-pelican-themes
 ghp-import
 wheel
