@@ -1,10 +1,15 @@
-*************************
-The Interstellar Twilight
-*************************
+***********************************
+The Interstellar Twilight |blitzer|
+***********************************
 
 :date: 2020-09-28 22:47
 :tags: interstellar, twilight 
 :category: blog
+
+.. |blitzer| image:: /images/blitzer.jpg
+    :width: 40
+    :height: 40
+    :align: middle
 
 Yeah, it was a dream someday. I never imagined you. But I do remember glimpses of a wonderful person 
 in my deep slumber. When I go back to last year about the same time, I find myself a manic who gets 
