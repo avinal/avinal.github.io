@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
+AUTHOR = 'Avinal'
 HIDE_AUTHORS = True
 SITENAME = 'The Interstellar Twilight'
+SITESUBTITLE = 'Avinal Kumar'
 SITEURL = 'https://avinal.github.io'
 THEME = 'alchemy'
 PATH = 'content'
+EMAIL = '185067@nith.ac.in'
 SITEIMAGE = '/images/profile.jpg width=150 height=150'
 TIMEZONE = 'Asia/Kolkata'
 DEFAULT_LANG = 'en'
