@@ -6,7 +6,7 @@ The Interstellar Twilight |blitzer|
 :tags: interstellar, twilight 
 :category: blog
 
-.. |blitzer| image:: /images/blitzer.jpg
+.. |blitzer| image:: /images/blitzer.png
     :width: 40
     :height: 40
     :align: middle
@@ -18,12 +18,16 @@ common that I never noticed what I was risking.
 
 **"If in the Twilight of dreams we should meet once more, we shell talk again together and I shall sing to you a lullaby till you sleep again to meet me in the Twilight of another dream."**
 
-.. raw:: html
+.. .. raw:: html
 
-    <p align="center">
-        <img alt="The sunset" src="/images/interstellar_twilight.jpg" style="height: 400px;" />
-    </p>
+..     <p align="center">
+..         <img alt="The sunset" src="/images/interstellar_twilight.png" style="height: 400px;" />
+..     </p>
 
+.. figure:: /images/interstellar_twilight.png
+    :align: center
+    :alt: the sunset
+   
 
 But 1 year ago many things changed. A never seen dream came true. To be honest I was skeptical if all 
 this happening to me was true. Even until last December. Gradually things started falling into places. 
