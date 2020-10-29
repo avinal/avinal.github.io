@@ -16,10 +16,10 @@ jobs:
     name: Update the WakaTime Stat
     runs-on: ubuntu-latest
     steps:
-      - uses: avinal/github-pages-deploy-action@master
+      - uses: avinal/github-pages-deploy-action@main
         with:
           GITHUB_TOKEN: ${{ github.token }}
-          LANGUAGE: "python"
+          LANGUAGE: "python3 python3-setuptools python3-wheel"
           MAKE_COMMAND: "make theme && make html"
           PAGES_BRANCH: "gh-pages"
           BUILD_FROM: "main"
