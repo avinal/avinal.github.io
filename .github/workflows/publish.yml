@@ -20,7 +20,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ github.token }}
           LANGUAGE: "python3 python3-setuptools python3-wheel"
-          MAKE_COMMAND: "make theme && make html"
+          MAKE_COMMAND: "make html"
           PAGES_BRANCH: "gh-pages"
           BUILD_FROM: "main"
           DOCS_FOLDER: "output"
