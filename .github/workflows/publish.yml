@@ -12,16 +12,20 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  update-readme:
-    name: Update the WakaTime Stat
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: avinal/github-pages-deploy-action@main
-        with:
-          GITHUB_TOKEN: ${{ github.token }}
-          LANGUAGE: "python3 python3-setuptools python3-wheel"
-          MAKE_COMMAND: "make html"
-          PAGES_BRANCH: "gh-pages"
-          BUILD_FROM: "main"
-          DOCS_FOLDER: "output"
-      
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs a single command using the runners shell
+      - name: set up permissions
+        run: chmod +x pages-publish.sh
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: ./pages-publish.sh
