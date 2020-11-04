@@ -1,0 +1,11 @@
+image: ubuntu:latest
+
+pages:
+  stage: deploy
+  tags: 
+    - pages
+  script:
+    - make gitlab
+  artifacts:
+    paths:
+    - public
