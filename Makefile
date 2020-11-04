@@ -78,9 +78,10 @@ publish:
 theme:
 	"$(PELICANTHEME)" --install "$(THEMEDIR)" --verbose
 
-github: publish
-	ghp-import -m "Generate Pelican site" -b $(GITHUB_PAGES_BRANCH) "$(OUTPUTDIR)"
-	git push -f origin $(GITHUB_PAGES_BRANCH)
-
+gitlab: html
+	test -d "$(OUTPUTDIR)" &&\
+	mkdir -p public &&\
+	rm -rf public/* &&\
+	cp -r "$(OUTPUTDIR)"/* public/
 
 .PHONY: html help clean regenerate serve serve-global devserver publish github
