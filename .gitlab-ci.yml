@@ -1,11 +1,13 @@
-image: ubuntu:latest
+image: ubuntu
 
 pages:
   stage: deploy
-  tags: 
-    - pages
   script:
-    - make gitlab
+  - apt update && apt -y install python3-pip
+  - pip3 install -r requirements.txt
+  - make gitlab
   artifacts:
     paths:
     - public
+  only:
+  - master
