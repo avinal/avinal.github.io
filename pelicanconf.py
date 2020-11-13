@@ -52,7 +52,7 @@ ICONS = [
     ('gitlab', 'https://code.videolan.org/avinal'),
     ('linkedin', 'https://www.linkedin.com/in/avinal/'),
     ('instagram', 'https://www.instagram.com/amaranthine.sole/'),
-    ('twitter', 'https://www.twitter.com/avinal_
+    ('twitter', 'https://www.twitter.com/avinal_')
 ]
 
 DEFAULT_PAGINATION = 10
