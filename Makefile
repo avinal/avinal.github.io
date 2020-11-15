@@ -79,6 +79,8 @@ theme:
 	"$(PELICANTHEME)" --install "$(THEMEDIR)" --verbose
 
 github: publish
+	touch "$(OUTPUTDIR)/CNAME"
+	echo "avinal.is-a.dev" > "$(OUTPUTDIR)/CNAME"
 	ghp-import -m "Generate Pelican site" -b $(GITHUB_PAGES_BRANCH) "$(OUTPUTDIR)"
 	git push -f origin $(GITHUB_PAGES_BRANCH)
 
