@@ -4,7 +4,7 @@ AUTHOR = 'Avinal'
 HIDE_AUTHORS = True
 SITENAME = 'The Interstellar Twilight'
 SITESUBTITLE = 'Avinal Kumar'
-SITEURL = 'https://avinal.github.io'
+SITEURL = 'https://avinal.is-a.dev'
 THEME = 'alchemy'
 PATH = 'content'
 EMAIL = '185067@nith.ac.in'
@@ -51,7 +51,8 @@ ICONS = [
     ('github', "https://github.com/avinal"),
     ('gitlab', 'https://code.videolan.org/avinal'),
     ('linkedin', 'https://www.linkedin.com/in/avinal/'),
-    ('instagram', 'https://www.instagram.com/amaranthine.sole/'),
+    ('instagram', 'https://www.instagram.com/avinal.k/'),
+    ('facebook', "https://www.facebook.com/avinal.kt")
     ('twitter', 'https://www.twitter.com/avinal_')
 ]
 
