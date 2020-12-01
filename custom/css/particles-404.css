@@ -244,7 +244,7 @@ body {
     transition: all .3s;
     z-index: 999;
     position: relative;
-    content: "back to hompage";
+    content: "github";
 }
 
 .links a:hover:before {
