@@ -52,7 +52,7 @@ ICONS = [
     ('gitlab', 'https://code.videolan.org/avinal'),
     ('linkedin', 'https://www.linkedin.com/in/avinal/'),
     ('instagram', 'https://www.instagram.com/avinal.k/'),
-    ('facebook', "https://www.facebook.com/avinal.kt")
+    ('facebook', 'https://www.facebook.com/avinal.kt'),
     ('twitter', 'https://www.twitter.com/avinal_')
 ]
 
