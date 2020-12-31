@@ -10,15 +10,15 @@ It is real pain when you have small SSD and Windows Subsystem for Linux (WSL) is
 the WSL installation to another drive. Here in this blog I will discuss how to tackle this problem with bite size steps. 
 
 .. |powershell| image:: /images/powershell.png
-    :scale: 5%
+    :width: 5%
     :align: middle
 
 .. |command-line| image:: /images/command-line.png
-    :scale: 5%
+    :width: 5%
     :align: middle
 
 .. |windows10| image:: /images/windows10.png
-    :scale: 5%
+    :width: 5%
     :align: middle
     :alt: WinKey
 
