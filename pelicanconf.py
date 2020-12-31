@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- #
 AUTHOR = 'Avinal'
 HIDE_AUTHORS = True
-SITENAME = 'The Interstellar Twilight'
+SITENAME = 'Be My SpaceTime'
 SITESUBTITLE = 'Avinal Kumar'
 SITEURL = 'https://avinal.is-a.dev'
 THEME = 'alchemy'
