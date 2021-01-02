@@ -30,6 +30,7 @@
   <link rel="stylesheet" href="{{ url(FONTAWESOME_CSS or '/theme/css/all.css') }}">
   <link rel="stylesheet" href="{{ SITEURL }}/theme/css/pygments/{{ PYGMENTS_STYLE|default('default') }}.min.css">
   <link rel="stylesheet" href="{{ SITEURL }}/theme/css/theme.css">
+  <link rel="stylesheet" href="{{ SITEURL }}/theme/css/space.css">
   {% for stylesheet in THEME_CSS_OVERRIDES or () %}
   <link rel="stylesheet" href="{{ url(stylesheet) }}">
   {% endfor %}
@@ -40,7 +41,10 @@
 </head>
 
 <body>
-  <header class="header">
+  <header class="header star">
+    <div id='stars'></div>
+    <div id='stars2'></div>
+    <div id='stars3'></div>
     <div class="container">
       {% include 'include/header.html' %}
     </div>
@@ -54,7 +58,10 @@
     </div>
   </div>
 
-  <footer class="footer">
+  <footer class="footer star">
+    <div id='stars'></div>
+    <div id='stars2'></div>
+    <div id='stars3'></div>
     <div class="container">
       {% include 'include/footer.html' %}
     </div>
