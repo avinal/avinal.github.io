@@ -9,7 +9,7 @@
 
 .. raw:: html
 
-    <p style="border: 2px solid #06d6f1;border-radius: 7px;" align=center>This article was published in SRIJAN 2020, the official magazine of <a href=https://nith.ac.in">NIT Hamirpur</a>, India. The magazine can be accessed <a href="https://issuu.com/srijandesk/docs/srijan2020" style="text-decoration: none;">here</a>.<p><br>
+    <p style="border: 2px solid #06d6f1;border-radius: 7px;" align=center>This article was published in SRIJAN 2020, the official magazine of <a href="https://nith.ac.in" style="text-decoration: none;">NIT Hamirpur</a>, India. The magazine can be accessed <a href="https://issuu.com/srijandesk/docs/srijan2020" style="text-decoration: none;">here</a>.<p><br>
 
 
 टूटता तारा देखना एक अलौकिक अनुभव है। हिमाद्रि के छत से आसमान कुछ ज्यादा ही करीब प्रतीत होता है । लोग सदियों से हिमालय को पूजते आयें हैं । 
