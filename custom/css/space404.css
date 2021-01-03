@@ -66,9 +66,9 @@
   .description {
     padding: 30px;
     position: absolute;
-    top: 25%;
-    left: 0;
-    width: 33%;
+    top: 50%;
+    left: 25%;
+    width: 50%;
     z-index: 999;
   }
   
