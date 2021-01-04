@@ -59,3 +59,6 @@ ICONS = [
 DEFAULT_PAGINATION = 10
 
 PYGMENTS_STYLE = 'monokai'
+
+# disqus integration
+DISQUS_SITENAME = "avinal"
