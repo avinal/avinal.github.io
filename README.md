@@ -1,1 +1,0 @@
-# avinal.github.io
