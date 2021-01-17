@@ -62,6 +62,3 @@ once. Second, I am talkative, I do not know if interviewer was not faking his ex
 but not all interviewers will be same. So, do not talk too much, neither too less. At last work on your communication skill, mostly how 
 you present things and how to answer technical as well as behavioural questions. I was not fluent, but my way of presentation might 
 have saved me. 
-
-I will add more to this blog if I get selected for further process. I hope this will help you prepare better for the interview. Do share 
-if you find it useful. Thanks. :code:`live long and code`
