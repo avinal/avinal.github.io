@@ -42,8 +42,8 @@
 
   @font-face {
     font-family: Exodar;
-    src: url(Exodar.woff)
-         url(Exodar-Outline.woff);
+    src: url(Exodar.woff),
+         url(Exodar.woff2);
   }
 
   h1 {
