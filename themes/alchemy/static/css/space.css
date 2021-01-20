@@ -63,3 +63,15 @@
     transform: translateY(-2000px);
   }
 }
+
+@font-face {
+  font-family: ExodarOut;
+  src: url(Exodar-Outline.woff2),
+       url(Exodar-Outline.woff);
+}
+
+@font-face {
+  font-family: Exodar;
+  src: url(Exodar.woff),
+       url(Exodar.woff2);
+}
