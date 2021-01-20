@@ -34,11 +34,23 @@
     background-attachment: fixed;
   }
   
+  @font-face {
+    font-family: ExodarOut;
+    src: url(Exodar-Outline.woff2),
+         url(Exodar-Outline.woff);
+  }
+
+  @font-face {
+    font-family: Exodar;
+    src: url(Exodar.woff)
+         url(Exodar-Outline.woff);
+  }
+
   h1 {
     font-weight: 500;
     font-size: 2.5em;
     text-transform: uppercase;
-    font-family: Lato;
+    font-family: ExodarOut;
     line-height: 1.6em;
     letter-spacing: 0.1em;
   }
