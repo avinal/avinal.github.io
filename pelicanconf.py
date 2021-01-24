@@ -3,7 +3,7 @@
 AUTHOR = 'Avinal'
 HIDE_AUTHORS = True
 SITENAME = 'Be My SpaceTime'
-SITESUBTITLE = 'Avinal Kumar'
+SITESUBTITLE = '눈치'
 SITEURL = 'https://avinal.is-a.dev'
 THEME = 'alchemy'
 PATH = 'content'
