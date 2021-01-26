@@ -6,6 +6,7 @@
 :tags: HRT, hudsonrivertrading, interview, internship
 :slug: hrt-interview-1
 :category: blog
+:summary: I applied for **Systems Internship - Summer 2021** back in December 2020 at `Hudson River Trading <https://www.hudsonrivertrading.com>`_ , New York....Questions were clear and of medium level. But they were designed in such a way that you must know the basics before you could attempt.
 
 I applied for **Systems Internship - Summer 2021** back in December 2020 at `Hudson River Trading <https://www.hudsonrivertrading.com>`_ , New York. The internship description was: -
 
