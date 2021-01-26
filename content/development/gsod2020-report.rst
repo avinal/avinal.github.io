@@ -7,6 +7,7 @@ Create the VLC User Documentation for one Mobile Port(Android)
 :slug: vlc-gsod-report
 :category: development
 :tags: vlc, gsod, gsod2020
+:summary: The project was to Create the VLC User Documentation for Android Mobile Port which was previously hosted on VLC’s wiki pages. The major portion of this was to start everything from scratch including chapter separation, section organisation.
 
 OVERVIEW
 --------
