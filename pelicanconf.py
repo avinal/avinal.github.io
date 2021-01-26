@@ -5,7 +5,7 @@ HIDE_AUTHORS = True
 SITENAME = 'Be My SpaceTime'
 SITESUBTITLE = '눈치'
 SITEURL = 'https://avinal.is-a.dev'
-THEME = 'alchemy'
+THEME = 'themes/alchemy'
 PATH = 'content'
 MAIL = 'avinal.xlvii@gmail.com'
 TIMEZONE = 'Asia/Kolkata'
@@ -49,6 +49,10 @@ RFG_FAVICONS = False
 ICONS = [
     ('github', "https://github.com/avinal"),
     ('linkedin', 'https://www.linkedin.com/in/avinal/')
+]
+
+LINKS = [
+    ('feedback', "https://github.com/avinal/avinal/discussions/2")
 ]
 
 DEFAULT_PAGINATION = 10

@@ -137,7 +137,7 @@ If you have done everything correctly then go to *https://username.github.io* an
 
 :html-raw:`<h2 style=font-family:Exodar;font-weight:lighter;">But My Blog is Special 🥰</h2>`
 
-My blog looks different, that is because I customised this theme a lot, especially headers, footers, and link appearance. And sorry I won't be publish my theme any time sooner. But I am listing down all the resources I have used for finally getting this result. You can always get my help by send a :html-raw:`<a href="mailto:avinal.xlvii@gmail.com" class="fa fa-envelope" style="text-decoration: none;"></a>` or strting a discussion on :html-raw:`<a href="https://github.com/avinal/avinal/discussions/2" class="fab fa-github" style="text-decoration: none;"></a>`.
+My blog looks different, that is because I customised this theme a lot, especially headers, footers, and link appearance. And sorry I won't be publish my theme any time sooner. But I am listing down all the resources I have used for finally getting this result. You can always get my help by sending me a :html-raw:`<a href="mailto:avinal.xlvii@gmail.com" class="fa fa-envelope" style="text-decoration: none;"></a>` or strting a discussion on :html-raw:`<a href="https://github.com/avinal/avinal/discussions/2" class="fab fa-github" style="text-decoration: none;"></a>`.
 
 * `Pelican Blog <https://blog.getpelican.com/>`_
 * `Pelican Docs <https://docs.getpelican.com/en/latest/>`_
