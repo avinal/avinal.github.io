@@ -5,7 +5,7 @@ Create the VLC User Documentation for one Mobile Port(Android)
 :date: 2020-12-01 23:47
 :modified: 2020-12-31 23:19
 :slug: vlc-gsod-report
-:category: blog
+:category: development
 :tags: vlc, gsod, gsod2020
 
 OVERVIEW

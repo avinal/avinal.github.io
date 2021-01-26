@@ -4,7 +4,7 @@
 
 :date: 2019-09-21 15:47
 :slug: for-sunshine
-:category: blog
+:category: article
 :tags: love, article, hindi
 
 .. raw:: html
