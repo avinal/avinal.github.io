@@ -43,16 +43,12 @@ EXTRA_PATH_METADATA = {
     'extras/safari-pinned-tab.svg': {'path': 'safari-pinned-tab.svg'},
 }
 
-RFG_FAVICONS = True
+RFG_FAVICONS = False
 
 # icons
 ICONS = [
     ('github', "https://github.com/avinal"),
     ('linkedin', 'https://www.linkedin.com/in/avinal/')
-]
-
-LINKS = [
-    ('hello', "mailto:me")
 ]
 
 DEFAULT_PAGINATION = 10
