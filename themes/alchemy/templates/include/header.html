@@ -43,6 +43,9 @@ fab fa-{{icon}}
       {% endif %}
       <li class="list-inline-item"><a class="{{ fa(icon) }}" href="{{ url(link) }}" target="_blank"></a></li>
       {% endfor %}
+      {% if MAIL %}
+      <li class="list-inline-item"><a class="fa fa-envelope" href="mailto:{{ MAIL }}" target="_blank"></a></li>
+      {% endif %}
     </ul>
     {% endif %}
   </div>

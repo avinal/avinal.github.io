@@ -7,8 +7,7 @@ SITESUBTITLE = '눈치'
 SITEURL = 'https://avinal.is-a.dev'
 THEME = 'alchemy'
 PATH = 'content'
-EMAIL = '185067@nith.ac.in'
-SITEIMAGE = '/images/profile.png width=150 height=150'
+MAIL = 'avinal.xlvii@gmail.com'
 TIMEZONE = 'Asia/Kolkata'
 DEFAULT_LANG = 'en'
 
@@ -49,7 +48,11 @@ RFG_FAVICONS = True
 # icons
 ICONS = [
     ('github', "https://github.com/avinal"),
-    ('linkedin', 'https://www.linkedin.com/in/avinal/'),
+    ('linkedin', 'https://www.linkedin.com/in/avinal/')
+]
+
+LINKS = [
+    ('hello', "mailto:me")
 ]
 
 DEFAULT_PAGINATION = 10
@@ -57,4 +60,4 @@ DEFAULT_PAGINATION = 10
 PYGMENTS_STYLE = 'monokai'
 
 # disqus integration
-DISQUS_SITENAME = "avinal"
+# DISQUS_SITENAME = "avinal"
