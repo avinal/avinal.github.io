@@ -80,7 +80,7 @@ theme:
 
 github: publish
 	touch "$(OUTPUTDIR)/CNAME"
-	echo "avinal.is-a.dev" > "$(OUTPUTDIR)/CNAME"
+	echo "www.avinal.space" > "$(OUTPUTDIR)/CNAME"
 	mkdir -p "$(OUTPUTDIR)/custom"
 	cp -a custom/.  "$(OUTPUTDIR)/custom/"
 	cp 404.html "$(OUTPUTDIR)"
