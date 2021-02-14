@@ -2,7 +2,7 @@
 reStructuredText in GitHub
 **************************
 
-:date: 2020-14-02 22:47
+:date: 2021-02-14 22:47
 :slug: rst-guide
 :category: development
 :tags: rst, github
