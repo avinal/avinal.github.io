@@ -125,7 +125,7 @@ reStructuredText in GitHub
         Custom description here.
     
 
-These all are supported by GitHub very well. For more exhautive list specific to Sphinx see `this <https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html>` link.
+These all are supported by GitHub very well. For more exhautive list specific to Sphinx see `this <https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html>`__ link.
 
 Tips
 ----
