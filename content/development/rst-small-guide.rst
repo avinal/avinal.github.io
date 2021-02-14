@@ -6,6 +6,7 @@ reStructuredText in GitHub
 :slug: rst-guide
 :category: development
 :tags: rst, github
+:summary: reStructuredText syntax
 
 - Headers
   
@@ -103,5 +104,31 @@ reStructuredText in GitHub
             your html code here
         </put>
 
+- Notes, warnings
+  
+  .. code-block:: rst
+
+    .. note::
+
+        Put your note here.
+
+    .. warning::
+
+        Put your warning here.
+
+    .. important::
+
+        Put instructions here.
+
+    .. admonition:: custom-text
+
+        Custom description here.
+    
+
 These all are supported by GitHub very well. For more exhautive list specific to Sphinx see `this <https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html>` link.
 
+Tips
+----
+
+- There must be a blank line before and after any directive. Such as after title or code block, tables etc.
+- The options and content of a directives must be 1 tab indented to the directives.
