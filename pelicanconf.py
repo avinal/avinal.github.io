@@ -51,13 +51,7 @@ ICONS = [
     ('linkedin', 'https://www.linkedin.com/in/avinal/')
 ]
 
-LINKS = [
-    ('feedback', "https://github.com/avinal/avinal/discussions/2")
-]
 
 DEFAULT_PAGINATION = 10
 
 PYGMENTS_STYLE = 'monokai'
-
-# disqus integration
-# DISQUS_SITENAME = "avinal"
