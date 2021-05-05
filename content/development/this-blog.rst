@@ -3,6 +3,7 @@ How I Created This Blog?
 ************************
 
 :date: 2021-01-26 16:47
+:updated: 2021-05-05 22:30
 :tags: blog, pelican, ssg
 :slug: twilight-blog
 :category: development
@@ -133,11 +134,11 @@ Now once your project is on GitHub, go to the **Actions** tab and click on *set 
           - name: Run a multi-line script
             run: ./publi.sh
 
-If you have done everything correctly then go to *https://username.github.io* and you should see your blog. From now on whenever you want to add an article, just write it, test locally and push. Yayy your blog is ready.
+If you have done everything correctly then go to *https://username.github.io* and you should see your blog. From now on whenever you want to add an article, just write it, test locally and push. Yay your blog is ready.
 
 :html-raw:`<h2 style=font-family:Exodar;font-weight:lighter;">But My Blog is Special 🥰</h2>`
 
-My blog looks different, that is because I customised this theme a lot, especially headers, footers, and link appearance. And sorry I won't be publish my theme any time sooner. But I am listing down all the resources I have used for finally getting this result. You can always get my help by sending me a :html-raw:`<a href="mailto:avinal.xlvii@gmail.com" class="fa fa-envelope" style="text-decoration: none;"></a>` or strting a discussion on :html-raw:`<a href="https://github.com/avinal/avinal/discussions/2" class="fab fa-github" style="text-decoration: none;"></a>`.
+My blog looks different, that is because I customized this theme a lot, especially headers, footers, and link appearance. And sorry I won't be publish my theme any time sooner. But I am listing down all the resources I have used for finally getting this result. You can always get my help by sending me a :html-raw:`<a href="mailto:avinal.xlvii@gmail.com" class="fa fa-envelope" style="text-decoration: none;"></a>` or starting a discussion on :html-raw:`<a href="https://github.com/avinal/avinal/discussions/2" class="fab fa-github" style="text-decoration: none;"></a>`.
 
 * `Pelican Blog <https://blog.getpelican.com/>`_
 * `Pelican Docs <https://docs.getpelican.com/en/latest/>`_
@@ -146,6 +147,11 @@ My blog looks different, that is because I customised this theme a lot, especial
 * `Parallax Star background in CSS <https://codepen.io/saransh/pen/BKJun>`_
 * `Solar System animation <https://codepen.io/kowlor/pen/ZYYQoy>`_
 * :html-raw:`<a href="https://www.dafont.com/exodar.font" style="font-family: Exodar;font-weight: lighter;text-decoration: none;">EXODAR Font</a>`
+* `Overpass Mono <https://fonts.google.com/specimen/Overpass+Mono>`_
+* `Font Awesome <https://fontawesome.com/how-to-use/on-the-web/setup/hosting-font-awesome-yourself>`_
+
+.. note:: Some of the fonts I have used in my blog may not be available for commercial use. Please check if you intend to do so. Alternatively you may use fonts from this wonderful collection, `70+ Best Free Fonts for Designers – Free for Commercial Use in 2021 <https://www.websiteplanet.com/blog/best-free-fonts/>`_ *(Thanks Ritta Blens for this suggestion)*.
+
 
 :html-raw:`<p align=center>Thanks!</p>`
 
