@@ -7,7 +7,7 @@ Create the VLC User Documentation for one Mobile Port(Android)
 :slug: vlc-gsod-report
 :category: development
 :tags: vlc, gsod, gsod2020
-:summary: The project was to Create the VLC User Documentation for Android Mobile Port which was previously hosted on VLC’s wiki pages. The major portion of this was to start everything from scratch including chapter separation, section organisation.
+:summary: The project was to Create the VLC User Documentation for Android Mobile Port which was previously hosted on VLC’s wiki pages. The major portion of this was to start everything from scratch including chapter separation, section organization.
 
 OVERVIEW
 --------
@@ -15,7 +15,7 @@ OVERVIEW
 VideoLAN is a non-profit organization that develops software for playing video and other media formats. VLC media player (commonly known as just VLC) is a free and Open Source cross-platform multimedia player and framework that plays most multimedia files as well as DVDs, Audio CDs, VCDs, and various streaming protocols built by the VideoLAN organization and a team of volunteers. VLC for Android is a port of the VLC for Android OS.
 
 
-The project was to Create the VLC User Documentation for Android Mobile Port which was previously hosted on VLC’s wiki pages. The major portion of this was to start everything from scratch including chapter separation, section organisation and an engaging and easy to follow for both technical and non-technical users. The original proposal can be found here.
+The project was to Create the VLC User Documentation for Android Mobile Port which was previously hosted on VLC’s wiki pages. The major portion of this was to start everything from scratch including chapter separation, section organization and an engaging and easy to follow for both technical and non-technical users. The original proposal can be found here.
 
 
 PROJECT GOALS
@@ -24,13 +24,13 @@ PROJECT GOALS
 * Propose a new structure for documentation e.g. Chapter Separation, Sections etc
 * Proper balance between technical and non-technical descriptions to serve all kinds of users.
 * Adequate amount of screenshots in each section and other supporting media to make documentation more appealing.
-* Optimised for all Screen Sizes. Especially for Mobile Devices.
+* Optimized for all Screen Sizes. Especially for Mobile Devices.
 * Ease of navigation
 
 COMMUNITY BONDING
 -----------------
 
-This period was mostly utilized for collecting more information and many internal meetings to shape the projects and bonding with fellow writers, developers(mentors). I got to know more about the VLC organisation and the project. We decided to create a skeleton of the project and then follow a Issue-Merge Request-Review-Merge system to keep the commit history clean and maintain the proper review of the work before it is merged. 
+This period was mostly utilized for collecting more information and many internal meetings to shape the projects and bonding with fellow writers, developers(mentors). I got to know more about the VLC organization and the project. We decided to create a skeleton of the project and then follow a Issue-Merge Request-Review-Merge system to keep the commit history clean and maintain the proper review of the work before it is merged. 
 
 
 I initially proposed that the new documentation should also use the same tools(Sphinx and GitLab Pages) because if in future we want to merge all the documentation into a single one, it will be easier to migrate and will provide a consistency across all documentations.  Later I got to know that this will be an independent project and may not be merged since it solves a lot of problems. I was already familiar with the tools so it took no time to get started. 

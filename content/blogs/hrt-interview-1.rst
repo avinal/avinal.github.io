@@ -61,5 +61,5 @@ use examples for the things you cannot explain. I used nice examples. At last, h
 At last, I want to point out things I should not have done. The first is, I did not ask much about the role, you must do this at least 
 once. Second, I am talkative, I do not know if interviewer was not faking his expressions (because he would often discuss in depth), 
 but not all interviewers will be same. So, do not talk too much, neither too less. At last work on your communication skill, mostly how 
-you present things and how to answer technical as well as behavioural questions. I was not fluent, but my way of presentation might 
+you present things and how to answer technical as well as behavioral questions. I was not fluent, but my way of presentation might 
 have saved me. 
