@@ -1,10 +1,30 @@
 :root {
     --alchemy-border: rgba(0,0,0,.1);
 }
+
 ::selection {
-  background: var(--primary);
-  color: var(--secondary);
-  text-shadow: none;
+  background: #0085a1;
+  color: #fff;
+}
+
+::-moz-selection {
+  background: #0085a1;
+  color: #fff;
+}
+
+::-o-selection {
+  background: #0085a1;
+  color: #fff;
+}
+
+::-ms-selection {
+  background: #0085a1;
+  color: #fff;
+}
+
+::-webkit-selection {
+  background: #0085a1;
+  color: #fff;
 }
 
 blockquote {
