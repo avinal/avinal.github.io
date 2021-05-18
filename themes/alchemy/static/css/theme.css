@@ -3,27 +3,27 @@
 }
 
 ::selection {
-  background: #0085a1;
+  background: var(--pink);
   color: #fff;
 }
 
 ::-moz-selection {
-  background: #0085a1;
+  background: var(--pink);
   color: #fff;
 }
 
 ::-o-selection {
-  background: #0085a1;
+  background: var(--pink);
   color: #fff;
 }
 
 ::-ms-selection {
-  background: #0085a1;
+  background: var(--pink);
   color: #fff;
 }
 
 ::-webkit-selection {
-  background: #0085a1;
+  background: var(--pink);
   color: #fff;
 }
 
