@@ -44,8 +44,11 @@ EXTRA_PATH_METADATA = {
     'extras/CNAME': {'path': 'CNAME'},
 }
 
-RFG_FAVICONS = False
+RFG_FAVICONS = True
 
+LINKS = [
+    ('gsoc', 'https://gsoc.avinal.space')
+]
 # icons
 ICONS = [
     ('github', "https://github.com/avinal"),
