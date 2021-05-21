@@ -41,6 +41,7 @@ EXTRA_PATH_METADATA = {
     'extras/mstile-310x310.png': {'path': 'mstile-310x310.png'},
     'extras/mstile-144x144.png': {'path': 'mstile-144x144.png'},
     'extras/safari-pinned-tab.svg': {'path': 'safari-pinned-tab.svg'},
+    'extras/CNAME': {'path': 'CNAME'},
 }
 
 RFG_FAVICONS = False

@@ -79,8 +79,6 @@ theme:
 	"$(PELICANTHEME)" --install "$(THEMEDIR)" --verbose
 
 github: publish
-	touch "$(OUTPUTDIR)/CNAME"
-	echo "avinal.space" > "$(OUTPUTDIR)/CNAME"
 	mkdir -p "$(OUTPUTDIR)/custom"
 	cp -a custom/.  "$(OUTPUTDIR)/custom/"
 	cp 404.html "$(OUTPUTDIR)"
