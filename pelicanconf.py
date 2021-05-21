@@ -52,6 +52,8 @@ ICONS = [
     ('linkedin', 'https://www.linkedin.com/in/avinal/')
 ]
 
+DIRECT_TEMPLATES = ('index', 'tags', 'categories', 'archives', 'sitemap')
+SITEMAP_SAVE_AS = 'sitemap.xml'
 
 DEFAULT_PAGINATION = 10
 
