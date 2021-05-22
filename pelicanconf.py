@@ -59,6 +59,6 @@ ICONS = [
 DIRECT_TEMPLATES = ('index', 'tags', 'categories', 'archives', 'sitemap')
 SITEMAP_SAVE_AS = 'sitemap.xml'
 
-DEFAULT_PAGINATION = 10
+DEFAULT_PAGINATION = 5
 
 PYGMENTS_STYLE = 'manni'
