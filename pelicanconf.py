@@ -8,7 +8,7 @@ SITESUBTITLE = '눈치'
 SITEURL = 'https://avinal.space'
 THEME = 'themes/alchemy'
 PATH = 'content'
-MAIL = 'avinal.xlvii@gmail.com'
+MAIL = 'blog@avinal.space'
 TIMEZONE = 'Asia/Kolkata'
 DEFAULT_LANG = 'en'
 
