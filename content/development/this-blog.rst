@@ -150,7 +150,7 @@ My blog looks different, that is because I customized this theme a lot, especial
 * `Overpass Mono <https://fonts.google.com/specimen/Overpass+Mono>`_
 * `Font Awesome <https://fontawesome.com/how-to-use/on-the-web/setup/hosting-font-awesome-yourself>`_
 
-:html-raw:`<div class="alert alert-warning" role="alert">Some of the fonts I have used in my blog may not be available for commercial use. Please check if you intend to do so. Alternatively you may use fonts from this wonderful collection, <a href="https://www.websiteplanet.com/blog/best-free-fonts/">70+ Best Free Fonts for Designers – Free for Commercial Use in 2021</a> <i>(Thanks Ritta Blens for this suggestion)</i>`
+:html-raw:`<div class="alert alert-warning" role="alert">Some of the fonts I have used in my blog may not be available for commercial use. Please check if you intend to do so. Alternatively you may use fonts from this wonderful collection, <a href="https://www.websiteplanet.com/blog/best-free-fonts/">70+ Best Free Fonts for Designers – Free for Commercial Use in 2021</a> <i>(Thanks Ritta Blens for this suggestion)</i></div>`
 
 
 :html-raw:`<p align=center>Thanks!</p>`
