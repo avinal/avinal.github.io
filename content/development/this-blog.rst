@@ -12,7 +12,7 @@ How I Created This Blog?
 .. role:: html-raw(raw)
     :format: html
 
-:html-raw:`<p style="border: 2px solid var(--cyan);border-radius: 7px;" align=center>This article may not be for you if you are a web developer. You already got better options. 😉<p>`
+:html-raw:`<div class="alert alert-info" role="alert">This article may not be for you if you are a web developer. You already got better options. 😉</div>`
 
 There are lots of ways to create a personal website or a blog. You can design your own user interface and write the backend code. But not everyone is a web developer. And here comes :abbr:`SSGs (Static Site Generator)` to the rescue. **Static Site Generators** are little more than just website generators. In general, if you are looking for a simple blog, its better to use SSG than writing a lot of html and css. They are simple and elegant. Easy to maintain and you can add lots of customizations to your site without breaking or bloating your blog. There are lots of SSGs, `Jekyll <https://jekyllrb.com/>`_, `Pelican <https://blog.getpelican.com/>`_ and more complex ones like `Gatsby <https://www.gatsbyjs.com/>`_, `Hugo <https://gohugo.io/>`_ .
 
@@ -150,7 +150,7 @@ My blog looks different, that is because I customized this theme a lot, especial
 * `Overpass Mono <https://fonts.google.com/specimen/Overpass+Mono>`_
 * `Font Awesome <https://fontawesome.com/how-to-use/on-the-web/setup/hosting-font-awesome-yourself>`_
 
-.. note:: Some of the fonts I have used in my blog may not be available for commercial use. Please check if you intend to do so. Alternatively you may use fonts from this wonderful collection, `70+ Best Free Fonts for Designers – Free for Commercial Use in 2021 <https://www.websiteplanet.com/blog/best-free-fonts/>`_ *(Thanks Ritta Blens for this suggestion)*.
+:html-raw:`<div class="alert alert-warning" role="alert">Some of the fonts I have used in my blog may not be available for commercial use. Please check if you intend to do so. Alternatively you may use fonts from this wonderful collection, <a href="https://www.websiteplanet.com/blog/best-free-fonts/">70+ Best Free Fonts for Designers – Free for Commercial Use in 2021</a> <i>(Thanks Ritta Blens for this suggestion)</i>`
 
 
 :html-raw:`<p align=center>Thanks!</p>`
