@@ -11,7 +11,7 @@ How I implemented WakaTime embeddable Coding Graph GHA?
 
 .. raw:: html
 
-	<a href="https://github.com/avinal/Profile-Readme-WakaTime"><img src="https://github.com/avinal/Profile-Readme-WakaTime/blob/master/waka.png" class="img-fluid"></a>
+	<a href="https://github.com/avinal/Profile-Readme-WakaTime"><img src="https://raw.githubusercontent.com/avinal/Profile-Readme-WakaTime/b281d074ee75f9626b39d10e2e518c6a297208a3/waka.png" class="img-fluid"></a>
 
 Implementation Details
 ----------------------
@@ -156,5 +156,5 @@ My Coding Activity
 
 .. raw:: html
 
-	<img class="img-fluid" src="https://github.com/avinal/avinal/blob/main/images/stat.svg">
+	<img class="img-fluid" src="https://raw.githubusercontent.com/avinal/avinal/main/images/stat.svg">
 
