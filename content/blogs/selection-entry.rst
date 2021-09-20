@@ -6,6 +6,6 @@ Google Summer of Code 2021 Selection
 :slug: finally-gsoc
 :category: gsoc
 :tags: gsoc, gsoc21, fossology
-
+:status: unpublished
 
 Finally after three years I have been selected in **Google Summer of Code** program at **The FOSSology Project**. I will be working on *New Buildsystem and CI/CD* for the project.
