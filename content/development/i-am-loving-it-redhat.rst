@@ -12,14 +12,13 @@ My internship at Red Hat |redhat_logo|
 :slug: i-am-loving-it-redhat
 :category: development
 :tags: kubernetes, redhat, docker, golang, tekton, openshift, intern
-:summary: 
+:summary: I made it to the Red Hat as a DevTools intern. This post is about onboarding and how I prepared myself for working on the actual project.
 
 
 I have been contributing to open source for the last 3 years and Red Hat was one of the companies that I was very fond of. I must say all my contributions and consistency paid off, and I made it to the Red Hat as a DevTools intern. This post is about onboarding and how I prepared myself for working on the actual project. 
 
 
 On the first day of my internship, I met two amazing teammates `Saytam <https://github.com/>`_ and `Utkarsh <https://github.com/>`_. We were also introduced to a Senior Software Engineer `Piyush Garg <https://github.com>`_ who later mentored us. The initial few meetings were more on the introduction and what to learn topics. Before I jump into more details let me explain first what does a **DevTools Developer/Engineer** do? 
-
 
 
 What does a DevTools Developer/Engineer do?
@@ -37,8 +36,8 @@ Learning on the |golang_logo|
 There was a lot of learning and still a lot to learn. In a meeting with my manager Pradeepto Bhattacharya, I was told that I will be working on TektonCD or OpenShift Pipelines, and both of them require a sound knowledge of Golang, CI/CD, Containers, Docker, and Kubernetes. I was familiar with CI/CD, containers, and Docker but never used Golang and Kubernetes. We were provided plenty of good resources and my teammates also helped with many awesome resources. I am listing all the resources with their category.
 
 
-Golang
-""""""
+`Golang <https://go.dev/>`_
+"""""""""""""""""""""""""""
 
 .. image:: /images/goladder.png
     :class: float-md-right rounded ml-3
@@ -55,8 +54,8 @@ One of Golang’s biggest advantages is that it offers the clarity and ease of u
 - `The Go Programming Language - Book <https://www.gopl.io/>`_ *for learning advanced level golang*
 - `Golang Tutorial for Beginners | Full Go Course - TechWorld with Nana <https://youtu.be/yyUHQIec83I>`_ *if you prefer video tutorials, I don't :)*
   
-Docker
-""""""
+`Docker <https://www.docker.com/>`_
+"""""""""""""""""""""""""""""""""""
 
 Docker takes away repetitive, mundane configuration tasks and is used throughout the development lifecycle for fast, easy, and portable application development - desktop and cloud. Docker’s comprehensive end-to-end platform includes UIs, CLIs, APIs, and security that are engineered to work together across the entire application delivery lifecycle.
 
@@ -69,8 +68,8 @@ Docker takes away repetitive, mundane configuration tasks and is used throughout
 - `Docker for beginners <https://docker-curriculum.com/>`_
 - `Docker Tutorial for Beginners | TechWorld with Nana <https://youtu.be/3c-iBn73dDE>`_ *video tutorial*
 
-Kubernetes
-""""""""""
+`Kubernetes <https://kubernetes.io/>`_
+""""""""""""""""""""""""""""""""""""""
 
 .. image:: /images/kubernetes-meme.png
     :width: 200
@@ -93,4 +92,5 @@ In late January, we were asked to implement our learnings and deep dive into Kub
 The application was called **Minimal Tekton Server**. It is a set of three different applications, i.e a server, a CLI, and a dashboard. In short, this application is supposed to *listen to custom resources being created and then transfer the request to Tekton API to create the corresponding resource on the OpenShift/Kubernetes cluster.* 
 
 
-So are you interested in how it went? Please follow up with my next blog.
+So are you interested in how it went? Please follow up with my `next blog <https://avinal.space/posts/development/lovely-dangerous-things-redhat.html>`_.
+

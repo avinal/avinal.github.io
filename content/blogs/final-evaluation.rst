@@ -44,7 +44,7 @@ GitHub Actions CI/CD
     :width: 350
 
 Since the FOSSology project moved on Github, it has used only the free Travis CI service for OSS projects. 
-At the time of writing the Travis CI has reduced its free tier CI services. GitHub Actions provides faster builds. Since GitHub Actions is a fully managed service by GitHub, we don’t need to know how to scale and operate the infrastructure to run it. 
+At the time of writing Travis CI has reduced its free tier CI services. GitHub Actions provides faster builds. Since GitHub Actions is a fully managed service by GitHub, we don’t need to know how to scale and operate the infrastructure to run it. 
 
 It is straightforward to use with GitHub because when we fork a repository, the actions automatically get forked. This allows you to test and build projects very efficiently and even run them closer to the developer. Also, you have readily available access to the GitHub API, making it more popular among developers.
 
@@ -205,8 +205,8 @@ Deliverables
     
 
 
-How it works and how to use it?
--------------------------------
+How does it work and how to use it?
+-----------------------------------
 
 .. raw:: html
 
@@ -252,7 +252,7 @@ Each agent is a complete CMake sub-project with its independent configuration fo
     └── CMakeLists.txt                  # FOSSology Top-level CMake configuration 
 
 
-The :code:`cmake` directory contains customized CMake modules and templates for FOSSology. This directory is required for all the operations. The general workflow of the new build system as well as how to use it as described below.
+The :code:`cmake` directory contains customized CMake modules and templates for FOSSology. This directory is required for all the operations. The general workflow of the new build system as well as how to use it is described below.
 
 1. Since the new build system is still in review. You must fork FOSSology and pull the `#2075 <https://github.com/fossology/fossology/pull/2075>`_ pull request branch. Once you are in FOSSology root, run these commands.
 
@@ -331,7 +331,7 @@ The :code:`cmake` directory contains customized CMake modules and templates for 
         ninja install
 
 
-6. While testing has some issues, but most of the testing is working fine. For now, you must build and run any test from the FOSSology root directory only. You can choose to configure a single agent if you want to test one agent only. See :code:`ctest --help` for controlling test runs.
+6. While testing has some issues, most of the testing is working fine. For now, you must build and run any test from the FOSSology root directory only. You can choose to configure a single agent if you want to test one agent only. See :code:`ctest --help` for controlling test runs.
 
     .. code-block:: bash
 
@@ -380,13 +380,13 @@ Although the transition from Makefiles to CMake and Travis CI to GitHub Actions 
 - Running tests locally may require switching to :code:`fossy` user.
 - While configured for testing, it may give permission errors.
 - Scheduler, Ununpack, and Delagent unit and functional tests are not working. I have added an issue `#2084 <https://github.com/fossology/fossology/issues/2084>`_ to track the progress on fixing these tests.
-- CMake doesn't generates uninstall targets. The closest thing to uninstall is `this snippet <https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#can-i-do-make-uninstall-with-cmake>`_. This will be later added to the FOSSology.
+- CMake doesn't generate uninstall targets. The closest thing to uninstall is `this snippet <https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#can-i-do-make-uninstall-with-cmake>`_. This will be later added to the FOSSology.
 
 
 Challenges Faced
 ----------------
 
-While this whole project was challenging, some aspects of it were unforeseen and more challenging. When I decided to go on with this project I just had enough CMake knowledge to write a configuration for a very small project. I had never used CMake on this big scale. On the other side, the FOSSology community is largely unknown to CMake so for all of us it was learn, practice, and implement. With support from mentors, I was able to overcome this challenge with flying colors.
+While this whole project was challenging, some aspects of it were unforeseen and more challenging. When I decided to go on with this project I just had enough CMake knowledge to write a configuration for a very small project. I had never used CMake on this big scale. On the other side, the FOSSology community is largely unknown to CMake so for all of us it was learned, practiced, and implement. With support from mentors, I was able to overcome this challenge with flying colors.
 
 The other challenge was to understand the old build system, how they are all connected and what is the flow. The complexity can be imagined by the fact that the most of code and configurations were written in the decade before the last decade and haven't changed much since then.
 
@@ -428,5 +428,5 @@ First of all, I want to thank and appreciate my mentors `Gaurav Mishra <https://
 
 I want to thank my friend and :abbr:`fellow participant (Integrating ScanCode Toolkit to FOSSology)` `Sarita <https://github.com/itssingh>`_. Thank you for being a collaborator, support, and motivation for attempting GSoC. 
 
-Finally, I want to thanks, my family and friends. I got to meet many awesome developers as my fellow participants from around the world, I wish we will do more collaboration in the future.
+Finally, I want to thank, my family and friends. I got to meet many awesome developers as my fellow participants from around the world, I wish we will do more collaboration in the future.
 
