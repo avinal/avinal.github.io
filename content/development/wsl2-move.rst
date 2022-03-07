@@ -6,9 +6,9 @@ Move WSL 2 Safely to another Drive
 :tags: wsl, wsl2
 :category: development
 :slug: wsl1
-:summary: It is real pain when you have small SSD and Windows Subsystem for Linux (WSL) is growing exponentially in size. There no easy way to move the WSL installation to another drive. Here in this blog I will discuss how to tackle this problem with bite size steps.
+:summary: It is real pain when you have small SSD and Windows Subsystem for Linux (WSL) is growing exponentially in size. There is no easy way to move the WSL installation to another drive. Here in this blog I will discuss how to tackle this problem with bite size steps.
 
-It is real pain when you have small SSD and Windows Subsystem for Linux (WSL) is growing exponentially in size. There no easy way to move 
+It is real pain when you have small SSD and Windows Subsystem for Linux (WSL) is growing exponentially in size. There is no easy way to move 
 the WSL installation to another drive. Here in this blog I will discuss how to tackle this problem with bite size steps. 
 
 .. |powershell| image:: /images/powershell.png
