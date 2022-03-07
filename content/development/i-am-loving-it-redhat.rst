@@ -36,27 +36,53 @@ Learning on the |golang_logo|
 
 There was a lot of learning and still a lot to learn. In a meeting with my manager Pradeepto Bhattacharya, I was told that I will be working on TektonCD or OpenShift Pipelines, and both of them require a sound knowledge of Golang, CI/CD, Containers, Docker, and Kubernetes. I was familiar with CI/CD, containers, and Docker but never used Golang and Kubernetes. We were provided plenty of good resources and my teammates also helped with many awesome resources. I am listing all the resources with their category.
 
-.. image:: https://go.dev/images/gophers/ladder.svg
-    :class: float-md-right rounded border border-info ml-3
-    :alt: Gopher on the ladder
-    :width: 350
 
-- Golang
-    - `Official Go Documentation <https://go.dev/doc/>`_ - *Start from here*
-    - `Go by Example <https://gobyexample.com/>`_ - *bite-size examples for most of the golang features*
-    - `Golang tutorial series - GOLANGBOT.COM <https://golangbot.com/learn-golang-series/>`_ - *in-depth tutorial of golang*
-    - `Effective Go <https://go.dev/doc/effective_go>`_ - *writing good golang programs*
-    - `The Go Playground <https://go.dev/play/>`_ - *official online golang ide*
-    - `The Go Programming Language - Book <https://www.gopl.io/>`_ *for learning advanced level golang*
-    - `Golang Tutorial for Beginners | Full Go Course - TechWorld with Nana <https://youtu.be/yyUHQIec83I>`_ *if you prefer video tutorials, I don't :)*
-- Docker
-    - `Docker and Containers - Katacoda <https://www.katacoda.com/courses/docker>`_ *interactive lessons on docker and containers*
-    - `Docker for beginners <https://docker-curriculum.com/>`_
-    - `Docker Tutorial for Beginners | TechWorld with Nana <https://youtu.be/3c-iBn73dDE>`_ *video tutorial*
-- Kubernetes
-    - `Learn Kubernetes - Katacoda <https://www.katacoda.com/courses/kubernetes>`_ *interactive lessons with kubernetes*
-    - `kube by example <https://kubebyexample.com/>`_ *learn by doing*
-    - `Kubernetes Tutorial for Beginners <https://youtu.be/X48VuDVv0do>`_ *video tutorial*
+Golang
+""""""
+
+.. image:: /images/goladder.png
+    :class: float-md-right rounded ml-3
+    :alt: Gopher on the ladder
+    :height: 20em
+
+One of Golang’s biggest advantages is that it offers the clarity and ease of use that other languages lack. Golang’s advantages make it easy for new programmers to quickly understand the language and for seasoned veterans to easily read each other’s code.
+
+- `Official Go Documentation <https://go.dev/doc/>`_ - *Start from here*
+- `Go by Example <https://gobyexample.com/>`_ - *bite-size examples for most of the golang features*
+- `Golang tutorial series - GOLANGBOT.COM <https://golangbot.com/learn-golang-series/>`_ - *in-depth tutorial of golang*
+- `Effective Go <https://go.dev/doc/effective_go>`_ - *writing good golang programs*
+- `The Go Playground <https://go.dev/play/>`_ - *official online golang ide*
+- `The Go Programming Language - Book <https://www.gopl.io/>`_ *for learning advanced level golang*
+- `Golang Tutorial for Beginners | Full Go Course - TechWorld with Nana <https://youtu.be/yyUHQIec83I>`_ *if you prefer video tutorials, I don't :)*
+  
+Docker
+""""""
+
+Docker takes away repetitive, mundane configuration tasks and is used throughout the development lifecycle for fast, easy, and portable application development - desktop and cloud. Docker’s comprehensive end-to-end platform includes UIs, CLIs, APIs, and security that are engineered to work together across the entire application delivery lifecycle.
+
+.. image:: /images/docker-architecture.png
+    :class: float-md-right img-fluid my-3
+    :alt: The Docker Architecture
+
+
+- `Docker and Containers - Katacoda <https://www.katacoda.com/courses/docker>`_ *interactive lessons on docker and containers*
+- `Docker for beginners <https://docker-curriculum.com/>`_
+- `Docker Tutorial for Beginners | TechWorld with Nana <https://youtu.be/3c-iBn73dDE>`_ *video tutorial*
+
+Kubernetes
+""""""""""
+
+.. image:: /images/kubernetes-meme.png
+    :width: 200
+    :alt: Kubernetes tech
+    :class: float-md-left border mr-3 
+
+
+**Kubernetes** is the Greek word for a ship’s captain. We get the words Cybernetic and Gubernatorial from it. The Kubernetes project focuses on building a robust platform for running thousands of containers in production. 
+
+- `Learn Kubernetes - Katacoda <https://www.katacoda.com/courses/kubernetes>`_ *interactive lessons with kubernetes*
+- `kube by example <https://kubebyexample.com/>`_ *learn by doing*
+- `Kubernetes Tutorial for Beginners <https://youtu.be/X48VuDVv0do>`_ *video tutorial*
 
 *Not so Minimal* Tekton Server
 ------------------------------
