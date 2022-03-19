@@ -54,7 +54,8 @@ LINKS = [
 ICONS = [
     ('github', "https://github.com/avinal"),
     ('linkedin', 'https://www.linkedin.com/in/avinal/'),
-    ('instagram', 'https://instagram.com/avinal.k')
+    ('instagram', 'https://instagram.com/avinal.k'),
+    ('calendar', 'https://meet.avinal.space')
 ]
 
 DIRECT_TEMPLATES = ('index', 'tags', 'categories', 'archives', 'sitemap')
