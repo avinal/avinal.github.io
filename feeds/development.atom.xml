@@ -1,0 +1,783 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Be My SpaceTime - development</title><link href="https://avinal.space/" rel="alternate"></link><link href="https://avinal.space/feeds/development.atom.xml" rel="self"></link><id>https://avinal.space/</id><updated>2022-03-07T22:47:00+05:30</updated><subtitle>눈치</subtitle><entry><title>Developing Minimal Tekton Server</title><link href="https://avinal.space/posts/development/lovely-dangerous-things-redhat.html" rel="alternate"></link><published>2022-02-27T20:47:00+05:30</published><updated>2022-03-07T22:47:00+05:30</updated><author><name>Avinal</name></author><id>tag:avinal.space,2022-02-27:/posts/development/lovely-dangerous-things-redhat.html</id><summary type="html">&lt;p class="first last"&gt;We will be designing and implementing an application that will be talking to Tekton APIs to create resources on a Kubernetes/OpenShift Cluster.&lt;/p&gt;
+</summary><content type="html">&lt;p style="border: 2px solid var(--pink);border-radius: 7px;" align=center&gt;This blog is a descreptive account of the development of Minimal Tekton Server. This is highly technical in nature, so please make sure that you have sufficient knowledge about Golang, Docker, Kubernetes and TektonCD. You can refer to my &lt;a href="https://avinal.space/posts/development/i-am-loving-it-redhat.html"&gt;previous blog&lt;/a&gt; to know about these topics.&lt;p&gt;&lt;p&gt;As mentioned in my last blog, we were given to implement an application named &lt;strong&gt;Minimal Tekton Server&lt;/strong&gt;. The problem statement reads:&lt;/p&gt;
+&lt;blockquote class="epigraph"&gt;
+We will be designing and implementing an application that will be talking to Tekton APIs to create resources on a Kubernetes/OpenShift Cluster. The application will expose some fields of the Tekton Resources which the user will provide and then this application will create Tekton resources by talking to Tekton APIs available on the cluster to create the resources based on the user-provided fields.&lt;/blockquote&gt;
+&lt;p&gt;There are three parts in this project for the application and two more parts for the CI/CD using TektonCD and Kubernetes/OpenShift. I will go through each part descriptively and try to explain what we did.&lt;/p&gt;
+&lt;div class="section" id="the-architecture-of-mks"&gt;
+&lt;h2&gt;The Architecture of MKS&lt;/h2&gt;
+&lt;p&gt;The first task in the development of the Minimal Tekton Server was creating its architectural diagram. Our first diagram was trash compared to the final diagram. Yeah, we learned. I will be explaining our final(obviously) architectural diagram and try to make some sense out of band-aids and duct tapes.&lt;/p&gt;
+&lt;img alt="The MKS Arhitecture" class="img-fluid my-3" src="/images/mks-architecture.png" /&gt;
+&lt;p&gt;Let me start with explaining &lt;strong&gt;What are MKS Resources?&lt;/strong&gt;. I hope you know at least tidbits about Kubernetes and by the definition: &lt;em&gt;A resource is an endpoint in the Kubernetes API that stores a collection of API objects of a certain kind; for example, the built-in :code:`pods` resource contains a collection of Pod objects.&lt;/em&gt; But developers soon realized that these in-built resources were not enough for the ever-growing applications of Kubernetes. Here &lt;a class="reference external" href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/"&gt;custom resource&lt;/a&gt; comes into the picture. &lt;em&gt;A custom resource is an extension of the Kubernetes API that is not necessarily available in a default Kubernetes installation.&lt;/em&gt; To define a custom resource we use something called &lt;a class="reference external" href="https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/"&gt;Custom Resource Definition&lt;/a&gt;. So MKS Resources are such custom resources that correspond to the TektonCD custom resources.&lt;/p&gt;
+&lt;img alt="A venus flytrap engulphing an insect." class="float-md-right ml-3" src="/images/venus-flytrap.gif" style="width: 250px;" /&gt;
+&lt;p&gt;Let us now focus on the box containing &lt;code&gt;Controller&lt;/code&gt; and &lt;code&gt;API server&lt;/code&gt;. The controller can be said as a stimulus-response mechanism. Take the analogy of a Venus Flytrap plant. The trap is initially open. There are &lt;code&gt;trigger&lt;/code&gt; hairs on the inside of the trap. Once an insect is detected, there is a change of state and the trap closes in a blick on the eye. The controller works the same way. It listens for the change in the state of the MKS resources and immediately transfers the request to the Tekton API to reflect the change in the corresponding Tekton resources. The changes can be creation, deletion, or updating. The API server ensures that there is a working connection between our controller and the Tekton API.&lt;/p&gt;
+&lt;p&gt;MKS Server also exposes APIs to introduce a change of state in the MKS resources. In technical terms these are called &lt;code&gt;verbs&lt;/code&gt;. There are five such verbs that we have exposed: &lt;code&gt;create&lt;/code&gt;, &lt;code&gt;update&lt;/code&gt;, &lt;code&gt;get&lt;/code&gt;, &lt;code&gt;delete&lt;/code&gt;, and &lt;code&gt;list&lt;/code&gt;. They can be utilized by a REST client, or in our case &lt;strong&gt;MKS CLI&lt;/strong&gt; to introduce desired change. The MKS command-line interface provides commands and subcommands to do the desired tasks.&lt;/p&gt;
+&lt;p&gt;Whenever there is a change in the state, there is a logic running inside the controller to react on that and that also affects our database. We store four datapoints in our database: &lt;code&gt;created&lt;/code&gt;, &lt;code&gt;deleted&lt;/code&gt;, &lt;code&gt;completed&lt;/code&gt;, and &lt;code&gt;failed&lt;/code&gt;. They tell us about the current statistcs of our MKS resource using a single-page web app called &lt;strong&gt;MKS Dashboard&lt;/strong&gt; (or UI).&lt;/p&gt;
+&lt;p&gt;This was about the architecture of the Minimal Tekton Server. Let us jump into more technical stuff.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="how-to-implement-a-crd-controller"&gt;
+&lt;h2&gt;How to implement a CRD controller?&lt;/h2&gt;
+&lt;p&gt;During this assignment, something that took the most time and effort was the implementation of a controller for our custom resources. This isn't very hard if you go by the rules and do the things according to the well-defined documents and blogs since this is a standard step in the implementation of any custom resource controller. But did we follow the rules? Hell no! But this time, let us go step-by-step.&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;The first step is to define a &lt;code&gt;CustomResourceDefinition&lt;/code&gt; for our custom resource. Let us define a CRD called &lt;code&gt;spacetime&lt;/code&gt;. To do this you can write a YAML file like below.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# file: spacetime-crd.yaml&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nt"&gt;apiVersion&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;apiextensions.k8s.io/v1&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nt"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;CustomResourceDefinition&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nt"&gt;metadata&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="c1"&gt;# name must match the spec fields below, and be in the form: &amp;lt;plural&amp;gt;.&amp;lt;group&amp;gt;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;spacetimes.example.com&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nt"&gt;spec&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="c1"&gt;# group name to use for REST API: /apis/&amp;lt;group&amp;gt;/&amp;lt;version&amp;gt;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nt"&gt;group&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;example.com&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="c1"&gt;# list of versions supported by this CustomResourceDefinition&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nt"&gt;versions&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;v1alpha1&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;# Each version can be enabled/disabled by Served flag.&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;served&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;true&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;# One and only one version must be marked as the storage version.&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;storage&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;true&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;schema&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;openAPIV3Schema&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;object&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;properties&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;spec&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;object&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;properties&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;message&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;string&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="c1"&gt;# either Namespaced or Cluster&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nt"&gt;scope&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Namespaced&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nt"&gt;names&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;# plural name to be used in the URL: /apis/&amp;lt;group&amp;gt;/&amp;lt;version&amp;gt;/&amp;lt;plural&amp;gt;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;plural&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;spacetimes&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;# singular name to be used as an alias on the CLI and for display&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;singular&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;spacetime&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;# kind is normally the CamelCased singular type. Your resource manifests use this.&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;SpaceTime&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;# shortNames allow shorter string to match your resource on the CLI&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;shortNames&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;st&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can learn more about the fields and options &lt;a class="reference external" href="https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/"&gt;here&lt;/a&gt;. The CRD that we defined above corresponds to the &lt;code&gt;CustomResource&lt;/code&gt; given below. Once you apply the above file you will be able to see the &lt;code&gt;spacetime&lt;/code&gt; custom resource on your Kubernetes/OpenShift cluster.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# file: spacetime-cr.yaml&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nt"&gt;apiVersion&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;spacetimes.example.com/v1alpha1&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nt"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;SpaceTime&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nt"&gt;metadata&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;spacetime-cr&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nt"&gt;spec&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;message&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Hello&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;from&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;space!&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Apply them using the following commands:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;kubectl apply -f spacetime-crd.yaml
+kubectl apply -f spacetime-cr.yaml
+&lt;/pre&gt;&lt;/div&gt;
+&lt;ol class="arabic simple" start="2"&gt;
+&lt;li&gt;Once we have defined our custom resources, we need to define the types that will correspond to this custom resource definition. This can be done using &lt;code&gt;k8s.io/apimachinery/pkg/apis/meta/v1&lt;/code&gt; package written in golang. Did I tell you that this is all in golang? Well, now you know. Create a package structure for a golang project and add the definition of the type as given below.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mkdir -p pkg/api/spacetime/v1alpha1
+touch pkg/api/spacetime/v1alpha1/&lt;span class="o"&gt;{&lt;/span&gt;spacetime_types,register,doc&lt;span class="o"&gt;}&lt;/span&gt;.go pkg/api/spacetime/register.go
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Add the following content to the corresponding files.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;// file: /pkg/api/spacetime/v1alpha1/spacetime_types.go&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="kn"&gt;package&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;v1alpha1&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;metav1&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;k8s.io/apimachinery/pkg/apis/meta/v1&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="kd"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;SpaceTime&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;struct&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;metav1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;TypeMeta&lt;/span&gt;&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="s"&gt;`json:&amp;quot;,inline&amp;quot;`&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;metav1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;ObjectMeta&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;`json:&amp;quot;metadata,omitempty&amp;quot;`&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;Spec&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;SpaceTimeSpec&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;`json:&amp;quot;spec&amp;quot;`&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="kd"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;SpaceTimeSpec&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;struct&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;Message&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;string&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;`json:&amp;quot;message&amp;quot;`&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="kd"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;SpaceTimeList&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;struct&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;metav1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;TypeMeta&lt;/span&gt;&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="s"&gt;`json:&amp;quot;,inline&amp;quot;`&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;metav1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;ListMeta&lt;/span&gt;&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="s"&gt;`json:&amp;quot;metadata&amp;quot;`&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nx"&gt;Items&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="nx"&gt;SpaceTime&lt;/span&gt;&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="s"&gt;`json:&amp;quot;items&amp;quot;`&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;To be Continued&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+</content><category term="development"></category><category term="kubernetes"></category><category term="redhat"></category><category term="docker"></category><category term="golang"></category><category term="tekton"></category><category term="openshift"></category><category term="intern"></category></entry><entry><title>My internship at Red Hat</title><link href="https://avinal.space/posts/development/i-am-loving-it-redhat.html" rel="alternate"></link><published>2022-02-25T20:47:00+05:30</published><updated>2022-02-25T20:47:00+05:30</updated><author><name>Avinal</name></author><id>tag:avinal.space,2022-02-25:/posts/development/i-am-loving-it-redhat.html</id><summary type="html">&lt;p class="first last"&gt;I made it to the Red Hat as a DevTools intern. This post is about onboarding and how I prepared myself for working on the actual project.&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;I have been contributing to open source for the last 3 years and Red Hat was one of the companies that I was very fond of. I must say all my contributions and consistency paid off, and I made it to the Red Hat as a DevTools intern. This post is about onboarding and how I prepared myself for working on the actual project.&lt;/p&gt;
+&lt;p&gt;On the first day of my internship, I met two amazing teammates &lt;a class="reference external" href="https://github.com/"&gt;Saytam&lt;/a&gt; and &lt;a class="reference external" href="https://github.com/"&gt;Utkarsh&lt;/a&gt;. We were also introduced to a Senior Software Engineer &lt;a class="reference external" href="https://github.com"&gt;Piyush Garg&lt;/a&gt; who later mentored us. The initial few meetings were more on the introduction and what to learn topics. Before I jump into more details let me explain first what does a &lt;strong&gt;DevTools Developer/Engineer&lt;/strong&gt; do?&lt;/p&gt;
+&lt;div class="section" id="what-does-a-devtools-developer-engineer-do"&gt;
+&lt;h2&gt;What does a DevTools Developer/Engineer do?&lt;/h2&gt;
+&lt;p&gt;From &lt;a class="reference external" href="https://developer.mozilla.org/en-US/docs/Glossary/Developer_Tools"&gt;MDN Web Docs&lt;/a&gt; &lt;strong&gt;Developer tools (or &amp;quot;development tools&amp;quot; or short &amp;quot;DevTools&amp;quot;) are programs that allow a developer to create, test, and debug software.&lt;/strong&gt; At RedHat, a lot of open source developer tools of industry standards are developed. There are many, OpenShift, Tekton, CodeReady containers, and many more.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="learning-on-the-golang-logo"&gt;
+&lt;h2&gt;Learning on the &lt;img alt="golang_logo" class="align-top" src="/images/golang.png" style="width: 2.5em;" /&gt;&lt;/h2&gt;
+&lt;p&gt;There was a lot of learning and still a lot to learn. In a meeting with my manager Pradeepto Bhattacharya, I was told that I will be working on TektonCD or OpenShift Pipelines, and both of them require a sound knowledge of Golang, CI/CD, Containers, Docker, and Kubernetes. I was familiar with CI/CD, containers, and Docker but never used Golang and Kubernetes. We were provided plenty of good resources and my teammates also helped with many awesome resources. I am listing all the resources with their category.&lt;/p&gt;
+&lt;div class="section" id="golang-1"&gt;
+&lt;h3&gt;&lt;a class="reference external" href="https://go.dev/"&gt;Golang&lt;/a&gt;&lt;/h3&gt;
+&lt;img alt="Gopher on the ladder" class="float-md-right rounded ml-3" src="/images/goladder.png" style="height: 20em;" /&gt;
+&lt;p&gt;One of Golang’s biggest advantages is that it offers the clarity and ease of use that other languages lack. Golang’s advantages make it easy for new programmers to quickly understand the language and for seasoned veterans to easily read each other’s code.&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://go.dev/doc/"&gt;Official Go Documentation&lt;/a&gt; - &lt;em&gt;Start from here&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://gobyexample.com/"&gt;Go by Example&lt;/a&gt; - &lt;em&gt;bite-size examples for most of the golang features&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://golangbot.com/learn-golang-series/"&gt;Golang tutorial series - GOLANGBOT.COM&lt;/a&gt; - &lt;em&gt;in-depth tutorial of golang&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://go.dev/doc/effective_go"&gt;Effective Go&lt;/a&gt; - &lt;em&gt;writing good golang programs&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://go.dev/play/"&gt;The Go Playground&lt;/a&gt; - &lt;em&gt;official online golang ide&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://www.gopl.io/"&gt;The Go Programming Language - Book&lt;/a&gt; &lt;em&gt;for learning advanced level golang&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://youtu.be/yyUHQIec83I"&gt;Golang Tutorial for Beginners | Full Go Course - TechWorld with Nana&lt;/a&gt; &lt;em&gt;if you prefer video tutorials, I don't :)&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="docker-1"&gt;
+&lt;h3&gt;&lt;a class="reference external" href="https://www.docker.com/"&gt;Docker&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Docker takes away repetitive, mundane configuration tasks and is used throughout the development lifecycle for fast, easy, and portable application development - desktop and cloud. Docker’s comprehensive end-to-end platform includes UIs, CLIs, APIs, and security that are engineered to work together across the entire application delivery lifecycle.&lt;/p&gt;
+&lt;img alt="The Docker Architecture" class="float-md-right img-fluid my-3" src="/images/docker-architecture.png" /&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://www.katacoda.com/courses/docker"&gt;Docker and Containers - Katacoda&lt;/a&gt; &lt;em&gt;interactive lessons on docker and containers&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://docker-curriculum.com/"&gt;Docker for beginners&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://youtu.be/3c-iBn73dDE"&gt;Docker Tutorial for Beginners | TechWorld with Nana&lt;/a&gt; &lt;em&gt;video tutorial&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="kubernetes-1"&gt;
+&lt;h3&gt;&lt;a class="reference external" href="https://kubernetes.io/"&gt;Kubernetes&lt;/a&gt;&lt;/h3&gt;
+&lt;img alt="Kubernetes tech" class="float-md-left border mr-3" src="/images/kubernetes-meme.png" style="width: 200px;" /&gt;
+&lt;p&gt;&lt;strong&gt;Kubernetes&lt;/strong&gt; is the Greek word for a ship’s captain. We get the words Cybernetic and Gubernatorial from it. The Kubernetes project focuses on building a robust platform for running thousands of containers in production.&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://www.katacoda.com/courses/kubernetes"&gt;Learn Kubernetes - Katacoda&lt;/a&gt; &lt;em&gt;interactive lessons with kubernetes&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://kubebyexample.com/"&gt;kube by example&lt;/a&gt; &lt;em&gt;learn by doing&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://youtu.be/X48VuDVv0do"&gt;Kubernetes Tutorial for Beginners&lt;/a&gt; &lt;em&gt;video tutorial&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="not-so-minimal-tekton-server"&gt;
+&lt;h2&gt;&lt;em&gt;Not so Minimal&lt;/em&gt; Tekton Server&lt;/h2&gt;
+&lt;p&gt;In late January, we were asked to implement our learnings and deep dive into Kubernetes and TektonCD through an assignment project. Soon we realized that whatever we were learning so far was not even close to what we were going to implement. We were given a document containing the requirements of the applications we were supposed to create along with all the documentation and architectural diagrams.&lt;/p&gt;
+&lt;p&gt;The application was called &lt;strong&gt;Minimal Tekton Server&lt;/strong&gt;. It is a set of three different applications, i.e a server, a CLI, and a dashboard. In short, this application is supposed to &lt;em&gt;listen to custom resources being created and then transfer the request to Tekton API to create the corresponding resource on the OpenShift/Kubernetes cluster.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;So are you interested in how it went? Please follow up with my &lt;a class="reference external" href="https://avinal.space/posts/development/lovely-dangerous-things-redhat.html"&gt;next blog&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+</content><category term="development"></category><category term="kubernetes"></category><category term="redhat"></category><category term="docker"></category><category term="golang"></category><category term="tekton"></category><category term="openshift"></category><category term="intern"></category></entry><entry><title>reStructuredText in GitHub</title><link href="https://avinal.space/posts/development/rst-guide.html" rel="alternate"></link><published>2021-02-14T22:47:00+05:30</published><updated>2021-02-14T22:47:00+05:30</updated><author><name>Avinal</name></author><id>tag:avinal.space,2021-02-14:/posts/development/rst-guide.html</id><summary type="html">&lt;p class="first last"&gt;reStructuredText syntax&lt;/p&gt;
+</summary><content type="html">&lt;ul&gt;
+&lt;li&gt;&lt;p class="first"&gt;Headers&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="gh"&gt;Top Title&lt;/span&gt;
+&lt;span class="gh"&gt;=========&lt;/span&gt;
+
+&lt;span class="gh"&gt;Sub Title&lt;/span&gt;
+&lt;span class="gh"&gt;---------&lt;/span&gt;
+
+&lt;span class="gh"&gt;Sub Sub Title&lt;/span&gt;
+&lt;span class="gh"&gt;^^^^^^^^^^^^^&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Images&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p class="first"&gt;Direct&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;..&lt;/span&gt; &lt;span class="ow"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt; image-path-or-url
+    &lt;span class="nc"&gt;:align:&lt;/span&gt; center
+    &lt;span class="nc"&gt;:target:&lt;/span&gt; link-to-go-when-image-is-clicked
+    &lt;span class="nc"&gt;:alt:&lt;/span&gt; alternative-text-if-any
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Indirect&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;..&lt;/span&gt; &lt;span class="nt"&gt;|substitution|&lt;/span&gt; &lt;span class="ow"&gt;image&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt; image-path-or-url
+    &lt;span class="nc"&gt;:target:&lt;/span&gt; link-to-go-when-image-is-clicked
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can use &lt;code&gt;|substitution|&lt;/code&gt; where you want to put your image.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Links&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="s"&gt;`Link Text &lt;/span&gt;&lt;span class="si"&gt;&amp;lt;link-itself&amp;gt;&lt;/span&gt;&lt;span class="s"&gt;`__&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Lists&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="m"&gt;-&lt;/span&gt; item 1
+&lt;span class="m"&gt;-&lt;/span&gt; item 2
+
+&lt;span class="m"&gt;*&lt;/span&gt; item 1
+&lt;span class="m"&gt;*&lt;/span&gt; itme 2
+
+&lt;span class="m"&gt;#.&lt;/span&gt; item 1
+&lt;span class="m"&gt;#.&lt;/span&gt; item 2
+
+&lt;span class="m"&gt;1.&lt;/span&gt; item 1
+&lt;span class="m"&gt;2.&lt;/span&gt; item 2
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;First two lists are unordered next two are ordered.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Code&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p class="first"&gt;Inline&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="na"&gt;:code:&lt;/span&gt;&lt;span class="nv"&gt;`your-code`&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Code block&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;..&lt;/span&gt; &lt;span class="ow"&gt;code-block&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt; &lt;span class="k"&gt;language(optional)&lt;/span&gt;
+
+&lt;span class="s"&gt;    Your code&lt;/span&gt;
+&lt;span class="s"&gt;    in multiple lines. You may enable line numbers too.&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Tables&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;+----------------+----------------+
+&lt;span class="o"&gt;|&lt;/span&gt; Header Cell    | Header Cell    |
++================+================+
+&lt;span class="o"&gt;|&lt;/span&gt; Data cell      | Data Cell      |
++----------------+----------------+
+&lt;span class="o"&gt;|&lt;/span&gt; Header Cell    | Header Cell    |
++----------------+----------------+
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Raw HTML block&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;..&lt;/span&gt; &lt;span class="ow"&gt;raw&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt; html
+
+    &amp;lt;put&amp;gt;
+        your html code here
+    &amp;lt;/put&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Notes, warnings&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;..&lt;/span&gt; &lt;span class="ow"&gt;note&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;
+
+    Put your note here.
+
+&lt;span class="p"&gt;..&lt;/span&gt; &lt;span class="ow"&gt;warning&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;
+
+    Put your warning here.
+
+&lt;span class="p"&gt;..&lt;/span&gt; &lt;span class="ow"&gt;important&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;
+
+    Put instructions here.
+
+&lt;span class="p"&gt;..&lt;/span&gt; &lt;span class="ow"&gt;admonition&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt; custom-text
+
+    Custom description here.
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These all are supported by GitHub very well. For more exhautive list specific to Sphinx see &lt;a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html"&gt;this&lt;/a&gt; link.&lt;/p&gt;
+&lt;div class="section" id="tips"&gt;
+&lt;h2&gt;Tips&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;There must be a blank line before and after any directive. Such as after title or code block, tables etc.&lt;/li&gt;
+&lt;li&gt;The options and content of a directives must be 1 tab indented to the directives.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</content><category term="development"></category><category term="rst"></category><category term="github"></category></entry><entry><title>How I implemented WakaTime embeddable Coding Graph GHA?</title><link href="https://avinal.space/posts/development/wakatime-readme.html" rel="alternate"></link><published>2021-02-02T21:47:00+05:30</published><updated>2021-02-02T21:47:00+05:30</updated><author><name>Avinal</name></author><id>tag:avinal.space,2021-02-02:/posts/development/wakatime-readme.html</id><summary type="html">&lt;p class="first last"&gt;f you use WakaTime to track your coding activity. You can add that to your README as a bar graph or embed it in your blog/portfolio. Just add this action to any of your repositories and there you have it.&lt;/p&gt;
+</summary><content type="html">&lt;a href="https://github.com/avinal/Profile-Readme-WakaTime"&gt;&lt;img src="https://raw.githubusercontent.com/avinal/Profile-Readme-WakaTime/b281d074ee75f9626b39d10e2e518c6a297208a3/waka.png" class="img-fluid"&gt;&lt;/a&gt;&lt;div class="section" id="implementation-details"&gt;
+&lt;h2&gt;Implementation Details&lt;/h2&gt;
+&lt;p&gt;This GitHub Action is divided into three parts. I didn't want to use Docker but it seems it doesn't work well without it. Let dive a little into technical details. Three parts are as below.&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://github.com/avinal/Profile-Readme-WakaTime/blob/master/main.py"&gt;main.py&lt;/a&gt; python script. This script contains many procedures.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p class="first"&gt;&lt;a class="reference external" href="https://github.com/avinal/Profile-Readme-WakaTime/blob/master/main.py#L52"&gt;Getting JSON data file via WakaTime API&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_stats&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="o"&gt;...&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;data_list&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This function parses the JSON file received and scraps out the useful data as a list of lists. Data scraped are language list, time spent on each language, percentage of the time, start date, and end date. For this action, I have limited the number of languages to 5 however it should be very easy to increase that number.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;&lt;a class="reference external" href="https://github.com/avinal/Profile-Readme-WakaTime/blob/master/main.py#L13"&gt;Setting the Timeline&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;this_week&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dates&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="o"&gt;...&lt;/span&gt;
+&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Coding Activity During: &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;week_start&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;strftime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s1"&gt; %B, %Y&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; to &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;week_end&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;strftime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s1"&gt; %B, %Y&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The start date and end date scraped in the last function are used here to set the timeline. Because date in JSON is provided in UTC as below :&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="err"&gt;da&lt;/span&gt;&lt;span class="kc"&gt;te&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;YYYY-MM-DDTHH:MM:SSZ&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I striped it to simple dates only. We can set them manually by taking the current time from the system. But that method is flawed. But this method ensures that JSON was received latest and the request was successful. Any anomaly will point to a failure in request.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;&lt;a class="reference external" href="https://github.com/avinal/Profile-Readme-WakaTime/blob/master/main.py#L21"&gt;Creating a bar graph&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;make_graph&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+                &lt;span class="o"&gt;...&lt;/span&gt;
+        &lt;span class="n"&gt;savefig&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;...&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Lastly, it is time to generate the graph and save them as an image. This function uses the data scraped in the first step. Creating a bar graph using &lt;cite&gt;matplotlib&lt;/cite&gt; is easy. Decorating was a bit difficult. I wanted this graph to merge with GitHub's look so I chose to color the bar as GitHub colors the languages. That data is stored as &lt;cite&gt;colors.json&lt;/cite&gt;. Many of the languages have slightly different spelling in GitHub as compared to WakaTime. So some languages are shown in default color. That can be improved if we notice that language and change its color manually. Lastly, the graph is saved both as SVG and PNG. SVGs are better to put on a responsive page.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol class="arabic" start="2"&gt;
+&lt;li&gt;&lt;p class="first"&gt;&lt;a class="reference external" href="https://github.com/avinal/Profile-Readme-WakaTime/blob/master/entrypoint.sh"&gt;entrypoint.py&lt;/a&gt; shell script. This shell script clones the repository copies the image and pushes changes to the master. There were several problems. First of all authentication. This was solved by using a remote repository address using GitHub Token. And it seems that GitHub doesn't allow to commit without a username and email. So I used &lt;strong&gt;github-actions&lt;/strong&gt; bot email.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;remote_repo-&lt;span class="s2"&gt;&amp;quot;https://&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GITHUB_ACTOR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;:&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;INPUT_GITHUB_TOKEN&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;@github.com/&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GITHUB_REPOSITORY&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.git&amp;quot;&lt;/span&gt;
+git config user.email &lt;span class="s2"&gt;&amp;quot;41898282+github-actions[bot]@users.noreply.github.com&amp;quot;&lt;/span&gt;
+git config user.name &lt;span class="s2"&gt;&amp;quot;GitHub Actions&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;41898282&lt;/code&gt; is the id assigned to the github-actions bot. Don't ask where I found them 🙂.&lt;/p&gt;
+&lt;p&gt;Another problem was to separate repository name from combined &lt;em&gt;username/repository-name&lt;/em&gt; provided by &lt;cite&gt;${GITHUB_REPOSITORY}&lt;/cite&gt;. GitHub doesn't provides a direct way to get just the repo name. We used &lt;em&gt;Internal Field Separator&lt;/em&gt;. It returns an array and works similar to &lt;code&gt;split()&lt;/code&gt; command in Python and Java.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# &amp;#39;/&amp;#39; is the seperator&lt;/span&gt;
+IFS-&lt;span class="s1"&gt;&amp;#39;/&amp;#39;&lt;/span&gt; &lt;span class="nb"&gt;read&lt;/span&gt; -ra reponame &lt;span class="o"&gt;&amp;lt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GITHUB_REPOSITORY&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;span class="c1"&gt;# returned {username, repository}&lt;/span&gt;
+repository-&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;reponame&lt;/span&gt;&lt;span class="p"&gt;[1]&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;After that, all other commands are pretty straight. Commit the added files and push them.&lt;/p&gt;
+&lt;ol class="arabic simple" start="3"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://github.com/avinal/Profile-Readme-WakaTime/blob/master/Dockerfile"&gt;Dockerfile&lt;/a&gt; &lt;strong&gt;IMPORTANT&lt;/strong&gt; It took a lot of time to reach this state 🥱. This is where all the magic happens. I am running &lt;cite&gt;ubuntu:latest&lt;/cite&gt; inside the container. I first update the distribution. Then install the required python packages. Lastly, I invoke the python script and shell script.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;There was an almost impossible problem, I searched hundreds of posts that &lt;em&gt;how can I access the generated files inside Docker container&lt;/em&gt;, but no luck. But at last, I found a workaround(obviously otherwise you wouldn't be reading this by now 🤣) each command is run in a separate virtual sub-container. As the command ends its output is also lost but not when you club multiple commands together. At least not until every command is finished. The generated files are available to the next clubbed process. I did that by combining the python script run and shell script run.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;CMD&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;python3 /main.py &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; /entrypoint.sh
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This part is the smallest yet took the most time and tries while developing this action.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="how-to-use-this-github-actions"&gt;
+&lt;h2&gt;How to use this GitHub Actions?&lt;/h2&gt;
+&lt;ol class="arabic"&gt;
+&lt;li&gt;&lt;p class="first"&gt;First get your WakaTime API Key. You can get it from your [WakaTime](&lt;a class="reference external" href="https://wakatime.com"&gt;https://wakatime.com&lt;/a&gt;) account settings.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Save WakaTime API Key to Repository Secret. Find that by clicking the Settings tab. Keep the name of the secret as &lt;strong&gt;WAKATIME_API_KEY&lt;/strong&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Add the following line in your README.md of your repo.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;img&lt;/span&gt; &lt;span class="na"&gt;src-&lt;/span&gt;&lt;span class="err"&gt;&amp;quot;&lt;/span&gt;&lt;span class="na"&gt;https:&lt;/span&gt;&lt;span class="err"&gt;//&lt;/span&gt;&lt;span class="na"&gt;github&lt;/span&gt;&lt;span class="err"&gt;.&lt;/span&gt;&lt;span class="na"&gt;com&lt;/span&gt;&lt;span class="err"&gt;/&amp;lt;&lt;/span&gt;&lt;span class="na"&gt;username&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;/&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;repository-name&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;/blob/&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;branch-name&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;/images/stat.svg&amp;quot; alt-&amp;quot;Alternative Text&amp;quot;/&amp;gt;
+Example: &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;img&lt;/span&gt; &lt;span class="na"&gt;src-&lt;/span&gt;&lt;span class="err"&gt;&amp;quot;&lt;/span&gt;&lt;span class="na"&gt;https:&lt;/span&gt;&lt;span class="err"&gt;//&lt;/span&gt;&lt;span class="na"&gt;github&lt;/span&gt;&lt;span class="err"&gt;.&lt;/span&gt;&lt;span class="na"&gt;com&lt;/span&gt;&lt;span class="err"&gt;/&lt;/span&gt;&lt;span class="na"&gt;avinal&lt;/span&gt;&lt;span class="err"&gt;/&lt;/span&gt;&lt;span class="na"&gt;avinal&lt;/span&gt;&lt;span class="err"&gt;/&lt;/span&gt;&lt;span class="na"&gt;blob&lt;/span&gt;&lt;span class="err"&gt;/&lt;/span&gt;&lt;span class="na"&gt;main&lt;/span&gt;&lt;span class="err"&gt;/&lt;/span&gt;&lt;span class="na"&gt;images&lt;/span&gt;&lt;span class="err"&gt;/&lt;/span&gt;&lt;span class="na"&gt;stat&lt;/span&gt;&lt;span class="err"&gt;.&lt;/span&gt;&lt;span class="na"&gt;svg&lt;/span&gt;&lt;span class="err"&gt;&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;alt-&lt;/span&gt;&lt;span class="err"&gt;&amp;quot;&lt;/span&gt;&lt;span class="na"&gt;Avinal&lt;/span&gt; &lt;span class="na"&gt;WakaTime&lt;/span&gt; &lt;span class="na"&gt;Activity&lt;/span&gt;&lt;span class="err"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;/&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+You can use this method to embed in web pages too. &lt;strong&gt;Do not use the markdown method of inserting images. It does not work sometimes.&lt;/strong&gt;&lt;/blockquote&gt;
+&lt;ol class="arabic" start="4"&gt;
+&lt;li&gt;&lt;p class="first"&gt;Click the &lt;strong&gt;Action&lt;/strong&gt; tab and &lt;strong&gt;choose to set up a workflow yourself&lt;/strong&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Copy the following code into the opened file, you can search for &lt;strong&gt;WakaTime Stat&lt;/strong&gt; in the marketplace tab for assistance.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;WakaTime status update&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="nt"&gt;on&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;schedule&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="c1"&gt;# Runs at 12 am  &amp;#39;0 0 * * *&amp;#39;  UTC&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;cron&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;1&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;0&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;*&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;*&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;*&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="nt"&gt;jobs&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;update-readme&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Update the WakaTime Stat&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;runs-on&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ubuntu-latest&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;steps&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="c1"&gt;# Use avinal/Profile-Readme-WakaTime@&amp;lt;latest-release-tag&amp;gt; for latest stable release&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="c1"&gt;# Do not change the line below except the word master with tag number maybe&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="c1"&gt;# If you have forked this project you can use &amp;lt;username&amp;gt;/Profile-Readme-WakaTime@master instead&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;uses&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;avinal/Profile-Readme-WakaTime@master&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="nt"&gt;with&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;                  &lt;/span&gt;&lt;span class="c1"&gt;# WakaTime API key stored in secrets, do not directly paste it here&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;                  &lt;/span&gt;&lt;span class="nt"&gt;WAKATIME_API_KEY&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;${{ secrets.WAKATIME_API_KEY }}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;                  &lt;/span&gt;&lt;span class="c1"&gt;# Automatic github token&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;                  &lt;/span&gt;&lt;span class="nt"&gt;GITHUB_TOKEN&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;${{ github.token }}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;                  &lt;/span&gt;&lt;span class="c1"&gt;# Branch - newer GitHub repositories have &amp;quot;main&amp;quot; as default branch, change to main in that case, default is master&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;                  &lt;/span&gt;&lt;span class="nt"&gt;BRANCH&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;master&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;                  &lt;/span&gt;&lt;span class="c1"&gt;# Manual Commit messages - write your own messages here&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;                  &lt;/span&gt;&lt;span class="nt"&gt;COMMIT_MSG&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Automated&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;Coding&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;Activity&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;Update&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;:alien:&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Please wait till 12 AM UTC to run this workflow automatically. Or you can force run it by going to the Actions tab. Or you can add the following lines under &lt;cite&gt;on:&lt;/cite&gt; to run with every push. Search for 12 AM UTC to find the equivalent time in your time zone.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;on&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;push&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;branches&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p p-Indicator"&gt;[&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;master&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p p-Indicator"&gt;]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;schedule&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;cron&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;#39;1&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;0&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;*&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;*&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;*&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div class="section" id="my-coding-activity"&gt;
+&lt;h2&gt;My Coding Activity&lt;/h2&gt;
+&lt;img class="img-fluid" src="https://raw.githubusercontent.com/avinal/avinal/main/images/stat.svg"&gt;&lt;/div&gt;
+</content><category term="development"></category><category term="wakatime"></category><category term="github-action"></category><category term="coding"></category></entry><entry><title>How I Created This Blog?</title><link href="https://avinal.space/posts/development/twilight-blog.html" rel="alternate"></link><published>2021-01-26T16:47:00+05:30</published><updated>2021-01-26T16:47:00+05:30</updated><author><name>Avinal</name></author><id>tag:avinal.space,2021-01-26:/posts/development/twilight-blog.html</id><summary type="html">&lt;p class="first last"&gt;As you would have guessed by now, this blog is created using one such awesome SSG named &lt;strong&gt;Pelican&lt;/strong&gt;. Pelican is simple, customizable and offers lots of themes and plugins. Pelican is python based SSG and is available through &lt;tt class="docutils literal"&gt;pip&lt;/tt&gt;.&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;&lt;span class="html-raw"&gt;&lt;div class="alert alert-info" role="alert"&gt;This article may not be for you if you are a web developer. You already got better options. 😉&lt;/div&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;There are lots of ways to create a personal website or a blog. You can design your own user interface and write the backend code. But not everyone is a web developer. And here comes &lt;abbr title="Static Site Generator"&gt;SSGs&lt;/abbr&gt; to the rescue. &lt;strong&gt;Static Site Generators&lt;/strong&gt; are little more than just website generators. In general, if you are looking for a simple blog, its better to use SSG than writing a lot of html and css. They are simple and elegant. Easy to maintain and you can add lots of customizations to your site without breaking or bloating your blog. There are lots of SSGs, &lt;a class="reference external" href="https://jekyllrb.com/"&gt;Jekyll&lt;/a&gt;, &lt;a class="reference external" href="https://blog.getpelican.com/"&gt;Pelican&lt;/a&gt; and more complex ones like &lt;a class="reference external" href="https://www.gatsbyjs.com/"&gt;Gatsby&lt;/a&gt;, &lt;a class="reference external" href="https://gohugo.io/"&gt;Hugo&lt;/a&gt; .&lt;/p&gt;
+&lt;p&gt;As you would have guessed by now, this blog is created using one such awesome SSG named &lt;strong&gt;Pelican&lt;/strong&gt;. Pelican is simple, customizable and offers lots of &lt;a class="reference external" href="http://www.pelicanthemes.com/"&gt;themes&lt;/a&gt; and &lt;a class="reference external" href="https://github.com/getpelican/pelican-plugins"&gt;plugins&lt;/a&gt;. Pelican is python based SSG and is available through &lt;code&gt;pip&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# for reStructuredText only (recommended)&lt;/span&gt;
+python -m pip install pelican
+
+&lt;span class="c1"&gt;# for markdown and reStructuredText both&lt;/span&gt;
+python -m pip install &lt;span class="s2"&gt;&amp;quot;pelican[markdown]&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can start a pelican project by typing following command. It will create a basic template and build configurations.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pelican-quickstart
+
+&lt;span class="c1"&gt;# output&lt;/span&gt;
+yourproject/
+├── content              &lt;span class="c1"&gt;# Put your content here&lt;/span&gt;
+│   └── &lt;span class="o"&gt;(&lt;/span&gt;pages&lt;span class="o"&gt;)&lt;/span&gt;
+├── output               &lt;span class="c1"&gt;# Output files&lt;/span&gt;
+├── tasks.py
+├── Makefile             &lt;span class="c1"&gt;# Makefile to run build and publish command&lt;/span&gt;
+├── pelicanconf.py       &lt;span class="c1"&gt;# Main settings file&lt;/span&gt;
+└── publishconf.py       &lt;span class="c1"&gt;# Settings to use when ready to publish&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Next step is to choose themes. As I said earlier there are lots of &lt;a class="reference external" href="http://www.pelicanthemes.com/"&gt;themes&lt;/a&gt; . And it is easy to create your own theme. Check &lt;a class="reference external" href="https://docs.getpelican.com/en/latest/themes.html"&gt;here&lt;/a&gt; to create your own theme. My choice of theme was &lt;a class="reference external" href="https://nairobilug.github.io/pelican-alchemy/"&gt;pelican-alchemy&lt;/a&gt; . This is a simple and great theme. Installing and removing themes in pelican is very easy.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# list all installed themes&lt;/span&gt;
+pelican-themes -l
+&lt;span class="c1"&gt;# output&lt;/span&gt;
+simple
+alchemy
+notmyidea
+
+&lt;span class="c1"&gt;# install new theme&lt;/span&gt;
+pelican-themes -i theme-path
+
+&lt;span class="c1"&gt;# remove a theme&lt;/span&gt;
+pelican-themes -r theme-name
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;To use a particular theme, set the &lt;code&gt;THEME&lt;/code&gt; variable in the &lt;strong&gt;pelicanconf.py&lt;/strong&gt; file.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;THEME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;alchemy&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can also use a theme that is not installed if you have all the required theme files. Just set this variable to its path.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;THEME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;path-to-theme-directory&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Various themes will have different feature, choose according to your need, or you can always add a feature through plugin. The next step is to build and check your blog. Pelican got it all set up.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# build your website&lt;/span&gt;
+make html
+&lt;span class="c1"&gt;# output&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;quot;pelican&amp;quot;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;/mnt/z/my_git/avinal.github.io/content&amp;quot;&lt;/span&gt; -o &lt;span class="s2"&gt;&amp;quot;/mnt/z/my_git/avinal.github.io/output&amp;quot;&lt;/span&gt; -s &lt;span class="s2"&gt;&amp;quot;/mnt/z/my_git/avinal.github.io/pelicanconf.py&amp;quot;&lt;/span&gt;
+Done: Processed &lt;span class="m"&gt;6&lt;/span&gt; articles, &lt;span class="m"&gt;0&lt;/span&gt; drafts, &lt;span class="m"&gt;1&lt;/span&gt; page, &lt;span class="m"&gt;0&lt;/span&gt; hidden pages and &lt;span class="m"&gt;0&lt;/span&gt; draft pages &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;.43 seconds.
+
+&lt;span class="c1"&gt;# build and test/serve on localhost&lt;/span&gt;
+make serve
+&lt;span class="c1"&gt;# output&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;quot;pelican&amp;quot;&lt;/span&gt; -l &lt;span class="s2"&gt;&amp;quot;/mnt/z/my_git/avinal.github.io/content&amp;quot;&lt;/span&gt; -o &lt;span class="s2"&gt;&amp;quot;/mnt/z/my_git/avinal.github.io/output&amp;quot;&lt;/span&gt; -s &lt;span class="s2"&gt;&amp;quot;/mnt/z/my_git/avinal.github.io/pelicanconf.py&amp;quot;&lt;/span&gt;
+
+Serving site at: &lt;span class="m"&gt;127&lt;/span&gt;.0.0.1:8000 - Tap CTRL-C to stop
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now open your browser and open &lt;a class="reference external" href="127.0.0.1:8000"&gt;127.0.0.1:8000&lt;/a&gt; or &lt;a class="reference external" href="localhost:8000"&gt;localhost:8000&lt;/a&gt;. You should be able to see your new blog. Stop local server using &lt;code&gt;CTRL+C&lt;/code&gt;. Next step is to publish it to github pages. Pelican has tools for this too. But wait we can do something more interesting here. Why not let GitHub take care of both building and publishing? Just push this project to a GitHub repository and set up GitHub pages. See &lt;a class="reference external" href="https://pages.github.com/"&gt;this&lt;/a&gt; help for instructions on that. Before pushing to GitHub add this little script to your project.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#! /bin/bash&lt;/span&gt;
+&lt;span class="c1"&gt;## file: publi.sh&lt;/span&gt;
+
+&lt;span class="c1"&gt;# install tools&lt;/span&gt;
+sudo apt-get install -y git make python3 python3-pip python3-setuptools python3-wheel
+
+&lt;span class="c1"&gt;# setup github config&lt;/span&gt;
+git config user.email &lt;span class="s2"&gt;&amp;quot;your-email&amp;quot;&lt;/span&gt;
+git config user.name &lt;span class="s2"&gt;&amp;quot;your-username&amp;quot;&lt;/span&gt;
+
+&lt;span class="c1"&gt;# install dependencies&lt;/span&gt;
+sudo pip3 install -r requirements.txt
+
+&lt;span class="c1"&gt;# pelican commands - install theme put your theme in themes directory&lt;/span&gt;
+pelican-themes --install themes/theme-name
+
+&lt;span class="c1"&gt;# publish to github pages&lt;/span&gt;
+ghp-import -m &lt;span class="s2"&gt;&amp;quot;Generate Pelican site&amp;quot;&lt;/span&gt; -b gh-pages output
+    git push -f origin gh-pages
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now once your project is on GitHub, go to the &lt;strong&gt;Actions&lt;/strong&gt; tab and click on &lt;em&gt;set up a workflow yourself&lt;/em&gt; and paste the following code into the file and commit it.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# file: publish.yml&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Publish Blog&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nt"&gt;on&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;push&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;branches&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p p-Indicator"&gt;[&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;main&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p p-Indicator"&gt;]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;pull_request&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;branches&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p p-Indicator"&gt;[&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;main&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p p-Indicator"&gt;]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="nt"&gt;jobs&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;build&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;runs-on&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ubuntu-latest&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;steps&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;uses&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;actions/checkout@v2&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;set up permissions&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;run&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;chmod +x publi.sh&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Run a multi-line script&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;run&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;./publi.sh&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;If you have done everything correctly then go to &lt;em&gt;https://username.github.io&lt;/em&gt; and you should see your blog. From now on whenever you want to add an article, just write it, test locally and push. Yay your blog is ready.&lt;/p&gt;
+&lt;p&gt;&lt;span class="html-raw"&gt;&lt;h2 style=font-family:Exodar;font-weight:lighter;"&gt;But My Blog is Special 🥰&lt;/h2&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;My blog looks different, that is because I customized this theme a lot, especially headers, footers, and link appearance. And sorry I won't be publish my theme any time sooner. But I am listing down all the resources I have used for finally getting this result. You can always get my help by sending me a &lt;span class="html-raw"&gt;&lt;a href="mailto:avinal.xlvii@gmail.com" class="fa fa-envelope" style="text-decoration: none;"&gt;&lt;/a&gt;&lt;/span&gt; or starting a discussion on &lt;span class="html-raw"&gt;&lt;a href="https://github.com/avinal/avinal/discussions/2" class="fab fa-github" style="text-decoration: none;"&gt;&lt;/a&gt;&lt;/span&gt;.&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://blog.getpelican.com/"&gt;Pelican Blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://docs.getpelican.com/en/latest/"&gt;Pelican Docs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://www.pelicanthemes.com/"&gt;Pelican Themes&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://github.com/nairobilug/pelican-alchemy"&gt;Pelican Alchemy Theme&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://codepen.io/saransh/pen/BKJun"&gt;Parallax Star background in CSS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://codepen.io/kowlor/pen/ZYYQoy"&gt;Solar System animation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span class="html-raw"&gt;&lt;a href="https://www.dafont.com/exodar.font" style="font-family: Exodar;font-weight: lighter;text-decoration: none;"&gt;EXODAR Font&lt;/a&gt;&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://fonts.google.com/specimen/Overpass+Mono"&gt;Overpass Mono&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://fontawesome.com/how-to-use/on-the-web/setup/hosting-font-awesome-yourself"&gt;Font Awesome&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;span class="html-raw"&gt;&lt;div class="alert alert-warning" role="alert"&gt;Some of the fonts I have used in my blog may not be available for commercial use. Please check if you intend to do so. Alternatively you may use fonts from this wonderful collection, &lt;a href="https://www.websiteplanet.com/blog/best-free-fonts/"&gt;70+ Best Free Fonts for Designers – Free for Commercial Use in 2021&lt;/a&gt; &lt;i&gt;(Thanks Ritta Blens for this suggestion)&lt;/i&gt;&lt;/div&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class="html-raw"&gt;&lt;p align=center&gt;Thanks!&lt;/p&gt;&lt;/span&gt;&lt;/p&gt;
+</content><category term="development"></category><category term="blog"></category><category term="pelican"></category><category term="ssg"></category></entry><entry><title>Move WSL 2 Safely to another Drive</title><link href="https://avinal.space/posts/development/wsl1.html" rel="alternate"></link><published>2020-12-31T19:07:00+05:30</published><updated>2020-12-31T19:07:00+05:30</updated><author><name>Avinal</name></author><id>tag:avinal.space,2020-12-31:/posts/development/wsl1.html</id><summary type="html">&lt;p class="first last"&gt;It is real pain when you have small SSD and Windows Subsystem for Linux (WSL) is growing exponentially in size. There is no easy way to move the WSL installation to another drive. Here in this blog I will discuss how to tackle this problem with bite size steps.&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;It is real pain when you have small SSD and Windows Subsystem for Linux (WSL) is growing exponentially in size. There is no easy way to move
+the WSL installation to another drive. Here in this blog I will discuss how to tackle this problem with bite size steps.&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Open a PowerShell &lt;img alt="powershell" class="align-middle" src="/images/powershell.png" style="width: 5%;" /&gt; or Command Prompt &lt;img alt="command-line" class="align-middle" src="/images/command-line.png" style="width: 5%;" /&gt; with &lt;em&gt;Admin&lt;/em&gt; access. For this you can use &lt;img alt="WinKey" class="align-middle" src="/images/windows10.png" style="width: 5%;" /&gt; + X shortcut and select &lt;strong&gt;Windows PowerShell(Admin)&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;Check if the WSL 2 installation you are planning to move is is currently running/stopped.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;PS &lt;/span&gt;&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:\&lt;/span&gt;&lt;span class="n"&gt;Users&lt;/span&gt;&lt;span class="p"&gt;\&lt;/span&gt;&lt;span class="n"&gt;Avinal&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;wsl&lt;/span&gt; &lt;span class="n"&gt;-l&lt;/span&gt; &lt;span class="n"&gt;-v&lt;/span&gt;
+&lt;span class="nb"&gt;PS &lt;/span&gt;&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:\&lt;/span&gt;&lt;span class="n"&gt;Users&lt;/span&gt;&lt;span class="p"&gt;\&lt;/span&gt;&lt;span class="n"&gt;Avinal&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="n"&gt;NAME&lt;/span&gt;      &lt;span class="n"&gt;STATE&lt;/span&gt;           &lt;span class="n"&gt;VERSION&lt;/span&gt;
+&lt;span class="p"&gt;*&lt;/span&gt; &lt;span class="n"&gt;Ubuntu&lt;/span&gt;    &lt;span class="n"&gt;Running&lt;/span&gt;         &lt;span class="n"&gt;2&lt;/span&gt;
+  &lt;span class="n"&gt;Kali&lt;/span&gt;      &lt;span class="n"&gt;Stopped&lt;/span&gt;         &lt;span class="n"&gt;2&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;ol class="arabic simple" start="3"&gt;
+&lt;li&gt;If its running then you must stop the particular WSL distribution. (&lt;em&gt;Ubuntu&lt;/em&gt; used as example)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;PS &lt;/span&gt;&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:\&lt;/span&gt;&lt;span class="n"&gt;Users&lt;/span&gt;&lt;span class="p"&gt;\&lt;/span&gt;&lt;span class="n"&gt;Avinal&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;wsl&lt;/span&gt; &lt;span class="n"&gt;-t&lt;/span&gt; &lt;span class="n"&gt;Ubuntu&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;ol class="arabic simple" start="4"&gt;
+&lt;li&gt;Export to some folder. (Here exporting &lt;em&gt;Ubuntu&lt;/em&gt; as &lt;em&gt;ubuntu-ex.tar&lt;/em&gt; to &lt;em&gt;Z:wsl2&lt;/em&gt;)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;PS &lt;/span&gt;&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:\&lt;/span&gt;&lt;span class="n"&gt;Users&lt;/span&gt;&lt;span class="p"&gt;\&lt;/span&gt;&lt;span class="n"&gt;Avinal&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;wsl&lt;/span&gt; &lt;span class="p"&gt;-&lt;/span&gt;&lt;span class="n"&gt;-export&lt;/span&gt; &lt;span class="n"&gt;Ubuntu&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Z:\export\ubuntu-ex.tar&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;ol class="arabic simple" start="5"&gt;
+&lt;li&gt;Unregister previous WSL installation&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;PS &lt;/span&gt;&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:\&lt;/span&gt;&lt;span class="n"&gt;Users&lt;/span&gt;&lt;span class="p"&gt;\&lt;/span&gt;&lt;span class="n"&gt;Avinal&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;wsl&lt;/span&gt; &lt;span class="p"&gt;-&lt;/span&gt;&lt;span class="n"&gt;-unregister&lt;/span&gt; &lt;span class="n"&gt;Ubuntu&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;ol class="arabic simple" start="6"&gt;
+&lt;li&gt;Create a new folder and import your WSL installation to that folder.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;PS &lt;/span&gt;&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:\&lt;/span&gt;&lt;span class="n"&gt;Users&lt;/span&gt;&lt;span class="p"&gt;\&lt;/span&gt;&lt;span class="n"&gt;Avinal&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;New-Item&lt;/span&gt; &lt;span class="n"&gt;-Path&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Z:\wsl2&amp;quot;&lt;/span&gt; &lt;span class="n"&gt;-ItemType&lt;/span&gt; &lt;span class="n"&gt;Directory&lt;/span&gt;
+
+    &lt;span class="n"&gt;Directory&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Z&lt;/span&gt;&lt;span class="p"&gt;:\&lt;/span&gt;
+
+&lt;span class="n"&gt;Mode&lt;/span&gt;                 &lt;span class="n"&gt;LastWriteTime&lt;/span&gt;         &lt;span class="n"&gt;Length&lt;/span&gt; &lt;span class="n"&gt;Name&lt;/span&gt;
+&lt;span class="p"&gt;----&lt;/span&gt;                 &lt;span class="p"&gt;-------------&lt;/span&gt;         &lt;span class="p"&gt;------&lt;/span&gt; &lt;span class="p"&gt;----&lt;/span&gt;
+&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="p"&gt;-----&lt;/span&gt;        &lt;span class="n"&gt;31&lt;/span&gt;&lt;span class="p"&gt;-&lt;/span&gt;&lt;span class="n"&gt;12&lt;/span&gt;&lt;span class="p"&gt;-&lt;/span&gt;&lt;span class="n"&gt;2020&lt;/span&gt;     &lt;span class="n"&gt;21&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;03&lt;/span&gt;                &lt;span class="n"&gt;wsl2&lt;/span&gt;
+
+&lt;span class="nb"&gt;PS &lt;/span&gt;&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:\&lt;/span&gt;&lt;span class="n"&gt;Users&lt;/span&gt;&lt;span class="p"&gt;\&lt;/span&gt;&lt;span class="n"&gt;Avinal&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;wsl&lt;/span&gt; &lt;span class="p"&gt;-&lt;/span&gt;&lt;span class="n"&gt;-import&lt;/span&gt; &lt;span class="n"&gt;Ubuntu&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Z:\wsl2&amp;quot;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Z:\export\ubuntu-ex.tar&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;ol class="arabic simple" start="7"&gt;
+&lt;li&gt;Check after import is complete&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;PS &lt;/span&gt;&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:\&lt;/span&gt;&lt;span class="n"&gt;Users&lt;/span&gt;&lt;span class="p"&gt;\&lt;/span&gt;&lt;span class="n"&gt;Avinal&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;wsl&lt;/span&gt; &lt;span class="n"&gt;-l&lt;/span&gt; &lt;span class="n"&gt;-v&lt;/span&gt;
+&lt;span class="nb"&gt;PS &lt;/span&gt;&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:\&lt;/span&gt;&lt;span class="n"&gt;Users&lt;/span&gt;&lt;span class="p"&gt;\&lt;/span&gt;&lt;span class="n"&gt;Avinal&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="n"&gt;NAME&lt;/span&gt;      &lt;span class="n"&gt;STATE&lt;/span&gt;           &lt;span class="n"&gt;VERSION&lt;/span&gt;
+&lt;span class="p"&gt;*&lt;/span&gt; &lt;span class="n"&gt;Ubuntu&lt;/span&gt;    &lt;span class="n"&gt;Running&lt;/span&gt;         &lt;span class="n"&gt;2&lt;/span&gt;
+  &lt;span class="n"&gt;Kali&lt;/span&gt;      &lt;span class="n"&gt;Stopped&lt;/span&gt;         &lt;span class="n"&gt;2&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;ol class="arabic simple" start="8"&gt;
+&lt;li&gt;Mark one of your WSL distribution as &lt;em&gt;(default)&lt;/em&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;PS &lt;/span&gt;&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:\&lt;/span&gt;&lt;span class="n"&gt;Users&lt;/span&gt;&lt;span class="p"&gt;\&lt;/span&gt;&lt;span class="n"&gt;Avinal&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;wsl&lt;/span&gt; &lt;span class="n"&gt;-s&lt;/span&gt; &lt;span class="n"&gt;Ubuntu&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;ol class="arabic simple" start="9"&gt;
+&lt;li&gt;After exporting your default user will be set as &lt;span class="html-raw"&gt;&lt;i style="color:red"&gt;root&lt;/i&gt;&lt;/span&gt; , to change it to your desired username, run following command&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;PS &lt;/span&gt;&lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;:\&lt;/span&gt;&lt;span class="n"&gt;Users&lt;/span&gt;&lt;span class="p"&gt;\&lt;/span&gt;&lt;span class="n"&gt;Avinal&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;ubuntu&lt;/span&gt; &lt;span class="n"&gt;config&lt;/span&gt; &lt;span class="p"&gt;-&lt;/span&gt;&lt;span class="n"&gt;-default-user&lt;/span&gt; &lt;span class="n"&gt;user_name&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;ol class="arabic simple" start="10"&gt;
+&lt;li&gt;Finally run &lt;code&gt;wsl&lt;/code&gt; and you have successfully moved your WSL 2 installation to another drive.&lt;/li&gt;
+&lt;/ol&gt;
+</content><category term="development"></category><category term="wsl"></category><category term="wsl2"></category></entry><entry><title>Create the VLC User Documentation for one Mobile Port(Android)</title><link href="https://avinal.space/posts/development/vlc-gsod-report.html" rel="alternate"></link><published>2020-12-01T23:47:00+05:30</published><updated>2020-12-31T23:19:00+05:30</updated><author><name>Avinal</name></author><id>tag:avinal.space,2020-12-01:/posts/development/vlc-gsod-report.html</id><summary type="html">&lt;p class="first last"&gt;The project was to Create the VLC User Documentation for Android Mobile Port which was previously hosted on VLC’s wiki pages. The major portion of this was to start everything from scratch including chapter separation, section organization.&lt;/p&gt;
+</summary><content type="html">&lt;div class="section" id="overview"&gt;
+&lt;h2&gt;OVERVIEW&lt;/h2&gt;
+&lt;p&gt;VideoLAN is a non-profit organization that develops software for playing video and other media formats. VLC media player (commonly known as just VLC) is a free and Open Source cross-platform multimedia player and framework that plays most multimedia files as well as DVDs, Audio CDs, VCDs, and various streaming protocols built by the VideoLAN organization and a team of volunteers. VLC for Android is a port of the VLC for Android OS.&lt;/p&gt;
+&lt;p&gt;The project was to Create the VLC User Documentation for Android Mobile Port which was previously hosted on VLC’s wiki pages. The major portion of this was to start everything from scratch including chapter separation, section organization and an engaging and easy to follow for both technical and non-technical users. The original proposal can be found here.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="project-goals"&gt;
+&lt;h2&gt;PROJECT GOALS&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Propose a new structure for documentation e.g. Chapter Separation, Sections etc&lt;/li&gt;
+&lt;li&gt;Proper balance between technical and non-technical descriptions to serve all kinds of users.&lt;/li&gt;
+&lt;li&gt;Adequate amount of screenshots in each section and other supporting media to make documentation more appealing.&lt;/li&gt;
+&lt;li&gt;Optimized for all Screen Sizes. Especially for Mobile Devices.&lt;/li&gt;
+&lt;li&gt;Ease of navigation&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="community-bonding"&gt;
+&lt;h2&gt;COMMUNITY BONDING&lt;/h2&gt;
+&lt;p&gt;This period was mostly utilized for collecting more information and many internal meetings to shape the projects and bonding with fellow writers, developers(mentors). I got to know more about the VLC organization and the project. We decided to create a skeleton of the project and then follow a Issue-Merge Request-Review-Merge system to keep the commit history clean and maintain the proper review of the work before it is merged.&lt;/p&gt;
+&lt;p&gt;I initially proposed that the new documentation should also use the same tools(Sphinx and GitLab Pages) because if in future we want to merge all the documentation into a single one, it will be easier to migrate and will provide a consistency across all documentations.  Later I got to know that this will be an independent project and may not be merged since it solves a lot of problems. I was already familiar with the tools so it took no time to get started.&lt;/p&gt;
+&lt;p&gt;Nicolas Pomepuy, who is the lead developer of VLC for Android was assigned as my primary mentor and Simon Latapie as secondary mentor.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="documentation-development-phase"&gt;
+&lt;h2&gt;DOCUMENTATION DEVELOPMENT PHASE&lt;/h2&gt;
+&lt;p&gt;Initial Preparation
+I first moved my existing demo documentation to an entirely new repository with only the skeleton at the suggestion of my mentor. It was necessary to keep the commit history clean. The skeleton contained the empty directories representing the chapter separation. I got to learn “how to properly develop a project and contribute to open source”. This was a major lesson that got me familiar with the Merge Request and Review system.&lt;/p&gt;
+&lt;p&gt;The Development
+The next part was to frame the actual documentation pages and push to the repository. Since there was a significant time-zone difference we agreed to discuss by creating issues and sometimes my emails. There was one meeting every fortnight to check the process and discuss further development and blockers. Nicolas was really helpful and patient, answering each of my big-small queries.&lt;/p&gt;
+&lt;p&gt;Work Done&lt;/p&gt;
+&lt;style&gt;
+table,td,th {
+border-collapse:collapse;
+border: 1px solid #000000;
+}
+&lt;/style&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Documentation&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://avinal.videolan.me/vlc-android-user/"&gt;VLC for Android User Documentation &lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Project Repository&lt;/strong&gt;
+&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://code.videolan.org/avinal/vlc-android-user"&gt;Projects · Avinal Kumar / VLC for Android User Documentation&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Commits&lt;/strong&gt;
+&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://code.videolan.org/avinal/vlc-android-user/-/commits/master"&gt;Commits · Avinal Kumar / VLC for Android User Documentation&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Issues/Discussions&lt;/strong&gt;
+&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://code.videolan.org/avinal/vlc-android-user/-/issues"&gt;Issues · Avinal Kumar / VLC for Android User Documentation&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Merge Requests&lt;/strong&gt;
+&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://code.videolan.org/avinal/vlc-android-user/-/merge_requests"&gt;Merge Requests · Avinal Kumar / VLC for Android User Documentation&lt;/a&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;&lt;p&gt;Since the Android port of VLC can be installed on Android Smartphones/Tablets, Android TVs, Amazon Fire Devices and Chromebooks too, a full documentation will cover these all devices. Although these are different form factors, the features provided on each of them is exactly the same and the same documentation can be used for all these devices. As of now only Smartphones/Tablets are covered. And later additional pages will be added to reference different features/User Interface. Regardless of this addition the current documentation can serve a major part for all these form factors.
+Completed/Remaining&lt;/p&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Chapters&lt;/strong&gt;
+&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;Sections&lt;/strong&gt;
+&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;Status&lt;/strong&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Settings&lt;/strong&gt;
+&lt;/td&gt;
+&lt;td&gt;
+&lt;ul&gt;
+&lt;li&gt;General Settings
+&lt;li&gt;Interface
+&lt;li&gt;Video
+&lt;li&gt;Subtitles
+&lt;li&gt;Audio
+&lt;li&gt;Casting
+&lt;li&gt;Advanced
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;ALL COMPLETED&lt;/strong&gt;
+&lt;p&gt;
+&lt;strong&gt;FOR ALL FORM FACTORS&lt;/strong&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+    &lt;td&gt;&lt;strong&gt;Video&lt;/strong&gt;
+    &lt;/td&gt;
+    &lt;td&gt;
+        &lt;ul&gt;
+            &lt;li&gt;Video Explorer
+            &lt;li&gt;Video Player
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/td&gt;
+    &lt;td&gt;&lt;strong&gt;COMPLETED FOR SMARTPHONES/TABLETS&lt;/strong&gt;
+    &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+    &lt;td&gt;&lt;strong&gt;Audio&lt;/strong&gt;
+    &lt;/td&gt;
+    &lt;td&gt;
+        &lt;ul&gt;
+            &lt;li&gt;Audio Explorer
+            &lt;li&gt;Audio Player
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/td&gt;
+    &lt;td&gt;&lt;strong&gt;COMPLETED FOR SMARTPHONES/TABLETS&lt;/strong&gt;
+    &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+    &lt;td&gt;&lt;strong&gt;Browse&lt;/strong&gt;
+    &lt;/td&gt;
+    &lt;td&gt;
+        &lt;ul&gt;
+            &lt;li&gt;Explorer
+            &lt;li&gt;Local Network
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/td&gt;
+    &lt;td&gt;&lt;strong&gt;ONLY SMB IN LOCAL NETWORK COMPLETED&lt;/strong&gt;
+    &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+    &lt;td&gt;&lt;strong&gt;Installation&lt;/strong&gt;
+    &lt;/td&gt;
+    &lt;td&gt;
+        &lt;ul&gt;
+            &lt;li&gt;Smartphones/Tablets
+            &lt;li&gt;Android TV
+            &lt;li&gt;Fire Devices
+            &lt;li&gt;Chromebooks
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/td&gt;
+    &lt;td&gt;&lt;strong&gt;COMPLETED FOR SMARTPHONES/TABLETS&lt;/strong&gt;
+    &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+    &lt;td&gt;&lt;strong&gt;User Interface&lt;/strong&gt;
+    &lt;/td&gt;
+    &lt;td&gt;
+        &lt;ul&gt;
+            &lt;li&gt;Smartphones/Tablets
+            &lt;li&gt;Android TV
+            &lt;li&gt;Fire Devices
+            &lt;li&gt;Chromebooks
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/td&gt;
+    &lt;td&gt;&lt;strong&gt;COMPLETED FOR SMARTPHONES/TABLETS&lt;/strong&gt;
+    &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+    &lt;td&gt;&lt;strong&gt;Support&lt;/strong&gt;
+    &lt;/td&gt;
+    &lt;td&gt;
+        &lt;ul&gt;
+            &lt;li&gt;FAQs
+            &lt;li&gt;Help
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/td&gt;
+    &lt;td&gt;&lt;strong&gt;IN PROGRESS&lt;/strong&gt;
+    &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+    &lt;td&gt;&lt;strong&gt;Guidelines&lt;/strong&gt;
+    &lt;/td&gt;
+    &lt;td&gt;
+        &lt;ul&gt;
+            &lt;li&gt;Contribution Guideline
+            &lt;li&gt;Screenshot Guidelines
+            &lt;li&gt;READMEs
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/td&gt;
+    &lt;td&gt;&lt;strong&gt;IN PROGRESS&lt;/strong&gt;
+    &lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;&lt;/div&gt;
+&lt;div class="section" id="challenges"&gt;
+&lt;h2&gt;CHALLENGES&lt;/h2&gt;
+&lt;p&gt;The major obstacle was to get screenshots for all form factors. Since screenshots were the major part of this documentation it was necessary to provide proper screenshots in each chapter and with every step. For Android TV and Smartphone this was solved by using emulators instead of actual devices, but to emulate the actual scenario in an emulator was sometimes very difficult.
+There were many occasions where I was not able to gather the exact information about devices other than smartphones/tables. Since all form factors share a common pool of features, my mentor suggested that I focus on smartphones/tables. And to create issues mentioning missing parts so that it could be solved later.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="thanks"&gt;
+&lt;h2&gt;THANKS&lt;/h2&gt;
+&lt;p&gt;I want to thank my mentors for being supporting and helpful. I want to thank every person at VLC and Google who were involved in this whole process. Thanks and Congrats to my fellow writer Abhishek Pratap Singh. This was a great opportunity to learn and meet awesome people. I learned a lot about Sphinx, reStructured Text and many other things.&lt;/p&gt;
+&lt;/div&gt;
+</content><category term="development"></category><category term="vlc"></category><category term="gsod"></category><category term="gsod2020"></category></entry></feed>

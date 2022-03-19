@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Create the VLC User Documentation for one Mobile Port(Android) | Be My SpaceTime
+</title>
+  <link rel="canonical" href="https://avinal.space/posts/development/vlc-gsod-report.html">
+
+  <link rel="apple-touch-icon" href="https://avinal.space/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://avinal.space/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://avinal.space/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://avinal.space/site.webmanifest">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://avinal.space/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://avinal.space/theme/css/all.css">
+  <link rel="stylesheet" href="https://avinal.space/theme/css/pygments/manni.min.css">
+  <link rel="stylesheet" href="https://avinal.space/theme/css/theme.css">
+  <link rel="stylesheet" href="https://avinal.space/theme/css/space.css">
+
+<link rel="alternate" type="application/atom+xml" title="Full Atom Feed" href="https://avinal.space/feeds/all.atom.xml">
+<link rel="alternate" type="application/atom+xml" title="Categories Atom Feed"
+  href="https://avinal.space/feeds/development.atom.xml">
+<meta name="description" content="The project was to Create the VLC User Documentation for Android Mobile Port which was previously hosted on VLC’s wiki pages. The major portion of this was to start everything from scratch including chapter separation, section organization.">
+
+
+</head>
+
+<body style="font-family:Overpass Mono,monospace;">
+  <header class="header star">
+    <div id='stars'></div>
+    <div id='stars2'></div>
+    <div id='stars3'></div>
+    <div class="container text-center">
+<div class="row">
+  <div class="col-sm-12">
+    <h1 class="title" style="font-family: ExodarOut;font-weight: lighter;"><a href="https://avinal.space/">Be My SpaceTime</a>
+    </h1>
+    <!--
+    <p class="text-muted">눈치</p>
+    -->
+    <ul class="list-inline">
+      <li class="list-inline-item"><a href="https://gsoc.avinal.space" target="_blank">gsoc</a></li>
+      <li class="list-inline-item text-muted">|</li>
+      <li class="list-inline-item"><a href="https://avinal.space/pages/about-me.html">About Me</a></li>
+      <li class=" list-inline-item text-muted">|</li>
+      <li class="list-inline-item"><a class="fab fa-github" href="https://github.com/avinal" target="_blank"></a></li>
+      <li class="list-inline-item"><a class="fab fa-linkedin" href="https://www.linkedin.com/in/avinal/" target="_blank"></a></li>
+      <li class="list-inline-item"><a class="fab fa-instagram" href="https://instagram.com/avinal.k" target="_blank"></a></li>
+      <li class="list-inline-item"><a class="fab fa-calendar" href="https://meet.avinal.space" target="_blank"></a></li>
+      <li class="list-inline-item"><a class="fa fa-envelope" href="mailto:blog@avinal.space" target="_blank"></a></li>
+    </ul>
+  </div>
+</div>    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>Create the VLC User Documentation for one Mobile Port(Android)
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2020-12-01T23:47:00+05:30">
+        <i class="fas fa-clock"></i>
+        Tue 01 December 2020
+      </li>
+      <li class="list-inline-item">
+        <i class="fas fa-folder-open"></i>
+        <a href="https://avinal.space/category/development.html">development</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fas fa-tag"></i>
+        <a href="https://avinal.space/tag/vlc.html">#vlc</a>,         <a href="https://avinal.space/tag/gsod.html">#gsod</a>,         <a href="https://avinal.space/tag/gsod2020.html">#gsod2020</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <div class="section" id="overview">
+<h2>OVERVIEW</h2>
+<p>VideoLAN is a non-profit organization that develops software for playing video and other media formats. VLC media player (commonly known as just VLC) is a free and Open Source cross-platform multimedia player and framework that plays most multimedia files as well as DVDs, Audio CDs, VCDs, and various streaming protocols built by the VideoLAN organization and a team of volunteers. VLC for Android is a port of the VLC for Android OS.</p>
+<p>The project was to Create the VLC User Documentation for Android Mobile Port which was previously hosted on VLC’s wiki pages. The major portion of this was to start everything from scratch including chapter separation, section organization and an engaging and easy to follow for both technical and non-technical users. The original proposal can be found here.</p>
+</div>
+<div class="section" id="project-goals">
+<h2>PROJECT GOALS</h2>
+<ul class="simple">
+<li>Propose a new structure for documentation e.g. Chapter Separation, Sections etc</li>
+<li>Proper balance between technical and non-technical descriptions to serve all kinds of users.</li>
+<li>Adequate amount of screenshots in each section and other supporting media to make documentation more appealing.</li>
+<li>Optimized for all Screen Sizes. Especially for Mobile Devices.</li>
+<li>Ease of navigation</li>
+</ul>
+</div>
+<div class="section" id="community-bonding">
+<h2>COMMUNITY BONDING</h2>
+<p>This period was mostly utilized for collecting more information and many internal meetings to shape the projects and bonding with fellow writers, developers(mentors). I got to know more about the VLC organization and the project. We decided to create a skeleton of the project and then follow a Issue-Merge Request-Review-Merge system to keep the commit history clean and maintain the proper review of the work before it is merged.</p>
+<p>I initially proposed that the new documentation should also use the same tools(Sphinx and GitLab Pages) because if in future we want to merge all the documentation into a single one, it will be easier to migrate and will provide a consistency across all documentations.  Later I got to know that this will be an independent project and may not be merged since it solves a lot of problems. I was already familiar with the tools so it took no time to get started.</p>
+<p>Nicolas Pomepuy, who is the lead developer of VLC for Android was assigned as my primary mentor and Simon Latapie as secondary mentor.</p>
+</div>
+<div class="section" id="documentation-development-phase">
+<h2>DOCUMENTATION DEVELOPMENT PHASE</h2>
+<p>Initial Preparation
+I first moved my existing demo documentation to an entirely new repository with only the skeleton at the suggestion of my mentor. It was necessary to keep the commit history clean. The skeleton contained the empty directories representing the chapter separation. I got to learn “how to properly develop a project and contribute to open source”. This was a major lesson that got me familiar with the Merge Request and Review system.</p>
+<p>The Development
+The next part was to frame the actual documentation pages and push to the repository. Since there was a significant time-zone difference we agreed to discuss by creating issues and sometimes my emails. There was one meeting every fortnight to check the process and discuss further development and blockers. Nicolas was really helpful and patient, answering each of my big-small queries.</p>
+<p>Work Done</p>
+<style>
+table,td,th {
+border-collapse:collapse;
+border: 1px solid #000000;
+}
+</style>
+<table>
+<tr>
+<td><strong>Documentation</strong></td>
+<td><a href="https://avinal.videolan.me/vlc-android-user/">VLC for Android User Documentation </a>
+</td>
+</tr>
+<tr>
+<td><strong>Project Repository</strong>
+</td>
+<td><a href="https://code.videolan.org/avinal/vlc-android-user">Projects · Avinal Kumar / VLC for Android User Documentation</a>
+</td>
+</tr>
+<tr>
+<td><strong>Commits</strong>
+</td>
+<td><a href="https://code.videolan.org/avinal/vlc-android-user/-/commits/master">Commits · Avinal Kumar / VLC for Android User Documentation</a>
+</td>
+</tr>
+<tr>
+<td><strong>Issues/Discussions</strong>
+</td>
+<td><a href="https://code.videolan.org/avinal/vlc-android-user/-/issues">Issues · Avinal Kumar / VLC for Android User Documentation</a>
+</td>
+</tr>
+<tr>
+<td><strong>Merge Requests</strong>
+</td>
+<td><a href="https://code.videolan.org/avinal/vlc-android-user/-/merge_requests">Merge Requests · Avinal Kumar / VLC for Android User Documentation</a>
+</td>
+</tr>
+</table><p>Since the Android port of VLC can be installed on Android Smartphones/Tablets, Android TVs, Amazon Fire Devices and Chromebooks too, a full documentation will cover these all devices. Although these are different form factors, the features provided on each of them is exactly the same and the same documentation can be used for all these devices. As of now only Smartphones/Tablets are covered. And later additional pages will be added to reference different features/User Interface. Regardless of this addition the current documentation can serve a major part for all these form factors.
+Completed/Remaining</p>
+<table>
+<tr>
+<td><strong>Chapters</strong>
+</td>
+<td><strong>Sections</strong>
+</td>
+<td><strong>Status</strong>
+</td>
+</tr>
+<tr>
+<td><strong>Settings</strong>
+</td>
+<td>
+<ul>
+<li>General Settings
+<li>Interface
+<li>Video
+<li>Subtitles
+<li>Audio
+<li>Casting
+<li>Advanced
+</li>
+</ul>
+</td>
+<td><strong>ALL COMPLETED</strong>
+<p>
+<strong>FOR ALL FORM FACTORS</strong>
+</td>
+</tr>
+<tr>
+    <td><strong>Video</strong>
+    </td>
+    <td>
+        <ul>
+            <li>Video Explorer
+            <li>Video Player
+            </li>
+        </ul>
+    </td>
+    <td><strong>COMPLETED FOR SMARTPHONES/TABLETS</strong>
+    </td>
+</tr>
+<tr>
+    <td><strong>Audio</strong>
+    </td>
+    <td>
+        <ul>
+            <li>Audio Explorer
+            <li>Audio Player
+            </li>
+        </ul>
+    </td>
+    <td><strong>COMPLETED FOR SMARTPHONES/TABLETS</strong>
+    </td>
+</tr>
+<tr>
+    <td><strong>Browse</strong>
+    </td>
+    <td>
+        <ul>
+            <li>Explorer
+            <li>Local Network
+            </li>
+        </ul>
+    </td>
+    <td><strong>ONLY SMB IN LOCAL NETWORK COMPLETED</strong>
+    </td>
+</tr>
+<tr>
+    <td><strong>Installation</strong>
+    </td>
+    <td>
+        <ul>
+            <li>Smartphones/Tablets
+            <li>Android TV
+            <li>Fire Devices
+            <li>Chromebooks
+            </li>
+        </ul>
+    </td>
+    <td><strong>COMPLETED FOR SMARTPHONES/TABLETS</strong>
+    </td>
+</tr>
+<tr>
+    <td><strong>User Interface</strong>
+    </td>
+    <td>
+        <ul>
+            <li>Smartphones/Tablets
+            <li>Android TV
+            <li>Fire Devices
+            <li>Chromebooks
+            </li>
+        </ul>
+    </td>
+    <td><strong>COMPLETED FOR SMARTPHONES/TABLETS</strong>
+    </td>
+</tr>
+<tr>
+    <td><strong>Support</strong>
+    </td>
+    <td>
+        <ul>
+            <li>FAQs
+            <li>Help
+            </li>
+        </ul>
+    </td>
+    <td><strong>IN PROGRESS</strong>
+    </td>
+</tr>
+<tr>
+    <td><strong>Guidelines</strong>
+    </td>
+    <td>
+        <ul>
+            <li>Contribution Guideline
+            <li>Screenshot Guidelines
+            <li>READMEs
+            </li>
+        </ul>
+    </td>
+    <td><strong>IN PROGRESS</strong>
+    </td>
+</tr>
+</table></div>
+<div class="section" id="challenges">
+<h2>CHALLENGES</h2>
+<p>The major obstacle was to get screenshots for all form factors. Since screenshots were the major part of this documentation it was necessary to provide proper screenshots in each chapter and with every step. For Android TV and Smartphone this was solved by using emulators instead of actual devices, but to emulate the actual scenario in an emulator was sometimes very difficult.
+There were many occasions where I was not able to gather the exact information about devices other than smartphones/tables. Since all form factors share a common pool of features, my mentor suggested that I focus on smartphones/tables. And to create issues mentioning missing parts so that it could be solved later.</p>
+</div>
+<div class="section" id="thanks">
+<h2>THANKS</h2>
+<p>I want to thank my mentors for being supporting and helpful. I want to thank every person at VLC and Google who were involved in this whole process. Thanks and Congrats to my fellow writer Abhishek Pratap Singh. This was a great opportunity to learn and meet awesome people. I learned a lot about Sphinx, reStructured Text and many other things.</p>
+</div>
+
+    <hr>
+    <p align=center>
+      This Blog is licensed under <a href="http://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1"
+        target="_blank" rel="license noopener noreferrer">Attribution-NonCommercial 4.0 International<img
+          style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+          src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img
+          style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+          src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img
+          style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+          src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1">
+      </a>
+    </p>
+  </div>
+</article>
+<hr>
+<div id="comment-form">
+  <div class="alert alert-info" role="alert">
+    Feel free to leave a feedback or question!
+  </div>
+  <form action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSfL9T8WBRm-Ac2uyu74lJXSYOqAuF6lLIUAulRArCsuiI1ZRQ/formResponse" target="response" method="POST" id="valid-form">
+    <div class="form-row align-items-center">
+      <div class="form-group col-md-5">
+        <label class="sr-only" for="person-name">Name</label>
+        <input type="text" class="form-control form-control-sm" id="person-name" placeholder="Your Name (Optional)"
+          aria-describedby="nameHelp" name="entry.982725972">
+        <input type="text" id="page-link" name="entry.1641222305" hidden>
+        <small id="nameHelp" class="form-text text-muted">You may put your GitHub Username.</small>
+      </div>
+      <div class="form-group col-md-7">
+        <label class="sr-only" for="email-address">Email address</label>
+        <input type="email" class="form-control form-control-sm" id="email-address" aria-describedby="emailHelp"
+          placeholder="Your Email Address (Optional)" name="entry.1652853191">
+        <small id="emailHelp" class="form-text text-muted">I'll never share your email with anyone
+          else.</small>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="comment-section">Your Message</label>
+      <textarea class="form-control form-control-sm" id="comment-section" rows="3"
+        placeholder="Please enter your message or feedback. (Required)" aria-describedby="emailHelp"
+        name="entry.1062656232" required></textarea>
+      <div class="invalid-feedback">
+        Please Enter something !
+      </div>
+      <small id="textHelp" class="form-text text-muted">Enter upto 200 characters.</small>
+    </div>
+    <button class="btn btn-outline-info" type="submit">Send</button>
+  </form>
+  <iframe name="response" hidden></iframe>
+</div>
+<div class="alert alert-info" role="alert" id="comment-message" style="display: none;">
+  <h4 class="alert-heading">Thanks You 🥳</h4>
+  <p>Thanks a lot for reading this blog and sending me a feedback. I hope you liked it. I will get back to you
+    soon if you have added an email.</p>
+</div>
+<script>
+  (function () {
+    'use strict';
+    window.addEventListener('load', function () {
+      var form = document.getElementById('valid-form');
+      form.addEventListener('submit', function (event) {
+        document.getElementById('page-link').value = window.location.href;
+        document.getElementById('comment-form').style.display = 'none';
+        document.getElementById('comment-message').style.display = '';
+      }, false);
+    }, false);
+  })();
+</script>
+    </div>
+  </div>
+
+  <footer class="footer star">
+    <div id='stars'></div>
+    <div id='stars2'></div>
+    <div id='stars3'></div>
+    <div class="container">
+<div class="row">
+  <ul class="col-sm-6 list-inline">
+    <li class="list-inline-item"><a
+        href="https://avinal.space/archives.html">Archives</a></li>
+    <li class="list-inline-item"><a
+        href="https://avinal.space/categories.html">Categories</a></li>
+    <li class="list-inline-item"><a href="https://avinal.space/tags.html">Tags</a></li>
+  </ul>
+  <p class="col-sm-6 text-sm-right text-muted">Created with <i class="fa fa-heart" style="color: red;"></i> by <a
+      href="https://github.com/avinal" target="_blank">Avinal</a>
+  </p>
+</div>    </div>
+  </footer>
+
+</body>
+
+</html>

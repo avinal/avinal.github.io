@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Developing Minimal Tekton Server | Be My SpaceTime
+</title>
+  <link rel="canonical" href="https://avinal.space/posts/development/lovely-dangerous-things-redhat.html">
+
+  <link rel="apple-touch-icon" href="https://avinal.space/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://avinal.space/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://avinal.space/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://avinal.space/site.webmanifest">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://avinal.space/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://avinal.space/theme/css/all.css">
+  <link rel="stylesheet" href="https://avinal.space/theme/css/pygments/manni.min.css">
+  <link rel="stylesheet" href="https://avinal.space/theme/css/theme.css">
+  <link rel="stylesheet" href="https://avinal.space/theme/css/space.css">
+
+<link rel="alternate" type="application/atom+xml" title="Full Atom Feed" href="https://avinal.space/feeds/all.atom.xml">
+<link rel="alternate" type="application/atom+xml" title="Categories Atom Feed"
+  href="https://avinal.space/feeds/development.atom.xml">
+<meta name="description" content="We will be designing and implementing an application that will be talking to Tekton APIs to create resources on a Kubernetes/OpenShift Cluster.">
+
+
+</head>
+
+<body style="font-family:Overpass Mono,monospace;">
+  <header class="header star">
+    <div id='stars'></div>
+    <div id='stars2'></div>
+    <div id='stars3'></div>
+    <div class="container text-center">
+<div class="row">
+  <div class="col-sm-12">
+    <h1 class="title" style="font-family: ExodarOut;font-weight: lighter;"><a href="https://avinal.space/">Be My SpaceTime</a>
+    </h1>
+    <!--
+    <p class="text-muted">눈치</p>
+    -->
+    <ul class="list-inline">
+      <li class="list-inline-item"><a href="https://gsoc.avinal.space" target="_blank">gsoc</a></li>
+      <li class="list-inline-item text-muted">|</li>
+      <li class="list-inline-item"><a href="https://avinal.space/pages/about-me.html">About Me</a></li>
+      <li class=" list-inline-item text-muted">|</li>
+      <li class="list-inline-item"><a class="fab fa-github" href="https://github.com/avinal" target="_blank"></a></li>
+      <li class="list-inline-item"><a class="fab fa-linkedin" href="https://www.linkedin.com/in/avinal/" target="_blank"></a></li>
+      <li class="list-inline-item"><a class="fab fa-instagram" href="https://instagram.com/avinal.k" target="_blank"></a></li>
+      <li class="list-inline-item"><a class="fab fa-calendar" href="https://meet.avinal.space" target="_blank"></a></li>
+      <li class="list-inline-item"><a class="fa fa-envelope" href="mailto:blog@avinal.space" target="_blank"></a></li>
+    </ul>
+  </div>
+</div>    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>Developing Minimal Tekton Server <a class="reference external image-reference" href="https://github.com/MiniTeks"><img alt="mks_logo" class="align-middle" src="/images/mks_logo.png" style="width: 1.5em;" /></a>
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2022-02-27T20:47:00+05:30">
+        <i class="fas fa-clock"></i>
+        Sun 27 February 2022
+      </li>
+      <li class="list-inline-item">
+        <i class="fas fa-folder-open"></i>
+        <a href="https://avinal.space/category/development.html">development</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fas fa-tag"></i>
+        <a href="https://avinal.space/tag/kubernetes.html">#kubernetes</a>,         <a href="https://avinal.space/tag/redhat.html">#redhat</a>,         <a href="https://avinal.space/tag/docker.html">#docker</a>,         <a href="https://avinal.space/tag/golang.html">#golang</a>,         <a href="https://avinal.space/tag/tekton.html">#tekton</a>,         <a href="https://avinal.space/tag/openshift.html">#openshift</a>,         <a href="https://avinal.space/tag/intern.html">#intern</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <p style="border: 2px solid var(--pink);border-radius: 7px;" align=center>This blog is a descreptive account of the development of Minimal Tekton Server. This is highly technical in nature, so please make sure that you have sufficient knowledge about Golang, Docker, Kubernetes and TektonCD. You can refer to my <a href="https://avinal.space/posts/development/i-am-loving-it-redhat.html">previous blog</a> to know about these topics.<p><p>As mentioned in my last blog, we were given to implement an application named <strong>Minimal Tekton Server</strong>. The problem statement reads:</p>
+<blockquote class="epigraph">
+We will be designing and implementing an application that will be talking to Tekton APIs to create resources on a Kubernetes/OpenShift Cluster. The application will expose some fields of the Tekton Resources which the user will provide and then this application will create Tekton resources by talking to Tekton APIs available on the cluster to create the resources based on the user-provided fields.</blockquote>
+<p>There are three parts in this project for the application and two more parts for the CI/CD using TektonCD and Kubernetes/OpenShift. I will go through each part descriptively and try to explain what we did.</p>
+<div class="section" id="the-architecture-of-mks">
+<h2>The Architecture of MKS</h2>
+<p>The first task in the development of the Minimal Tekton Server was creating its architectural diagram. Our first diagram was trash compared to the final diagram. Yeah, we learned. I will be explaining our final(obviously) architectural diagram and try to make some sense out of band-aids and duct tapes.</p>
+<img alt="The MKS Arhitecture" class="img-fluid my-3" src="/images/mks-architecture.png" />
+<p>Let me start with explaining <strong>What are MKS Resources?</strong>. I hope you know at least tidbits about Kubernetes and by the definition: <em>A resource is an endpoint in the Kubernetes API that stores a collection of API objects of a certain kind; for example, the built-in :code:`pods` resource contains a collection of Pod objects.</em> But developers soon realized that these in-built resources were not enough for the ever-growing applications of Kubernetes. Here <a class="reference external" href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/">custom resource</a> comes into the picture. <em>A custom resource is an extension of the Kubernetes API that is not necessarily available in a default Kubernetes installation.</em> To define a custom resource we use something called <a class="reference external" href="https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/">Custom Resource Definition</a>. So MKS Resources are such custom resources that correspond to the TektonCD custom resources.</p>
+<img alt="A venus flytrap engulphing an insect." class="float-md-right ml-3" src="/images/venus-flytrap.gif" style="width: 250px;" />
+<p>Let us now focus on the box containing <code>Controller</code> and <code>API server</code>. The controller can be said as a stimulus-response mechanism. Take the analogy of a Venus Flytrap plant. The trap is initially open. There are <code>trigger</code> hairs on the inside of the trap. Once an insect is detected, there is a change of state and the trap closes in a blick on the eye. The controller works the same way. It listens for the change in the state of the MKS resources and immediately transfers the request to the Tekton API to reflect the change in the corresponding Tekton resources. The changes can be creation, deletion, or updating. The API server ensures that there is a working connection between our controller and the Tekton API.</p>
+<p>MKS Server also exposes APIs to introduce a change of state in the MKS resources. In technical terms these are called <code>verbs</code>. There are five such verbs that we have exposed: <code>create</code>, <code>update</code>, <code>get</code>, <code>delete</code>, and <code>list</code>. They can be utilized by a REST client, or in our case <strong>MKS CLI</strong> to introduce desired change. The MKS command-line interface provides commands and subcommands to do the desired tasks.</p>
+<p>Whenever there is a change in the state, there is a logic running inside the controller to react on that and that also affects our database. We store four datapoints in our database: <code>created</code>, <code>deleted</code>, <code>completed</code>, and <code>failed</code>. They tell us about the current statistcs of our MKS resource using a single-page web app called <strong>MKS Dashboard</strong> (or UI).</p>
+<p>This was about the architecture of the Minimal Tekton Server. Let us jump into more technical stuff.</p>
+</div>
+<div class="section" id="how-to-implement-a-crd-controller">
+<h2>How to implement a CRD controller?</h2>
+<p>During this assignment, something that took the most time and effort was the implementation of a controller for our custom resources. This isn't very hard if you go by the rules and do the things according to the well-defined documents and blogs since this is a standard step in the implementation of any custom resource controller. But did we follow the rules? Hell no! But this time, let us go step-by-step.</p>
+<ol class="arabic simple">
+<li>The first step is to define a <code>CustomResourceDefinition</code> for our custom resource. Let us define a CRD called <code>spacetime</code>. To do this you can write a YAML file like below.</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="c1"># file: spacetime-crd.yaml</span><span class="w"></span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apiextensions.k8s.io/v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CustomResourceDefinition</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="c1"># name must match the spec fields below, and be in the form: &lt;plural&gt;.&lt;group&gt;</span><span class="w"></span>
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spacetimes.example.com</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="c1"># group name to use for REST API: /apis/&lt;group&gt;/&lt;version&gt;</span><span class="w"></span>
+<span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example.com</span><span class="w"></span>
+<span class="c1"># list of versions supported by this CustomResourceDefinition</span><span class="w"></span>
+<span class="nt">versions</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1alpha1</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># Each version can be enabled/disabled by Served flag.</span><span class="w"></span>
+<span class="w">  </span><span class="nt">served</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># One and only one version must be marked as the storage version.</span><span class="w"></span>
+<span class="w">  </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="nt">schema</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">openAPIV3Schema</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span><span class="w"></span>
+<span class="w">    </span><span class="nt">properties</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span><span class="w"></span>
+<span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">message</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span><span class="w"></span>
+<span class="c1"># either Namespaced or Cluster</span><span class="w"></span>
+<span class="nt">scope</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Namespaced</span><span class="w"></span>
+<span class="nt">names</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># plural name to be used in the URL: /apis/&lt;group&gt;/&lt;version&gt;/&lt;plural&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">plural</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spacetimes</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># singular name to be used as an alias on the CLI and for display</span><span class="w"></span>
+<span class="w">  </span><span class="nt">singular</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spacetime</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># kind is normally the CamelCased singular type. Your resource manifests use this.</span><span class="w"></span>
+<span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SpaceTime</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># shortNames allow shorter string to match your resource on the CLI</span><span class="w"></span>
+<span class="w">  </span><span class="nt">shortNames</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">st</span><span class="w"></span>
+</pre></div>
+<p>You can learn more about the fields and options <a class="reference external" href="https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/">here</a>. The CRD that we defined above corresponds to the <code>CustomResource</code> given below. Once you apply the above file you will be able to see the <code>spacetime</code> custom resource on your Kubernetes/OpenShift cluster.</p>
+<div class="highlight"><pre><span></span><span class="c1"># file: spacetime-cr.yaml</span><span class="w"></span>
+<span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spacetimes.example.com/v1alpha1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SpaceTime</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spacetime-cr</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">message</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">space!&quot;</span><span class="w"></span>
+</pre></div>
+<p>Apply them using the following commands:</p>
+<div class="highlight"><pre><span></span>kubectl apply -f spacetime-crd.yaml
+kubectl apply -f spacetime-cr.yaml
+</pre></div>
+<ol class="arabic simple" start="2">
+<li>Once we have defined our custom resources, we need to define the types that will correspond to this custom resource definition. This can be done using <code>k8s.io/apimachinery/pkg/apis/meta/v1</code> package written in golang. Did I tell you that this is all in golang? Well, now you know. Create a package structure for a golang project and add the definition of the type as given below.</li>
+</ol>
+<div class="highlight"><pre><span></span>mkdir -p pkg/api/spacetime/v1alpha1
+touch pkg/api/spacetime/v1alpha1/<span class="o">{</span>spacetime_types,register,doc<span class="o">}</span>.go pkg/api/spacetime/register.go
+</pre></div>
+<p>Add the following content to the corresponding files.</p>
+<div class="highlight"><pre><span></span><span class="c1">// file: /pkg/api/spacetime/v1alpha1/spacetime_types.go</span><span class="w"></span>
+<span class="kn">package</span><span class="w"> </span><span class="nx">v1alpha1</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="nx">metav1</span><span class="w"> </span><span class="s">&quot;k8s.io/apimachinery/pkg/apis/meta/v1&quot;</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">type</span><span class="w"> </span><span class="nx">SpaceTime</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">metav1</span><span class="p">.</span><span class="nx">TypeMeta</span><span class="w">   </span><span class="s">`json:&quot;,inline&quot;`</span><span class="w"></span>
+<span class="w">  </span><span class="nx">metav1</span><span class="p">.</span><span class="nx">ObjectMeta</span><span class="w"> </span><span class="s">`json:&quot;metadata,omitempty&quot;`</span><span class="w"></span>
+
+<span class="w">  </span><span class="nx">Spec</span><span class="w"> </span><span class="nx">SpaceTimeSpec</span><span class="w"> </span><span class="s">`json:&quot;spec&quot;`</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">type</span><span class="w"> </span><span class="nx">SpaceTimeSpec</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">Message</span><span class="w"> </span><span class="kt">string</span><span class="w">  </span><span class="s">`json:&quot;message&quot;`</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">type</span><span class="w"> </span><span class="nx">SpaceTimeList</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nx">metav1</span><span class="p">.</span><span class="nx">TypeMeta</span><span class="w">     </span><span class="s">`json:&quot;,inline&quot;`</span><span class="w"></span>
+<span class="w">  </span><span class="nx">metav1</span><span class="p">.</span><span class="nx">ListMeta</span><span class="w">     </span><span class="s">`json:&quot;metadata&quot;`</span><span class="w"></span>
+
+<span class="w">  </span><span class="nx">Items</span><span class="w"> </span><span class="p">[]</span><span class="nx">SpaceTime</span><span class="w">   </span><span class="s">`json:&quot;items&quot;`</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+<p><strong>To be Continued</strong></p>
+</div>
+
+    <hr>
+    <p align=center>
+      This Blog is licensed under <a href="http://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1"
+        target="_blank" rel="license noopener noreferrer">Attribution-NonCommercial 4.0 International<img
+          style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+          src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img
+          style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+          src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img
+          style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+          src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1">
+      </a>
+    </p>
+  </div>
+</article>
+<hr>
+<div id="comment-form">
+  <div class="alert alert-info" role="alert">
+    Feel free to leave a feedback or question!
+  </div>
+  <form action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSfL9T8WBRm-Ac2uyu74lJXSYOqAuF6lLIUAulRArCsuiI1ZRQ/formResponse" target="response" method="POST" id="valid-form">
+    <div class="form-row align-items-center">
+      <div class="form-group col-md-5">
+        <label class="sr-only" for="person-name">Name</label>
+        <input type="text" class="form-control form-control-sm" id="person-name" placeholder="Your Name (Optional)"
+          aria-describedby="nameHelp" name="entry.982725972">
+        <input type="text" id="page-link" name="entry.1641222305" hidden>
+        <small id="nameHelp" class="form-text text-muted">You may put your GitHub Username.</small>
+      </div>
+      <div class="form-group col-md-7">
+        <label class="sr-only" for="email-address">Email address</label>
+        <input type="email" class="form-control form-control-sm" id="email-address" aria-describedby="emailHelp"
+          placeholder="Your Email Address (Optional)" name="entry.1652853191">
+        <small id="emailHelp" class="form-text text-muted">I'll never share your email with anyone
+          else.</small>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="comment-section">Your Message</label>
+      <textarea class="form-control form-control-sm" id="comment-section" rows="3"
+        placeholder="Please enter your message or feedback. (Required)" aria-describedby="emailHelp"
+        name="entry.1062656232" required></textarea>
+      <div class="invalid-feedback">
+        Please Enter something !
+      </div>
+      <small id="textHelp" class="form-text text-muted">Enter upto 200 characters.</small>
+    </div>
+    <button class="btn btn-outline-info" type="submit">Send</button>
+  </form>
+  <iframe name="response" hidden></iframe>
+</div>
+<div class="alert alert-info" role="alert" id="comment-message" style="display: none;">
+  <h4 class="alert-heading">Thanks You 🥳</h4>
+  <p>Thanks a lot for reading this blog and sending me a feedback. I hope you liked it. I will get back to you
+    soon if you have added an email.</p>
+</div>
+<script>
+  (function () {
+    'use strict';
+    window.addEventListener('load', function () {
+      var form = document.getElementById('valid-form');
+      form.addEventListener('submit', function (event) {
+        document.getElementById('page-link').value = window.location.href;
+        document.getElementById('comment-form').style.display = 'none';
+        document.getElementById('comment-message').style.display = '';
+      }, false);
+    }, false);
+  })();
+</script>
+    </div>
+  </div>
+
+  <footer class="footer star">
+    <div id='stars'></div>
+    <div id='stars2'></div>
+    <div id='stars3'></div>
+    <div class="container">
+<div class="row">
+  <ul class="col-sm-6 list-inline">
+    <li class="list-inline-item"><a
+        href="https://avinal.space/archives.html">Archives</a></li>
+    <li class="list-inline-item"><a
+        href="https://avinal.space/categories.html">Categories</a></li>
+    <li class="list-inline-item"><a href="https://avinal.space/tags.html">Tags</a></li>
+  </ul>
+  <p class="col-sm-6 text-sm-right text-muted">Created with <i class="fa fa-heart" style="color: red;"></i> by <a
+      href="https://github.com/avinal" target="_blank">Avinal</a>
+  </p>
+</div>    </div>
+  </footer>
+
+</body>
+
+</html>

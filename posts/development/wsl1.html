@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Move WSL 2 Safely to another Drive | Be My SpaceTime
+</title>
+  <link rel="canonical" href="https://avinal.space/posts/development/wsl1.html">
+
+  <link rel="apple-touch-icon" href="https://avinal.space/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://avinal.space/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://avinal.space/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://avinal.space/site.webmanifest">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://avinal.space/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://avinal.space/theme/css/all.css">
+  <link rel="stylesheet" href="https://avinal.space/theme/css/pygments/manni.min.css">
+  <link rel="stylesheet" href="https://avinal.space/theme/css/theme.css">
+  <link rel="stylesheet" href="https://avinal.space/theme/css/space.css">
+
+<link rel="alternate" type="application/atom+xml" title="Full Atom Feed" href="https://avinal.space/feeds/all.atom.xml">
+<link rel="alternate" type="application/atom+xml" title="Categories Atom Feed"
+  href="https://avinal.space/feeds/development.atom.xml">
+<meta name="description" content="It is real pain when you have small SSD and Windows Subsystem for Linux (WSL) is growing exponentially in size. There is no easy way to move the WSL installation to another drive. Here in this blog I will discuss how to tackle this problem with bite size steps.">
+
+
+</head>
+
+<body style="font-family:Overpass Mono,monospace;">
+  <header class="header star">
+    <div id='stars'></div>
+    <div id='stars2'></div>
+    <div id='stars3'></div>
+    <div class="container text-center">
+<div class="row">
+  <div class="col-sm-12">
+    <h1 class="title" style="font-family: ExodarOut;font-weight: lighter;"><a href="https://avinal.space/">Be My SpaceTime</a>
+    </h1>
+    <!--
+    <p class="text-muted">눈치</p>
+    -->
+    <ul class="list-inline">
+      <li class="list-inline-item"><a href="https://gsoc.avinal.space" target="_blank">gsoc</a></li>
+      <li class="list-inline-item text-muted">|</li>
+      <li class="list-inline-item"><a href="https://avinal.space/pages/about-me.html">About Me</a></li>
+      <li class=" list-inline-item text-muted">|</li>
+      <li class="list-inline-item"><a class="fab fa-github" href="https://github.com/avinal" target="_blank"></a></li>
+      <li class="list-inline-item"><a class="fab fa-linkedin" href="https://www.linkedin.com/in/avinal/" target="_blank"></a></li>
+      <li class="list-inline-item"><a class="fab fa-instagram" href="https://instagram.com/avinal.k" target="_blank"></a></li>
+      <li class="list-inline-item"><a class="fab fa-calendar" href="https://meet.avinal.space" target="_blank"></a></li>
+      <li class="list-inline-item"><a class="fa fa-envelope" href="mailto:blog@avinal.space" target="_blank"></a></li>
+    </ul>
+  </div>
+</div>    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>Move WSL 2 Safely to another Drive
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2020-12-31T19:07:00+05:30">
+        <i class="fas fa-clock"></i>
+        Thu 31 December 2020
+      </li>
+      <li class="list-inline-item">
+        <i class="fas fa-folder-open"></i>
+        <a href="https://avinal.space/category/development.html">development</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fas fa-tag"></i>
+        <a href="https://avinal.space/tag/wsl.html">#wsl</a>,         <a href="https://avinal.space/tag/wsl2.html">#wsl2</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <p>It is real pain when you have small SSD and Windows Subsystem for Linux (WSL) is growing exponentially in size. There is no easy way to move
+the WSL installation to another drive. Here in this blog I will discuss how to tackle this problem with bite size steps.</p>
+<ol class="arabic simple">
+<li>Open a PowerShell <img alt="powershell" class="align-middle" src="/images/powershell.png" style="width: 5%;" /> or Command Prompt <img alt="command-line" class="align-middle" src="/images/command-line.png" style="width: 5%;" /> with <em>Admin</em> access. For this you can use <img alt="WinKey" class="align-middle" src="/images/windows10.png" style="width: 5%;" /> + X shortcut and select <strong>Windows PowerShell(Admin)</strong>.</li>
+<li>Check if the WSL 2 installation you are planning to move is is currently running/stopped.</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="nb">PS </span><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">Avinal</span><span class="p">&gt;</span> <span class="n">wsl</span> <span class="n">-l</span> <span class="n">-v</span>
+<span class="nb">PS </span><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">Avinal</span><span class="p">&gt;</span>
+  <span class="n">NAME</span>      <span class="n">STATE</span>           <span class="n">VERSION</span>
+<span class="p">*</span> <span class="n">Ubuntu</span>    <span class="n">Running</span>         <span class="n">2</span>
+  <span class="n">Kali</span>      <span class="n">Stopped</span>         <span class="n">2</span>
+</pre></div>
+<ol class="arabic simple" start="3">
+<li>If its running then you must stop the particular WSL distribution. (<em>Ubuntu</em> used as example)</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="nb">PS </span><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">Avinal</span><span class="p">&gt;</span> <span class="n">wsl</span> <span class="n">-t</span> <span class="n">Ubuntu</span>
+</pre></div>
+<ol class="arabic simple" start="4">
+<li>Export to some folder. (Here exporting <em>Ubuntu</em> as <em>ubuntu-ex.tar</em> to <em>Z:wsl2</em>)</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="nb">PS </span><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">Avinal</span><span class="p">&gt;</span> <span class="n">wsl</span> <span class="p">-</span><span class="n">-export</span> <span class="n">Ubuntu</span> <span class="s2">&quot;Z:\export\ubuntu-ex.tar&quot;</span>
+</pre></div>
+<ol class="arabic simple" start="5">
+<li>Unregister previous WSL installation</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="nb">PS </span><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">Avinal</span><span class="p">&gt;</span> <span class="n">wsl</span> <span class="p">-</span><span class="n">-unregister</span> <span class="n">Ubuntu</span>
+</pre></div>
+<ol class="arabic simple" start="6">
+<li>Create a new folder and import your WSL installation to that folder.</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="nb">PS </span><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">Avinal</span><span class="p">&gt;</span> <span class="nb">New-Item</span> <span class="n">-Path</span> <span class="s2">&quot;Z:\wsl2&quot;</span> <span class="n">-ItemType</span> <span class="n">Directory</span>
+
+    <span class="n">Directory</span><span class="p">:</span> <span class="n">Z</span><span class="p">:\</span>
+
+<span class="n">Mode</span>                 <span class="n">LastWriteTime</span>         <span class="n">Length</span> <span class="n">Name</span>
+<span class="p">----</span>                 <span class="p">-------------</span>         <span class="p">------</span> <span class="p">----</span>
+<span class="n">d</span><span class="p">-----</span>        <span class="n">31</span><span class="p">-</span><span class="n">12</span><span class="p">-</span><span class="n">2020</span>     <span class="n">21</span><span class="p">:</span><span class="n">03</span>                <span class="n">wsl2</span>
+
+<span class="nb">PS </span><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">Avinal</span><span class="p">&gt;</span> <span class="n">wsl</span> <span class="p">-</span><span class="n">-import</span> <span class="n">Ubuntu</span> <span class="s2">&quot;Z:\wsl2&quot;</span> <span class="s2">&quot;Z:\export\ubuntu-ex.tar&quot;</span>
+</pre></div>
+<ol class="arabic simple" start="7">
+<li>Check after import is complete</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="nb">PS </span><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">Avinal</span><span class="p">&gt;</span> <span class="n">wsl</span> <span class="n">-l</span> <span class="n">-v</span>
+<span class="nb">PS </span><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">Avinal</span><span class="p">&gt;</span>
+  <span class="n">NAME</span>      <span class="n">STATE</span>           <span class="n">VERSION</span>
+<span class="p">*</span> <span class="n">Ubuntu</span>    <span class="n">Running</span>         <span class="n">2</span>
+  <span class="n">Kali</span>      <span class="n">Stopped</span>         <span class="n">2</span>
+</pre></div>
+<ol class="arabic simple" start="8">
+<li>Mark one of your WSL distribution as <em>(default)</em>.</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="nb">PS </span><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">Avinal</span><span class="p">&gt;</span> <span class="n">wsl</span> <span class="n">-s</span> <span class="n">Ubuntu</span>
+</pre></div>
+<ol class="arabic simple" start="9">
+<li>After exporting your default user will be set as <span class="html-raw"><i style="color:red">root</i></span> , to change it to your desired username, run following command</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="nb">PS </span><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">Avinal</span><span class="p">&gt;</span> <span class="n">ubuntu</span> <span class="n">config</span> <span class="p">-</span><span class="n">-default-user</span> <span class="n">user_name</span>
+</pre></div>
+<ol class="arabic simple" start="10">
+<li>Finally run <code>wsl</code> and you have successfully moved your WSL 2 installation to another drive.</li>
+</ol>
+
+    <hr>
+    <p align=center>
+      This Blog is licensed under <a href="http://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1"
+        target="_blank" rel="license noopener noreferrer">Attribution-NonCommercial 4.0 International<img
+          style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+          src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img
+          style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+          src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img
+          style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+          src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1">
+      </a>
+    </p>
+  </div>
+</article>
+<hr>
+<div id="comment-form">
+  <div class="alert alert-info" role="alert">
+    Feel free to leave a feedback or question!
+  </div>
+  <form action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSfL9T8WBRm-Ac2uyu74lJXSYOqAuF6lLIUAulRArCsuiI1ZRQ/formResponse" target="response" method="POST" id="valid-form">
+    <div class="form-row align-items-center">
+      <div class="form-group col-md-5">
+        <label class="sr-only" for="person-name">Name</label>
+        <input type="text" class="form-control form-control-sm" id="person-name" placeholder="Your Name (Optional)"
+          aria-describedby="nameHelp" name="entry.982725972">
+        <input type="text" id="page-link" name="entry.1641222305" hidden>
+        <small id="nameHelp" class="form-text text-muted">You may put your GitHub Username.</small>
+      </div>
+      <div class="form-group col-md-7">
+        <label class="sr-only" for="email-address">Email address</label>
+        <input type="email" class="form-control form-control-sm" id="email-address" aria-describedby="emailHelp"
+          placeholder="Your Email Address (Optional)" name="entry.1652853191">
+        <small id="emailHelp" class="form-text text-muted">I'll never share your email with anyone
+          else.</small>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="comment-section">Your Message</label>
+      <textarea class="form-control form-control-sm" id="comment-section" rows="3"
+        placeholder="Please enter your message or feedback. (Required)" aria-describedby="emailHelp"
+        name="entry.1062656232" required></textarea>
+      <div class="invalid-feedback">
+        Please Enter something !
+      </div>
+      <small id="textHelp" class="form-text text-muted">Enter upto 200 characters.</small>
+    </div>
+    <button class="btn btn-outline-info" type="submit">Send</button>
+  </form>
+  <iframe name="response" hidden></iframe>
+</div>
+<div class="alert alert-info" role="alert" id="comment-message" style="display: none;">
+  <h4 class="alert-heading">Thanks You 🥳</h4>
+  <p>Thanks a lot for reading this blog and sending me a feedback. I hope you liked it. I will get back to you
+    soon if you have added an email.</p>
+</div>
+<script>
+  (function () {
+    'use strict';
+    window.addEventListener('load', function () {
+      var form = document.getElementById('valid-form');
+      form.addEventListener('submit', function (event) {
+        document.getElementById('page-link').value = window.location.href;
+        document.getElementById('comment-form').style.display = 'none';
+        document.getElementById('comment-message').style.display = '';
+      }, false);
+    }, false);
+  })();
+</script>
+    </div>
+  </div>
+
+  <footer class="footer star">
+    <div id='stars'></div>
+    <div id='stars2'></div>
+    <div id='stars3'></div>
+    <div class="container">
+<div class="row">
+  <ul class="col-sm-6 list-inline">
+    <li class="list-inline-item"><a
+        href="https://avinal.space/archives.html">Archives</a></li>
+    <li class="list-inline-item"><a
+        href="https://avinal.space/categories.html">Categories</a></li>
+    <li class="list-inline-item"><a href="https://avinal.space/tags.html">Tags</a></li>
+  </ul>
+  <p class="col-sm-6 text-sm-right text-muted">Created with <i class="fa fa-heart" style="color: red;"></i> by <a
+      href="https://github.com/avinal" target="_blank">Avinal</a>
+  </p>
+</div>    </div>
+  </footer>
+
+</body>
+
+</html>

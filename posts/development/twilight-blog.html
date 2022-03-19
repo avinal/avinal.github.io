@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>How I Created This Blog? | Be My SpaceTime
+</title>
+  <link rel="canonical" href="https://avinal.space/posts/development/twilight-blog.html">
+
+  <link rel="apple-touch-icon" href="https://avinal.space/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://avinal.space/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://avinal.space/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://avinal.space/site.webmanifest">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://avinal.space/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://avinal.space/theme/css/all.css">
+  <link rel="stylesheet" href="https://avinal.space/theme/css/pygments/manni.min.css">
+  <link rel="stylesheet" href="https://avinal.space/theme/css/theme.css">
+  <link rel="stylesheet" href="https://avinal.space/theme/css/space.css">
+
+<link rel="alternate" type="application/atom+xml" title="Full Atom Feed" href="https://avinal.space/feeds/all.atom.xml">
+<link rel="alternate" type="application/atom+xml" title="Categories Atom Feed"
+  href="https://avinal.space/feeds/development.atom.xml">
+<meta name="description" content="As you would have guessed by now, this blog is created using one such awesome SSG named Pelican. Pelican is simple, customizable and offers lots of themes and plugins. Pelican is python based SSG and is available through pip.">
+
+
+</head>
+
+<body style="font-family:Overpass Mono,monospace;">
+  <header class="header star">
+    <div id='stars'></div>
+    <div id='stars2'></div>
+    <div id='stars3'></div>
+    <div class="container text-center">
+<div class="row">
+  <div class="col-sm-12">
+    <h1 class="title" style="font-family: ExodarOut;font-weight: lighter;"><a href="https://avinal.space/">Be My SpaceTime</a>
+    </h1>
+    <!--
+    <p class="text-muted">눈치</p>
+    -->
+    <ul class="list-inline">
+      <li class="list-inline-item"><a href="https://gsoc.avinal.space" target="_blank">gsoc</a></li>
+      <li class="list-inline-item text-muted">|</li>
+      <li class="list-inline-item"><a href="https://avinal.space/pages/about-me.html">About Me</a></li>
+      <li class=" list-inline-item text-muted">|</li>
+      <li class="list-inline-item"><a class="fab fa-github" href="https://github.com/avinal" target="_blank"></a></li>
+      <li class="list-inline-item"><a class="fab fa-linkedin" href="https://www.linkedin.com/in/avinal/" target="_blank"></a></li>
+      <li class="list-inline-item"><a class="fab fa-instagram" href="https://instagram.com/avinal.k" target="_blank"></a></li>
+      <li class="list-inline-item"><a class="fab fa-calendar" href="https://meet.avinal.space" target="_blank"></a></li>
+      <li class="list-inline-item"><a class="fa fa-envelope" href="mailto:blog@avinal.space" target="_blank"></a></li>
+    </ul>
+  </div>
+</div>    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>How I Created This Blog?
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2021-01-26T16:47:00+05:30">
+        <i class="fas fa-clock"></i>
+        Tue 26 January 2021
+      </li>
+      <li class="list-inline-item">
+        <i class="fas fa-folder-open"></i>
+        <a href="https://avinal.space/category/development.html">development</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fas fa-tag"></i>
+        <a href="https://avinal.space/tag/blog.html">#blog</a>,         <a href="https://avinal.space/tag/pelican.html">#pelican</a>,         <a href="https://avinal.space/tag/ssg.html">#ssg</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <p><span class="html-raw"><div class="alert alert-info" role="alert">This article may not be for you if you are a web developer. You already got better options. 😉</div></span></p>
+<p>There are lots of ways to create a personal website or a blog. You can design your own user interface and write the backend code. But not everyone is a web developer. And here comes <abbr title="Static Site Generator">SSGs</abbr> to the rescue. <strong>Static Site Generators</strong> are little more than just website generators. In general, if you are looking for a simple blog, its better to use SSG than writing a lot of html and css. They are simple and elegant. Easy to maintain and you can add lots of customizations to your site without breaking or bloating your blog. There are lots of SSGs, <a class="reference external" href="https://jekyllrb.com/">Jekyll</a>, <a class="reference external" href="https://blog.getpelican.com/">Pelican</a> and more complex ones like <a class="reference external" href="https://www.gatsbyjs.com/">Gatsby</a>, <a class="reference external" href="https://gohugo.io/">Hugo</a> .</p>
+<p>As you would have guessed by now, this blog is created using one such awesome SSG named <strong>Pelican</strong>. Pelican is simple, customizable and offers lots of <a class="reference external" href="http://www.pelicanthemes.com/">themes</a> and <a class="reference external" href="https://github.com/getpelican/pelican-plugins">plugins</a>. Pelican is python based SSG and is available through <code>pip</code>.</p>
+<div class="highlight"><pre><span></span><span class="c1"># for reStructuredText only (recommended)</span>
+python -m pip install pelican
+
+<span class="c1"># for markdown and reStructuredText both</span>
+python -m pip install <span class="s2">&quot;pelican[markdown]&quot;</span>
+</pre></div>
+<p>You can start a pelican project by typing following command. It will create a basic template and build configurations.</p>
+<div class="highlight"><pre><span></span>pelican-quickstart
+
+<span class="c1"># output</span>
+yourproject/
+├── content              <span class="c1"># Put your content here</span>
+│   └── <span class="o">(</span>pages<span class="o">)</span>
+├── output               <span class="c1"># Output files</span>
+├── tasks.py
+├── Makefile             <span class="c1"># Makefile to run build and publish command</span>
+├── pelicanconf.py       <span class="c1"># Main settings file</span>
+└── publishconf.py       <span class="c1"># Settings to use when ready to publish</span>
+</pre></div>
+<p>Next step is to choose themes. As I said earlier there are lots of <a class="reference external" href="http://www.pelicanthemes.com/">themes</a> . And it is easy to create your own theme. Check <a class="reference external" href="https://docs.getpelican.com/en/latest/themes.html">here</a> to create your own theme. My choice of theme was <a class="reference external" href="https://nairobilug.github.io/pelican-alchemy/">pelican-alchemy</a> . This is a simple and great theme. Installing and removing themes in pelican is very easy.</p>
+<div class="highlight"><pre><span></span><span class="c1"># list all installed themes</span>
+pelican-themes -l
+<span class="c1"># output</span>
+simple
+alchemy
+notmyidea
+
+<span class="c1"># install new theme</span>
+pelican-themes -i theme-path
+
+<span class="c1"># remove a theme</span>
+pelican-themes -r theme-name
+</pre></div>
+<p>To use a particular theme, set the <code>THEME</code> variable in the <strong>pelicanconf.py</strong> file.</p>
+<div class="highlight"><pre><span></span><span class="n">THEME</span> <span class="o">=</span> <span class="s1">&#39;alchemy&#39;</span>
+</pre></div>
+<p>You can also use a theme that is not installed if you have all the required theme files. Just set this variable to its path.</p>
+<div class="highlight"><pre><span></span><span class="n">THEME</span> <span class="o">=</span> <span class="s1">&#39;path-to-theme-directory&#39;</span>
+</pre></div>
+<p>Various themes will have different feature, choose according to your need, or you can always add a feature through plugin. The next step is to build and check your blog. Pelican got it all set up.</p>
+<div class="highlight"><pre><span></span><span class="c1"># build your website</span>
+make html
+<span class="c1"># output</span>
+<span class="s2">&quot;pelican&quot;</span> <span class="s2">&quot;/mnt/z/my_git/avinal.github.io/content&quot;</span> -o <span class="s2">&quot;/mnt/z/my_git/avinal.github.io/output&quot;</span> -s <span class="s2">&quot;/mnt/z/my_git/avinal.github.io/pelicanconf.py&quot;</span>
+Done: Processed <span class="m">6</span> articles, <span class="m">0</span> drafts, <span class="m">1</span> page, <span class="m">0</span> hidden pages and <span class="m">0</span> draft pages <span class="k">in</span> <span class="m">2</span>.43 seconds.
+
+<span class="c1"># build and test/serve on localhost</span>
+make serve
+<span class="c1"># output</span>
+<span class="s2">&quot;pelican&quot;</span> -l <span class="s2">&quot;/mnt/z/my_git/avinal.github.io/content&quot;</span> -o <span class="s2">&quot;/mnt/z/my_git/avinal.github.io/output&quot;</span> -s <span class="s2">&quot;/mnt/z/my_git/avinal.github.io/pelicanconf.py&quot;</span>
+
+Serving site at: <span class="m">127</span>.0.0.1:8000 - Tap CTRL-C to stop
+</pre></div>
+<p>Now open your browser and open <a class="reference external" href="127.0.0.1:8000">127.0.0.1:8000</a> or <a class="reference external" href="localhost:8000">localhost:8000</a>. You should be able to see your new blog. Stop local server using <code>CTRL+C</code>. Next step is to publish it to github pages. Pelican has tools for this too. But wait we can do something more interesting here. Why not let GitHub take care of both building and publishing? Just push this project to a GitHub repository and set up GitHub pages. See <a class="reference external" href="https://pages.github.com/">this</a> help for instructions on that. Before pushing to GitHub add this little script to your project.</p>
+<div class="highlight"><pre><span></span><span class="ch">#! /bin/bash</span>
+<span class="c1">## file: publi.sh</span>
+
+<span class="c1"># install tools</span>
+sudo apt-get install -y git make python3 python3-pip python3-setuptools python3-wheel
+
+<span class="c1"># setup github config</span>
+git config user.email <span class="s2">&quot;your-email&quot;</span>
+git config user.name <span class="s2">&quot;your-username&quot;</span>
+
+<span class="c1"># install dependencies</span>
+sudo pip3 install -r requirements.txt
+
+<span class="c1"># pelican commands - install theme put your theme in themes directory</span>
+pelican-themes --install themes/theme-name
+
+<span class="c1"># publish to github pages</span>
+ghp-import -m <span class="s2">&quot;Generate Pelican site&quot;</span> -b gh-pages output
+    git push -f origin gh-pages
+</pre></div>
+<p>Now once your project is on GitHub, go to the <strong>Actions</strong> tab and click on <em>set up a workflow yourself</em> and paste the following code into the file and commit it.</p>
+<div class="highlight"><pre><span></span><span class="c1"># file: publish.yml</span><span class="w"></span>
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Publish Blog</span><span class="w"></span>
+<span class="nt">on</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">push</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">main</span><span class="w"> </span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">  </span><span class="nt">pull_request</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">main</span><span class="w"> </span><span class="p p-Indicator">]</span><span class="w"></span>
+
+<span class="nt">jobs</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">build</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span><span class="w"></span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v2</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">set up permissions</span><span class="w"></span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">chmod +x publi.sh</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run a multi-line script</span><span class="w"></span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./publi.sh</span><span class="w"></span>
+</pre></div>
+<p>If you have done everything correctly then go to <em>https://username.github.io</em> and you should see your blog. From now on whenever you want to add an article, just write it, test locally and push. Yay your blog is ready.</p>
+<p><span class="html-raw"><h2 style=font-family:Exodar;font-weight:lighter;">But My Blog is Special 🥰</h2></span></p>
+<p>My blog looks different, that is because I customized this theme a lot, especially headers, footers, and link appearance. And sorry I won't be publish my theme any time sooner. But I am listing down all the resources I have used for finally getting this result. You can always get my help by sending me a <span class="html-raw"><a href="mailto:avinal.xlvii@gmail.com" class="fa fa-envelope" style="text-decoration: none;"></a></span> or starting a discussion on <span class="html-raw"><a href="https://github.com/avinal/avinal/discussions/2" class="fab fa-github" style="text-decoration: none;"></a></span>.</p>
+<ul class="simple">
+<li><a class="reference external" href="https://blog.getpelican.com/">Pelican Blog</a></li>
+<li><a class="reference external" href="https://docs.getpelican.com/en/latest/">Pelican Docs</a></li>
+<li><a class="reference external" href="http://www.pelicanthemes.com/">Pelican Themes</a></li>
+<li><a class="reference external" href="https://github.com/nairobilug/pelican-alchemy">Pelican Alchemy Theme</a></li>
+<li><a class="reference external" href="https://codepen.io/saransh/pen/BKJun">Parallax Star background in CSS</a></li>
+<li><a class="reference external" href="https://codepen.io/kowlor/pen/ZYYQoy">Solar System animation</a></li>
+<li><span class="html-raw"><a href="https://www.dafont.com/exodar.font" style="font-family: Exodar;font-weight: lighter;text-decoration: none;">EXODAR Font</a></span></li>
+<li><a class="reference external" href="https://fonts.google.com/specimen/Overpass+Mono">Overpass Mono</a></li>
+<li><a class="reference external" href="https://fontawesome.com/how-to-use/on-the-web/setup/hosting-font-awesome-yourself">Font Awesome</a></li>
+</ul>
+<p><span class="html-raw"><div class="alert alert-warning" role="alert">Some of the fonts I have used in my blog may not be available for commercial use. Please check if you intend to do so. Alternatively you may use fonts from this wonderful collection, <a href="https://www.websiteplanet.com/blog/best-free-fonts/">70+ Best Free Fonts for Designers – Free for Commercial Use in 2021</a> <i>(Thanks Ritta Blens for this suggestion)</i></div></span></p>
+<p><span class="html-raw"><p align=center>Thanks!</p></span></p>
+
+    <hr>
+    <p align=center>
+      This Blog is licensed under <a href="http://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1"
+        target="_blank" rel="license noopener noreferrer">Attribution-NonCommercial 4.0 International<img
+          style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+          src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img
+          style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+          src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img
+          style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+          src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1">
+      </a>
+    </p>
+  </div>
+</article>
+<hr>
+<div id="comment-form">
+  <div class="alert alert-info" role="alert">
+    Feel free to leave a feedback or question!
+  </div>
+  <form action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSfL9T8WBRm-Ac2uyu74lJXSYOqAuF6lLIUAulRArCsuiI1ZRQ/formResponse" target="response" method="POST" id="valid-form">
+    <div class="form-row align-items-center">
+      <div class="form-group col-md-5">
+        <label class="sr-only" for="person-name">Name</label>
+        <input type="text" class="form-control form-control-sm" id="person-name" placeholder="Your Name (Optional)"
+          aria-describedby="nameHelp" name="entry.982725972">
+        <input type="text" id="page-link" name="entry.1641222305" hidden>
+        <small id="nameHelp" class="form-text text-muted">You may put your GitHub Username.</small>
+      </div>
+      <div class="form-group col-md-7">
+        <label class="sr-only" for="email-address">Email address</label>
+        <input type="email" class="form-control form-control-sm" id="email-address" aria-describedby="emailHelp"
+          placeholder="Your Email Address (Optional)" name="entry.1652853191">
+        <small id="emailHelp" class="form-text text-muted">I'll never share your email with anyone
+          else.</small>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="comment-section">Your Message</label>
+      <textarea class="form-control form-control-sm" id="comment-section" rows="3"
+        placeholder="Please enter your message or feedback. (Required)" aria-describedby="emailHelp"
+        name="entry.1062656232" required></textarea>
+      <div class="invalid-feedback">
+        Please Enter something !
+      </div>
+      <small id="textHelp" class="form-text text-muted">Enter upto 200 characters.</small>
+    </div>
+    <button class="btn btn-outline-info" type="submit">Send</button>
+  </form>
+  <iframe name="response" hidden></iframe>
+</div>
+<div class="alert alert-info" role="alert" id="comment-message" style="display: none;">
+  <h4 class="alert-heading">Thanks You 🥳</h4>
+  <p>Thanks a lot for reading this blog and sending me a feedback. I hope you liked it. I will get back to you
+    soon if you have added an email.</p>
+</div>
+<script>
+  (function () {
+    'use strict';
+    window.addEventListener('load', function () {
+      var form = document.getElementById('valid-form');
+      form.addEventListener('submit', function (event) {
+        document.getElementById('page-link').value = window.location.href;
+        document.getElementById('comment-form').style.display = 'none';
+        document.getElementById('comment-message').style.display = '';
+      }, false);
+    }, false);
+  })();
+</script>
+    </div>
+  </div>
+
+  <footer class="footer star">
+    <div id='stars'></div>
+    <div id='stars2'></div>
+    <div id='stars3'></div>
+    <div class="container">
+<div class="row">
+  <ul class="col-sm-6 list-inline">
+    <li class="list-inline-item"><a
+        href="https://avinal.space/archives.html">Archives</a></li>
+    <li class="list-inline-item"><a
+        href="https://avinal.space/categories.html">Categories</a></li>
+    <li class="list-inline-item"><a href="https://avinal.space/tags.html">Tags</a></li>
+  </ul>
+  <p class="col-sm-6 text-sm-right text-muted">Created with <i class="fa fa-heart" style="color: red;"></i> by <a
+      href="https://github.com/avinal" target="_blank">Avinal</a>
+  </p>
+</div>    </div>
+  </footer>
+
+</body>
+
+</html>

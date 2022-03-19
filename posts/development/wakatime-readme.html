@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>How I implemented WakaTime embeddable Coding Graph GHA? | Be My SpaceTime
+</title>
+  <link rel="canonical" href="https://avinal.space/posts/development/wakatime-readme.html">
+
+  <link rel="apple-touch-icon" href="https://avinal.space/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://avinal.space/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://avinal.space/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://avinal.space/site.webmanifest">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://avinal.space/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://avinal.space/theme/css/all.css">
+  <link rel="stylesheet" href="https://avinal.space/theme/css/pygments/manni.min.css">
+  <link rel="stylesheet" href="https://avinal.space/theme/css/theme.css">
+  <link rel="stylesheet" href="https://avinal.space/theme/css/space.css">
+
+<link rel="alternate" type="application/atom+xml" title="Full Atom Feed" href="https://avinal.space/feeds/all.atom.xml">
+<link rel="alternate" type="application/atom+xml" title="Categories Atom Feed"
+  href="https://avinal.space/feeds/development.atom.xml">
+<meta name="description" content="f you use WakaTime to track your coding activity. You can add that to your README as a bar graph or embed it in your blog/portfolio. Just add this action to any of your repositories and there you have it.">
+
+
+</head>
+
+<body style="font-family:Overpass Mono,monospace;">
+  <header class="header star">
+    <div id='stars'></div>
+    <div id='stars2'></div>
+    <div id='stars3'></div>
+    <div class="container text-center">
+<div class="row">
+  <div class="col-sm-12">
+    <h1 class="title" style="font-family: ExodarOut;font-weight: lighter;"><a href="https://avinal.space/">Be My SpaceTime</a>
+    </h1>
+    <!--
+    <p class="text-muted">눈치</p>
+    -->
+    <ul class="list-inline">
+      <li class="list-inline-item"><a href="https://gsoc.avinal.space" target="_blank">gsoc</a></li>
+      <li class="list-inline-item text-muted">|</li>
+      <li class="list-inline-item"><a href="https://avinal.space/pages/about-me.html">About Me</a></li>
+      <li class=" list-inline-item text-muted">|</li>
+      <li class="list-inline-item"><a class="fab fa-github" href="https://github.com/avinal" target="_blank"></a></li>
+      <li class="list-inline-item"><a class="fab fa-linkedin" href="https://www.linkedin.com/in/avinal/" target="_blank"></a></li>
+      <li class="list-inline-item"><a class="fab fa-instagram" href="https://instagram.com/avinal.k" target="_blank"></a></li>
+      <li class="list-inline-item"><a class="fab fa-calendar" href="https://meet.avinal.space" target="_blank"></a></li>
+      <li class="list-inline-item"><a class="fa fa-envelope" href="mailto:blog@avinal.space" target="_blank"></a></li>
+    </ul>
+  </div>
+</div>    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>How I implemented WakaTime embeddable Coding Graph GHA?
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2021-02-02T21:47:00+05:30">
+        <i class="fas fa-clock"></i>
+        Tue 02 February 2021
+      </li>
+      <li class="list-inline-item">
+        <i class="fas fa-folder-open"></i>
+        <a href="https://avinal.space/category/development.html">development</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fas fa-tag"></i>
+        <a href="https://avinal.space/tag/wakatime.html">#wakatime</a>,         <a href="https://avinal.space/tag/github-action.html">#github-action</a>,         <a href="https://avinal.space/tag/coding.html">#coding</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <a href="https://github.com/avinal/Profile-Readme-WakaTime"><img src="https://raw.githubusercontent.com/avinal/Profile-Readme-WakaTime/b281d074ee75f9626b39d10e2e518c6a297208a3/waka.png" class="img-fluid"></a><div class="section" id="implementation-details">
+<h2>Implementation Details</h2>
+<p>This GitHub Action is divided into three parts. I didn't want to use Docker but it seems it doesn't work well without it. Let dive a little into technical details. Three parts are as below.</p>
+<ol class="arabic simple">
+<li><a class="reference external" href="https://github.com/avinal/Profile-Readme-WakaTime/blob/master/main.py">main.py</a> python script. This script contains many procedures.</li>
+</ol>
+<ul>
+<li><p class="first"><a class="reference external" href="https://github.com/avinal/Profile-Readme-WakaTime/blob/master/main.py#L52">Getting JSON data file via WakaTime API</a></p>
+<blockquote>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_stats</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="o">...</span>
+        <span class="k">return</span> <span class="n">data_list</span>
+</pre></div>
+</blockquote>
+<p>This function parses the JSON file received and scraps out the useful data as a list of lists. Data scraped are language list, time spent on each language, percentage of the time, start date, and end date. For this action, I have limited the number of languages to 5 however it should be very easy to increase that number.</p>
+</li>
+<li><p class="first"><a class="reference external" href="https://github.com/avinal/Profile-Readme-WakaTime/blob/master/main.py#L13">Setting the Timeline</a></p>
+<blockquote>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">this_week</span><span class="p">(</span><span class="n">dates</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="o">...</span>
+<span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Coding Activity During: </span><span class="si">{</span><span class="n">week_start</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1"> %B, %Y&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">week_end</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1"> %B, %Y&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+</pre></div>
+</blockquote>
+<p>The start date and end date scraped in the last function are used here to set the timeline. Because date in JSON is provided in UTC as below :</p>
+<blockquote>
+<div class="highlight"><pre><span></span><span class="err">da</span><span class="kc">te</span><span class="p">:</span><span class="w">   </span><span class="s2">&quot;YYYY-MM-DDTHH:MM:SSZ&quot;</span><span class="w"></span>
+</pre></div>
+</blockquote>
+<p>I striped it to simple dates only. We can set them manually by taking the current time from the system. But that method is flawed. But this method ensures that JSON was received latest and the request was successful. Any anomaly will point to a failure in request.</p>
+</li>
+<li><p class="first"><a class="reference external" href="https://github.com/avinal/Profile-Readme-WakaTime/blob/master/main.py#L21">Creating a bar graph</a></p>
+<blockquote>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_graph</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="o">...</span>
+        <span class="n">savefig</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</blockquote>
+<p>Lastly, it is time to generate the graph and save them as an image. This function uses the data scraped in the first step. Creating a bar graph using <cite>matplotlib</cite> is easy. Decorating was a bit difficult. I wanted this graph to merge with GitHub's look so I chose to color the bar as GitHub colors the languages. That data is stored as <cite>colors.json</cite>. Many of the languages have slightly different spelling in GitHub as compared to WakaTime. So some languages are shown in default color. That can be improved if we notice that language and change its color manually. Lastly, the graph is saved both as SVG and PNG. SVGs are better to put on a responsive page.</p>
+</li>
+</ul>
+<ol class="arabic" start="2">
+<li><p class="first"><a class="reference external" href="https://github.com/avinal/Profile-Readme-WakaTime/blob/master/entrypoint.sh">entrypoint.py</a> shell script. This shell script clones the repository copies the image and pushes changes to the master. There were several problems. First of all authentication. This was solved by using a remote repository address using GitHub Token. And it seems that GitHub doesn't allow to commit without a username and email. So I used <strong>github-actions</strong> bot email.</p>
+<blockquote>
+<div class="highlight"><pre><span></span>remote_repo-<span class="s2">&quot;https://</span><span class="si">${</span><span class="nv">GITHUB_ACTOR</span><span class="si">}</span><span class="s2">:</span><span class="si">${</span><span class="nv">INPUT_GITHUB_TOKEN</span><span class="si">}</span><span class="s2">@github.com/</span><span class="si">${</span><span class="nv">GITHUB_REPOSITORY</span><span class="si">}</span><span class="s2">.git&quot;</span>
+git config user.email <span class="s2">&quot;41898282+github-actions[bot]@users.noreply.github.com&quot;</span>
+git config user.name <span class="s2">&quot;GitHub Actions&quot;</span>
+</pre></div>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p><code>41898282</code> is the id assigned to the github-actions bot. Don't ask where I found them 🙂.</p>
+<p>Another problem was to separate repository name from combined <em>username/repository-name</em> provided by <cite>${GITHUB_REPOSITORY}</cite>. GitHub doesn't provides a direct way to get just the repo name. We used <em>Internal Field Separator</em>. It returns an array and works similar to <code>split()</code> command in Python and Java.</p>
+<blockquote>
+<div class="highlight"><pre><span></span><span class="c1"># &#39;/&#39; is the seperator</span>
+IFS-<span class="s1">&#39;/&#39;</span> <span class="nb">read</span> -ra reponame <span class="o">&lt;&lt;&lt;</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">GITHUB_REPOSITORY</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="c1"># returned {username, repository}</span>
+repository-<span class="s2">&quot;</span><span class="si">${</span><span class="nv">reponame</span><span class="p">[1]</span><span class="si">}</span><span class="s2">&quot;</span>
+</pre></div>
+</blockquote>
+</blockquote>
+<p>After that, all other commands are pretty straight. Commit the added files and push them.</p>
+<ol class="arabic simple" start="3">
+<li><a class="reference external" href="https://github.com/avinal/Profile-Readme-WakaTime/blob/master/Dockerfile">Dockerfile</a> <strong>IMPORTANT</strong> It took a lot of time to reach this state 🥱. This is where all the magic happens. I am running <cite>ubuntu:latest</cite> inside the container. I first update the distribution. Then install the required python packages. Lastly, I invoke the python script and shell script.</li>
+</ol>
+<p>There was an almost impossible problem, I searched hundreds of posts that <em>how can I access the generated files inside Docker container</em>, but no luck. But at last, I found a workaround(obviously otherwise you wouldn't be reading this by now 🤣) each command is run in a separate virtual sub-container. As the command ends its output is also lost but not when you club multiple commands together. At least not until every command is finished. The generated files are available to the next clubbed process. I did that by combining the python script run and shell script run.</p>
+<div class="highlight"><pre><span></span><span class="k">CMD</span><span class="w"> </span>python3 /main.py <span class="o">&amp;&amp;</span> /entrypoint.sh
+</pre></div>
+<p>This part is the smallest yet took the most time and tries while developing this action.</p>
+</div>
+<div class="section" id="how-to-use-this-github-actions">
+<h2>How to use this GitHub Actions?</h2>
+<ol class="arabic">
+<li><p class="first">First get your WakaTime API Key. You can get it from your [WakaTime](<a class="reference external" href="https://wakatime.com">https://wakatime.com</a>) account settings.</p>
+</li>
+<li><p class="first">Save WakaTime API Key to Repository Secret. Find that by clicking the Settings tab. Keep the name of the secret as <strong>WAKATIME_API_KEY</strong>.</p>
+</li>
+<li><p class="first">Add the following line in your README.md of your repo.</p>
+<blockquote>
+<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">img</span> <span class="na">src-</span><span class="err">&quot;</span><span class="na">https:</span><span class="err">//</span><span class="na">github</span><span class="err">.</span><span class="na">com</span><span class="err">/&lt;</span><span class="na">username</span><span class="p">&gt;</span>/<span class="p">&lt;</span><span class="nt">repository-name</span><span class="p">&gt;</span>/blob/<span class="p">&lt;</span><span class="nt">branch-name</span><span class="p">&gt;</span>/images/stat.svg&quot; alt-&quot;Alternative Text&quot;/&gt;
+Example: <span class="p">&lt;</span><span class="nt">img</span> <span class="na">src-</span><span class="err">&quot;</span><span class="na">https:</span><span class="err">//</span><span class="na">github</span><span class="err">.</span><span class="na">com</span><span class="err">/</span><span class="na">avinal</span><span class="err">/</span><span class="na">avinal</span><span class="err">/</span><span class="na">blob</span><span class="err">/</span><span class="na">main</span><span class="err">/</span><span class="na">images</span><span class="err">/</span><span class="na">stat</span><span class="err">.</span><span class="na">svg</span><span class="err">&quot;</span> <span class="na">alt-</span><span class="err">&quot;</span><span class="na">Avinal</span> <span class="na">WakaTime</span> <span class="na">Activity</span><span class="err">&quot;</span><span class="p">/&gt;</span>
+</pre></div>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+You can use this method to embed in web pages too. <strong>Do not use the markdown method of inserting images. It does not work sometimes.</strong></blockquote>
+<ol class="arabic" start="4">
+<li><p class="first">Click the <strong>Action</strong> tab and <strong>choose to set up a workflow yourself</strong>.</p>
+</li>
+<li><p class="first">Copy the following code into the opened file, you can search for <strong>WakaTime Stat</strong> in the marketplace tab for assistance.</p>
+<blockquote>
+<div class="highlight"><pre><span></span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">WakaTime status update</span><span class="w"></span>
+
+<span class="nt">on</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">schedule</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="c1"># Runs at 12 am  &#39;0 0 * * *&#39;  UTC</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">cron</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1</span><span class="nv"> </span><span class="s">0</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*&quot;</span><span class="w"></span>
+
+<span class="nt">jobs</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">update-readme</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Update the WakaTime Stat</span><span class="w"></span>
+<span class="w">        </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span><span class="w"></span>
+<span class="w">        </span><span class="nt">steps</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="c1"># Use avinal/Profile-Readme-WakaTime@&lt;latest-release-tag&gt; for latest stable release</span><span class="w"></span>
+<span class="w">          </span><span class="c1"># Do not change the line below except the word master with tag number maybe</span><span class="w"></span>
+<span class="w">          </span><span class="c1"># If you have forked this project you can use &lt;username&gt;/Profile-Readme-WakaTime@master instead</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">avinal/Profile-Readme-WakaTime@master</span><span class="w"></span>
+<span class="w">            </span><span class="nt">with</span><span class="p">:</span><span class="w"></span>
+<span class="w">                  </span><span class="c1"># WakaTime API key stored in secrets, do not directly paste it here</span><span class="w"></span>
+<span class="w">                  </span><span class="nt">WAKATIME_API_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.WAKATIME_API_KEY }}</span><span class="w"></span>
+<span class="w">                  </span><span class="c1"># Automatic github token</span><span class="w"></span>
+<span class="w">                  </span><span class="nt">GITHUB_TOKEN</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ github.token }}</span><span class="w"></span>
+<span class="w">                  </span><span class="c1"># Branch - newer GitHub repositories have &quot;main&quot; as default branch, change to main in that case, default is master</span><span class="w"></span>
+<span class="w">                  </span><span class="nt">BRANCH</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;master&quot;</span><span class="w"></span>
+<span class="w">                  </span><span class="c1"># Manual Commit messages - write your own messages here</span><span class="w"></span>
+<span class="w">                  </span><span class="nt">COMMIT_MSG</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Automated</span><span class="nv"> </span><span class="s">Coding</span><span class="nv"> </span><span class="s">Activity</span><span class="nv"> </span><span class="s">Update</span><span class="nv"> </span><span class="s">:alien:&quot;</span><span class="w"></span>
+</pre></div>
+</blockquote>
+</li>
+<li><p class="first">Please wait till 12 AM UTC to run this workflow automatically. Or you can force run it by going to the Actions tab. Or you can add the following lines under <cite>on:</cite> to run with every push. Search for 12 AM UTC to find the equivalent time in your time zone.</p>
+<blockquote>
+<div class="highlight"><pre><span></span><span class="nt">on</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">push</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">master</span><span class="w"> </span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">  </span><span class="nt">schedule</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">cron</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;1</span><span class="nv"> </span><span class="s">0</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*&#39;</span><span class="w"></span>
+</pre></div>
+</blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="my-coding-activity">
+<h2>My Coding Activity</h2>
+<img class="img-fluid" src="https://raw.githubusercontent.com/avinal/avinal/main/images/stat.svg"></div>
+
+    <hr>
+    <p align=center>
+      This Blog is licensed under <a href="http://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1"
+        target="_blank" rel="license noopener noreferrer">Attribution-NonCommercial 4.0 International<img
+          style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+          src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img
+          style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+          src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img
+          style="height:22px!important;margin-left:3px;vertical-align:text-bottom;"
+          src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1">
+      </a>
+    </p>
+  </div>
+</article>
+<hr>
+<div id="comment-form">
+  <div class="alert alert-info" role="alert">
+    Feel free to leave a feedback or question!
+  </div>
+  <form action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSfL9T8WBRm-Ac2uyu74lJXSYOqAuF6lLIUAulRArCsuiI1ZRQ/formResponse" target="response" method="POST" id="valid-form">
+    <div class="form-row align-items-center">
+      <div class="form-group col-md-5">
+        <label class="sr-only" for="person-name">Name</label>
+        <input type="text" class="form-control form-control-sm" id="person-name" placeholder="Your Name (Optional)"
+          aria-describedby="nameHelp" name="entry.982725972">
+        <input type="text" id="page-link" name="entry.1641222305" hidden>
+        <small id="nameHelp" class="form-text text-muted">You may put your GitHub Username.</small>
+      </div>
+      <div class="form-group col-md-7">
+        <label class="sr-only" for="email-address">Email address</label>
+        <input type="email" class="form-control form-control-sm" id="email-address" aria-describedby="emailHelp"
+          placeholder="Your Email Address (Optional)" name="entry.1652853191">
+        <small id="emailHelp" class="form-text text-muted">I'll never share your email with anyone
+          else.</small>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="comment-section">Your Message</label>
+      <textarea class="form-control form-control-sm" id="comment-section" rows="3"
+        placeholder="Please enter your message or feedback. (Required)" aria-describedby="emailHelp"
+        name="entry.1062656232" required></textarea>
+      <div class="invalid-feedback">
+        Please Enter something !
+      </div>
+      <small id="textHelp" class="form-text text-muted">Enter upto 200 characters.</small>
+    </div>
+    <button class="btn btn-outline-info" type="submit">Send</button>
+  </form>
+  <iframe name="response" hidden></iframe>
+</div>
+<div class="alert alert-info" role="alert" id="comment-message" style="display: none;">
+  <h4 class="alert-heading">Thanks You 🥳</h4>
+  <p>Thanks a lot for reading this blog and sending me a feedback. I hope you liked it. I will get back to you
+    soon if you have added an email.</p>
+</div>
+<script>
+  (function () {
+    'use strict';
+    window.addEventListener('load', function () {
+      var form = document.getElementById('valid-form');
+      form.addEventListener('submit', function (event) {
+        document.getElementById('page-link').value = window.location.href;
+        document.getElementById('comment-form').style.display = 'none';
+        document.getElementById('comment-message').style.display = '';
+      }, false);
+    }, false);
+  })();
+</script>
+    </div>
+  </div>
+
+  <footer class="footer star">
+    <div id='stars'></div>
+    <div id='stars2'></div>
+    <div id='stars3'></div>
+    <div class="container">
+<div class="row">
+  <ul class="col-sm-6 list-inline">
+    <li class="list-inline-item"><a
+        href="https://avinal.space/archives.html">Archives</a></li>
+    <li class="list-inline-item"><a
+        href="https://avinal.space/categories.html">Categories</a></li>
+    <li class="list-inline-item"><a href="https://avinal.space/tags.html">Tags</a></li>
+  </ul>
+  <p class="col-sm-6 text-sm-right text-muted">Created with <i class="fa fa-heart" style="color: red;"></i> by <a
+      href="https://github.com/avinal" target="_blank">Avinal</a>
+  </p>
+</div>    </div>
+  </footer>
+
+</body>
+
+</html>

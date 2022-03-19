@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Be My SpaceTime - blog</title><link href="https://avinal.space/" rel="alternate"></link><link href="https://avinal.space/feeds/blog.atom.xml" rel="self"></link><id>https://avinal.space/</id><updated>2021-01-04T21:47:00+05:30</updated><subtitle>눈치</subtitle><entry><title>HRT Systems Internship Interview Experience</title><link href="https://avinal.space/posts/blog/hrt-interview-1.html" rel="alternate"></link><published>2021-01-04T21:47:00+05:30</published><updated>2021-01-04T21:47:00+05:30</updated><author><name>Avinal</name></author><id>tag:avinal.space,2021-01-04:/posts/blog/hrt-interview-1.html</id><summary type="html">&lt;p class="first last"&gt;I applied for &lt;strong&gt;Systems Internship - Summer 2021&lt;/strong&gt; back in December 2020 at &lt;a class="reference external" href="https://www.hudsonrivertrading.com"&gt;Hudson River Trading&lt;/a&gt; , New York.....Questions were clear and of medium level. But they were designed in such a way that you must know the basics before you could attempt.&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;I applied for &lt;strong&gt;Systems Internship - Summer 2021&lt;/strong&gt; back in December 2020 at &lt;a class="reference external" href="https://www.hudsonrivertrading.com"&gt;Hudson River Trading&lt;/a&gt; , New York. The internship description was: -&lt;/p&gt;
+&lt;blockquote class="epigraph"&gt;
+&lt;p&gt;We are looking for highly motivated students who are eager to learn and excited about systems to join us for our summer internship
+program. As a systems intern, you may have the opportunity to work on projects in the following areas:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Programming/scripting (Golang, Python, C++, C)&lt;/li&gt;
+&lt;li&gt;FOSS development&lt;/li&gt;
+&lt;li&gt;HPC, Cluster computing&lt;/li&gt;
+&lt;li&gt;System Administration&lt;/li&gt;
+&lt;li&gt;Linux, Debian&lt;/li&gt;
+&lt;li&gt;Linux-based computer security&lt;/li&gt;
+&lt;li&gt;Data Storage&lt;/li&gt;
+&lt;li&gt;Large deployment or config management&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The first step was a coding test on the Codility platform. If you have used any of the online coding platforms, this is similar. It was a &lt;abbr title="90 mins"&gt;2.5 hrs&lt;/abbr&gt; test consisting of 3 questions. They let you use &lt;abbr title="documentation, man pages, etc."&gt;online references&lt;/abbr&gt; but
+&lt;strong&gt;do not copy the code&lt;/strong&gt; as it will highly reduce your chances of qualifying for this first stage. You can choose between &lt;strong&gt;C/C++&lt;/strong&gt;,
+&lt;strong&gt;Python&lt;/strong&gt; and &lt;strong&gt;Golang&lt;/strong&gt; (no Java 😪).&lt;/p&gt;
+&lt;p&gt;Questions were clear and of medium level. But they were designed in such a way that you must know the basics before you could attempt.
+Also, they expected a clear and concise approach. Two of the most important points in their instructions were: -&lt;/p&gt;
+&lt;blockquote class="epigraph"&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;While correctness and performance are the most important factors for evaluation, we will take test duration into account as well.&lt;/li&gt;
+&lt;li&gt;Please understand that this test is meant to be challenging. A perfect score is not necessary to move on to future interview rounds, so do the best you can!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;So, you must be near perfect in your approach as well as on time. I did them kind of quickly. They will show you a summary of your
+submission but not the results. It will take almost 2 weeks to get back to you for further steps.&lt;/p&gt;
+&lt;p&gt;Next, I received a mail invitation for a telephonic interview. &lt;strong&gt;This interview will last about 45 minutes and will be technical but will not require coding. Interview topics may include your background, programming languages, and Unix/Linux concepts&lt;/strong&gt;. Once you receive this
+mail you can then decide a time slot for an interview.&lt;/p&gt;
+&lt;p&gt;I was not sure what they will ask if this is not a coding interview. The interviewer was very polite, and he was explaining the questions
+too. Questions were not so tricky but practical and real-life. Since it was &lt;strong&gt;not for SDE role&lt;/strong&gt;, the questions were mostly related to
+Linux/Unix, C++ (mainly pointers and memory), Python/Bash scripting, automation, knowledge of tools (IDEs, Editors, System Administration
+Tools) and previous experiences. The interview would often explain why he is asking this question, this was very nice. Then some common
+interview questions, why do you want to work for this role? What makes you fit for this role? etc.&lt;/p&gt;
+&lt;p&gt;One thing that I want to point out is that the interviewer was repeatedly checking my resume, and for the most part he did not ask
+anything that was not on my resume. So, my tip is to create a nice resume with genuine work/tool experiences. And when you are applying
+for such a role, it would be helpful if you mention mathematics or other courses that you have taken. &lt;em&gt;Do not lie on your resume&lt;/em&gt;. They
+will easily catch that.&lt;/p&gt;
+&lt;p&gt;The other thing is to keep your words short and clear; I was not great at communication, but you can be. If the interviewer allows then
+use examples for the things you cannot explain. I used nice examples. At last, he gave me short feedback on how well I performed.&lt;/p&gt;
+&lt;p&gt;At last, I want to point out things I should not have done. The first is, I did not ask much about the role, you must do this at least
+once. Second, I am talkative, I do not know if the interviewer was not faking his expressions (because he would often discuss in-depth),
+but not all interviewers will be the same. So, do not talk too much, nor too less. At last work on your communication skill, mostly how
+you to present things and how to answer technical as well as behavioral questions. I was not fluent, but my way of presentation might
+have saved me.&lt;/p&gt;
+</content><category term="blog"></category><category term="HRT"></category><category term="hudsonrivertrading"></category><category term="interview"></category><category term="internship"></category></entry><entry><title>The Interstellar Twilight</title><link href="https://avinal.space/posts/blog/this-is-for-you.html" rel="alternate"></link><published>2020-09-28T22:47:00+05:30</published><updated>2020-09-28T22:47:00+05:30</updated><author><name>Avinal</name></author><id>tag:avinal.space,2020-09-28:/posts/blog/this-is-for-you.html</id><summary type="html">&lt;p class="first last"&gt;If in the Twilight of dreams we should meet once more, we shell talk again together and I shall sing to you a lullaby till you sleep again to meet me in the Twilight of another dream.&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;Yeah, it was a dream someday. I never imagined you. But I do remember glimpses of a wonderful person
+in my deep slumber. When I go back to last year about the same time, I find myself a manic who gets
+carried away with every emotion. Becoming too happy about something and then becoming too sad was so
+common that I never noticed what I was risking.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&amp;quot;If in the Twilight of dreams we should meet once more, we shell talk again together and I shall sing to you a lullaby till you sleep again to meet me in the Twilight of another dream.&amp;quot;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;But 1 year ago many things changed. A never seen dream came true. To be honest I was skeptical if all
+this happening to me was true. Even until last December. Gradually things started falling into places.
+And for the most part, the reality became more real. I can now easily see what is happening and why it
+happened. Everything was so nice until we had a fight. Then another, and now it was every other day
+story. It was a really hard time collecting everything together and act as nothing happened after every
+single of those. Everything was plunging. I started imagining the end of something that I did not
+imagine to happen in the first place.&lt;/p&gt;
+&lt;p&gt;But during all those times, there was a continual intuition that maybe there is something that we both
+are missing. And that was maybe the root of all chaos. I never came to know that what it was neither did
+you. But I do realize many mistakes I have been doing since we met.&lt;/p&gt;
+&lt;p&gt;I want to thank you for not losing hope in me. We both always tried to reduce tension as much as we could.
+And thank you for many other ineffable things happened because of you.&lt;/p&gt;
+&lt;p&gt;As of now I can see things making sense. Every message, every talk now seems to make sense. I am more
+deeply into this friendship if I was not ever before. The ecstasy of having you is other-worldly. I don't
+know if I could ever adore a person this much but I adore this ravishing friendship. Only you or only
+this friendship may mean nothing to me. But I am delighted to say that I have both and I have you.&lt;/p&gt;
+&lt;p&gt;Now, what is all with The Interstellar Twilight. Why this name ? Let me explain it for you. &lt;strong&gt;Interstellar&lt;/strong&gt;
+means between stars and &lt;strong&gt;Twilight&lt;/strong&gt; means the soft glow when the sun is below the horizon.
+&lt;strong&gt;The Interstellar Twilight&lt;/strong&gt; means the glow between the stars or simply glow of a cluster of stars. A
+single star shines but the glow is too low to be noticed against its brightness. But a lot stars together
+gets a glow. So my friend we are such two stars and our friendship is that glow.&lt;/p&gt;
+</content><category term="blog"></category><category term="interstellar"></category><category term="twilight"></category></entry></feed>
