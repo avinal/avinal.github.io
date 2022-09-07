@@ -105,7 +105,7 @@ viewHeader page =
 
                 _ ->
                     header [ class "foo-logo" ]
-                        [ img [ src "logo-static.svg" ]
+                        [ img [ src "/website/logo-static.svg" ]
                             []
                         ]
     in
@@ -221,8 +221,8 @@ parser =
         [ Parser.map Splash Parser.top
         , Parser.map Splash (s urlPrefix)
         , Parser.map Blog (s urlPrefix </> s "posts")
-        , Parser.map Static (s "pages")
-        , Parser.map Terminal (s "terminal")
+        , Parser.map Static (s urlPrefix </> s "pages")
+        , Parser.map Terminal (s urlPrefix </> s "terminal")
         ]
 
 

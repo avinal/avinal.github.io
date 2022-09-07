@@ -17,7 +17,7 @@ view model =
         [ div [ class "foo-error" ]
             [ img
                 [ class "foo-error__logo"
-                , src "public/logo-loading.svg"
+                , src "/website/logo-loading.svg"
                 , alt "Finding the SpaceTime"
                 , width 130
                 , height 130
