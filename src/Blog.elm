@@ -1,7 +1,7 @@
 module Blog exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (class, datetime)
+import Html.Attributes exposing (class)
 
 
 
@@ -30,15 +30,17 @@ type alias Blog =
 
 view : Model -> Html msg
 view model =
-    div [ class "max-width mx-auto px3 ltr" ]
-        [ div [ class "content index py4" ]
-            [ article [ class "post" ]
-                [ h1 [ class "posttitle" ] [ text model.blog.title ]
-                , div [ class "meta" ]
-                    [ div [ class "article-tag" ]
-                        [ a [ class "tag-link" ] [ text "tag" ] ]
+    div [ class "foo-interface" ]
+        [ div [ class "max-width mx-auto px3 ltr" ]
+            [ div [ class "content index py4" ]
+                [ article [ class "post" ]
+                    [ h1 [ class "posttitle" ] [ text model.blog.title ]
+                    , div [ class "meta" ]
+                        [ div [ class "article-tag" ]
+                            [ a [ class "tag-link" ] [ text "tag" ] ]
+                        ]
+                    , div [ class "content" ] [ text model.blog.content ]
                     ]
-                , div [ class "content" ] [ text model.blog.content ]
                 ]
             ]
         ]
