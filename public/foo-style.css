@@ -61,13 +61,13 @@ s,
 samp,
 section,
 small,
-span,
+/* span, */
 strike,
 strong,
 sub,
 summary,
 sup,
-table,
+/* table, */
 tbody,
 td,
 tfoot,
@@ -126,10 +126,10 @@ q:before {
     content: none
 }
 
-table {
+/* table {
     border-collapse: collapse;
     border-spacing: 0
-}
+} */
 
 .foo-footer ul,
 .foo-grid {
