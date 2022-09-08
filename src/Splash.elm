@@ -33,6 +33,22 @@ type Msg
     = Nothing
 
 
+notFound : String -> Model
+notFound error =
+    { urls = []
+    , support_message = "We couldn't find the page you were looking for."
+    , error_message = "The url " ++ error ++ " does not exist."
+    }
+
+
+default : Model
+default =
+    { urls = []
+    , support_message = "We are looking for the SpaceTime"
+    , error_message = "We are sorry, but we can't find the SpaceTime"
+    }
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -40,11 +56,10 @@ update msg model =
             ( model, Cmd.none )
 
 
-init : () -> ( Model, Cmd Msg )
-init _ =
-    ( { urls = []
-      , support_message = "We are looking for the SpaceTime"
-      , error_message = "We are sorry, but we can't find the SpaceTime"
-      }
-    , Cmd.none
-    )
+init : () -> Bool -> String -> ( Model, Cmd Msg )
+init _ isError error =
+    if isError then
+        ( notFound error, Cmd.none )
+
+    else
+        ( default, Cmd.none )

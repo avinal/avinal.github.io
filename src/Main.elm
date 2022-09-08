@@ -75,7 +75,8 @@ view model =
                         |> Html.map GotStaticMsg
 
                 NotFound ->
-                    text "404"
+                    Splash.view (Splash.notFound (Url.toString model.url))
+                        |> Html.map GotSplashMsg
     in
     { title = model.title
     , body =
@@ -201,7 +202,7 @@ toStatic model ( staticModel, cmd ) =
 
 init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ url key =
-    updateUrl { url = url, page = NotFound, title = "404", key = key }
+    updateUrl { url = url, page = NotFound, title = "Be My SpaceTime", key = key }
 
 
 
@@ -230,7 +231,7 @@ updateUrl : Model -> ( Model, Cmd Msg )
 updateUrl model =
     case Parser.parse parser model.url of
         Just Splash ->
-            Splash.init ()
+            Splash.init () False ""
                 |> toSplash model
 
         Just Blog ->
@@ -246,7 +247,8 @@ updateUrl model =
                 |> toStatic model
 
         Nothing ->
-            ( { model | page = NotFound }, Cmd.none )
+            Splash.init () True (Url.toString model.url)
+                |> toSplash model
 
 
 
