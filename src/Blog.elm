@@ -35,7 +35,7 @@ view model =
     div [ class "foo-interface" ]
         [ div [ class "max-width mx-auto px3 ltr" ]
             [ div [ class "content index py4" ]
-                (textToHtml testString)
+                (textToHtml postString)
             ]
         ]
 
@@ -141,4 +141,104 @@ testString =
             </li>
         </ul>
     </section>
+    """
+
+
+postString : String
+postString =
+    """
+    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+        <h1 class="posttitle" itemprop="name headline">
+            Hello World
+        </h1>
+        <div class="meta">
+            <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                <span itemprop="name"></span>
+            </span>
+            <div class="postdate">
+                <time datetime="2022-09-05T17:21:59.000Z" itemprop="datePublished">2022-09-05</time>
+            </div>
+            <div class="article-category">
+                <i class="fas fa-archive"></i>
+                <a class="category-link" href="/categories/tech/">tech<span class="category-count">1</span></a>
+            </div>
+            <div class="article-tag">
+                <i class="fas fa-tag"></i>
+                <a class="tag-link-link" href="/tags/gyus-feaiugy/" rel="tag">gyus, feaiugy</a>
+            </div>
+        </div>
+    </header>
+    <div class="content" itemprop="articleBody">
+        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post.
+            Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you
+            get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener"
+                href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a
+                target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+        <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2>
+        <h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create
+            a new post</h3>
+        <figure class="highlight bash">
+            <table>
+                <tr>
+                    <td class="gutter">
+                        <pre><span class="line">1</span><br></pre>
+                    </td>
+                    <td class="code">
+                        <pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre>
+                    </td>
+                </tr>
+            </table>
+        </figure>
+        <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+        <h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3>
+        <figure class="highlight bash">
+            <table>
+                <tr>
+                    <td class="gutter">
+                        <pre><span class="line">1</span><br></pre>
+                    </td>
+                    <td class="code">
+                        <pre><span class="line">$ hexo server</span><br></pre>
+                    </td>
+                </tr>
+            </table>
+        </figure>
+        <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+        <h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink"
+                title="Generate static files"></a>Generate static files</h3>
+        <figure class="highlight bash">
+            <table>
+                <tr>
+                    <td class="gutter">
+                        <pre><span class="line">1</span><br></pre>
+                    </td>
+                    <td class="code">
+                        <pre><span class="line">$ hexo generate</span><br></pre>
+                    </td>
+                </tr>
+            </table>
+        </figure>
+
+        <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+        <h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink"
+                title="Deploy to remote sites"></a>Deploy to remote sites</h3>
+        <figure class="highlight bash">
+            <table>
+                <tr>
+                    <td class="gutter">
+                        <pre><span class="line">1</span><br></pre>
+                    </td>
+                    <td class="code">
+                        <pre><span class="line">$ hexo deploy</span><br></pre>
+                    </td>
+                </tr>
+            </table>
+        </figure>
+
+        <p>More info: <a target="_blank" rel="noopener"
+                href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+    </div>
+</article>
     """

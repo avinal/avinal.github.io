@@ -412,8 +412,8 @@
   padding-left: 4rem;
 }
 
-body h1,
-body .h1 {
+h1,
+.h1 {
   display: block;
   margin-top: 3rem;
   margin-bottom: 1rem;
@@ -426,8 +426,8 @@ body .h1 {
   -webkit-font-smoothing: antialiased;
 }
 
-body h2,
-body .h2 {
+h2,
+.h2 {
   position: relative;
   display: block;
   margin-top: 2rem;
@@ -439,16 +439,16 @@ body .h2 {
   font-size: 1rem;
 }
 
-body h3 {
+h3 {
   color: #eee;
   text-decoration: underline;
   font-weight: bold;
   font-size: 0.9rem;
 }
 
-body h4,
-body h5,
-body h6 {
+h4,
+h5,
+h6 {
   display: inline;
   text-decoration: none;
   color: #ccc;
@@ -456,15 +456,15 @@ body h6 {
   font-size: 0.9rem;
 }
 
-body h3,
-body h4,
-body h5,
-body h6 {
+h3,
+h4,
+h5,
+h6 {
   margin-top: 0.9rem;
   margin-bottom: 0.5rem;
 }
 
-body hr {
+hr {
   border: 0.5px dashed #ccc;
   opacity: 0.5;
   margin: 0;
@@ -472,63 +472,63 @@ body hr {
   margin-bottom: 20px;
 }
 
-body strong {
+strong {
   font-weight: bold;
 }
 
-body em,
-body cite {
+em,
+cite {
   font-style: italic;
 }
 
-body sup,
-body sub {
+sup,
+sub {
   position: relative;
   vertical-align: baseline;
   font-size: 0.75em;
   line-height: 0;
 }
 
-body sup {
+sup {
   top: -0.5em;
 }
 
-body sub {
+sub {
   bottom: -0.2em;
 }
 
-body small {
+small {
   font-size: 0.85em;
 }
 
-body acronym,
-body abbr {
+acronym,
+abbr {
   border-bottom: 1px dotted;
 }
 
-body ul,
-body ol,
-body dl {
+ul,
+ol,
+dl {
   line-height: 1.725;
 }
 
-body ul ul,
-body ol ul,
-body ul ol,
-body ol ol {
+ul ul,
+ol ul,
+ul ol,
+ol ol {
   margin-top: 0;
   margin-bottom: 0;
 }
 
-body ol {
+ol {
   list-style: decimal;
 }
 
-body dt {
+dt {
   font-weight: bold;
 }
 
-body table {
+table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
@@ -537,7 +537,7 @@ body table {
   display: block;
 }
 
-body th {
+th {
   padding: 8px;
   border-bottom: 1px dashed #908d8d;
   color: #eee;
@@ -545,7 +545,7 @@ body th {
   font-size: 13px;
 }
 
-body td {
+td {
   padding: 0 8px;
   border-bottom: none;
 }
@@ -600,7 +600,7 @@ html {
   -ms-text-size-adjust: 100%;
 }
 
-body {
+/*  {
   margin: 0;
   height: 100%;
   background-color: #1d1f21;
@@ -614,7 +614,7 @@ body {
   flex: 1;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-}
+} */
 
 .content {
   position: relative;
