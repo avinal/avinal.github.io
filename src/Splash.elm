@@ -23,8 +23,8 @@ view model =
                 , height 130
                 ]
                 []
-            , p [ class "foo-support__message" ] [ text model.support_message ]
-            , p [ class "foo-error__message" ] [ text model.error_message ]
+            , div [ class "foo-support__message" ] [ text model.support_message ]
+            , div [ class "foo-error__message" ] [ text model.error_message ]
             ]
         ]
 

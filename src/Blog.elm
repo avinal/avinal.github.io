@@ -147,88 +147,54 @@ testString =
 postString : String
 postString =
     """
-    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-    <div>
-
-        <h1 class="posttitle" itemprop="name headline">
-            Hello World
-        </h1>
-
-
-
-        <div class="meta">
-            <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
-                <span itemprop="name"></span>
-            </span>
-
-            <div class="postdate">
-
-                <time datetime="2016-11-14T12:19:32.000Z" itemprop="datePublished">2016-11-14</time>
-
-
-            </div>
+            <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Hello World
+    </h1>
 
 
 
-
-
-            <div class="article-tag">
-                <i class="fas fa-tag"></i>
-                <a class="tag-link-link" href="/tags/example/" rel="tag">example</a>, <a class="tag-link-link"
-                    href="/tags/features/" rel="tag">features</a>
-            </div>
-
-
-        </div>
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name"></span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2016-11-14T12:19:32.000Z" itemprop="datePublished">2016-11-14</time>
+        
+      
     </div>
 
 
-    <div class="content" itemprop="articleBody">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at dolor a sem consequat facilisis ut et
-            augue. Vestibulum vestibulum lectus erat, id tincidunt sapien laoreet non. Ut nec ante eu lorem posuere
-            fringilla sit amet in tortor.</p>
-        <h2 id="This-is-a-subtitle"><a href="#This-is-a-subtitle" class="headerlink" title="This is a subtitle"></a>This
-            is a subtitle</h2>
-        <p>Quisque ac maximus ligula, sed sagittis est. Integer venenatis pellentesque elit. Donec molestie turpis sit
-            amet sodales cursus. Sed at risus cursus, feugiat lacus sit amet, rutrum sem. Vestibulum accumsan dui urna,
-            vel feugiat lectus malesuada id. Quisque in interdum turpis, et pulvinar tortor. Vivamus tincidunt purus eu
-            libero viverra, at posuere dolor gravida.</p>
-        <figure class="highlight python">
-            <figcaption><span>Hello world
-                    
-                </span></figcaption>
-            <table>
-                <tr>
-                    <td class="gutter">
-                        <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
-                    </td>
-                    <td class="code">
-                        <pre><span class="line"><span class="built_in">print</span> <span class="string">&quot;Hello World!&quot;</span></span><br><span class="line">=&gt; <span class="string">&quot;Hello World!&quot;</span></span><br></pre>
-                    </td>
-                </tr>
-            </table>
-        </figure>
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/tech/">tech<span class="category-count">2</span></a>
+    </div>
 
-        <h2 id="This-is-a-second-subtitle"><a href="#This-is-a-second-subtitle" class="headerlink"
-                title="This is a second subtitle"></a>This is a second subtitle</h2>
-        <p>Donec venenatis eu nunc non accumsan. Etiam elementum dapibus urna, ac mattis tortor volutpat a. Pellentesque
-            eu purus metus. Curabitur vel nulla ut odio congue vulputate. Morbi lacinia tellus sit amet facilisis
-            dictum. Nullam a erat felis. Vestibulum nec diam ac nisi pharetra tincidunt. Ut vitae ullamcorper ipsum. Sed
-            vehicula vehicula dolor. Quisque ac tortor a neque scelerisque venenatis.</p>
-        <img src="/assets/wallpaper-878514.jpg" class="" title="Wallpaper">
 
-        <blockquote class="pullquote right">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque hendrerit lacus ut purus iaculis
-                feugiat.</p>
-        </blockquote>
-
-        <p>Mauris quis lorem id arcu lobortis finibus in quis mauris. Cras lacinia neque arcu, id viverra nunc pretium
-            eget. Aenean eu luctus diam. Maecenas blandit eros in fermentum cursus. Pellentesque hendrerit ipsum orci,
-            tempor facilisis est maximus at. Suspendisse potenti. Sed eleifend ullamcorper eleifend. Nullam tincidunt
-            eget ex vitae blandit. Donec molestie iaculis elementum. Interdum et malesuada fames ac ante ipsum primis in
-            faucibus. Maecenas in suscipit ex. Integer molestie felis mi, in commodo dolor fermentum a. Cras blandit
-            auctor enim, eu rhoncus turpis ullamcorper id.</p>
+      
 
     </div>
+  </div>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at dolor a sem consequat facilisis ut et augue. Vestibulum vestibulum lectus erat, id tincidunt sapien laoreet non. Ut nec ante eu lorem posuere fringilla sit amet in tortor.</p>
+<h2 id="This-is-a-subtitle"><a href="#This-is-a-subtitle" class="headerlink" title="This is a subtitle"></a>This is a subtitle</h2><p>Quisque ac maximus ligula, sed sagittis est. Integer venenatis pellentesque elit. Donec molestie turpis sit amet sodales cursus. Sed at risus cursus, feugiat lacus sit amet, rutrum sem. Vestibulum accumsan dui urna, vel feugiat lectus malesuada id. Quisque in interdum turpis, et pulvinar tortor. Vivamus tincidunt purus eu libero viverra, at posuere dolor gravida.</p>
+<figure class="highlight python"><figcaption><span>Hello world</span><a target="_blank" rel="noopener" href="http://github.com">hello_world.py</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span> <span class="string">&quot;Hello World!&quot;</span></span><br><span class="line">=&gt; <span class="string">&quot;Hello World!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="This-is-a-second-subtitle"><a href="#This-is-a-second-subtitle" class="headerlink" title="This is a second subtitle"></a>This is a second subtitle</h2><p>Donec venenatis eu nunc non accumsan. Etiam elementum dapibus urna, ac mattis tortor volutpat a. Pellentesque eu purus metus. Curabitur vel nulla ut odio congue vulputate. Morbi lacinia tellus sit amet facilisis dictum. Nullam a erat felis. Vestibulum nec diam ac nisi pharetra tincidunt. Ut vitae ullamcorper ipsum. Sed vehicula vehicula dolor. Quisque ac tortor a neque scelerisque venenatis.</p>
+<img src="/assets/wallpaper-878514.jpg" class="" title="Wallpaper">
+
+<blockquote class="pullquote right"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque hendrerit lacus ut purus iaculis feugiat.</p>
+</blockquote>
+
+<p>Mauris quis lorem id arcu lobortis finibus in quis mauris. Cras lacinia neque arcu, id viverra nunc pretium eget. Aenean eu luctus diam. Maecenas blandit eros in fermentum cursus. Pellentesque hendrerit ipsum orci, tempor facilisis est maximus at. Suspendisse potenti. Sed eleifend ullamcorper eleifend. Nullam tincidunt eget ex vitae blandit. Donec molestie iaculis elementum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Maecenas in suscipit ex. Integer molestie felis mi, in commodo dolor fermentum a. Cras blandit auctor enim, eu rhoncus turpis ullamcorper id.</p>
+
+  </div>
 </article>
     """
