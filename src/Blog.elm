@@ -195,7 +195,7 @@ postString =
             libero viverra, at posuere dolor gravida.</p>
         <figure class="highlight python">
             <figcaption><span>Hello world
-                    <http: //github.com /> hello_world.py
+                    
                 </span></figcaption>
             <table>
                 <tr>
