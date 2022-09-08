@@ -938,16 +938,26 @@ table {
     clear: both
 }
 
+/* share-tech-mono-regular - latin */
 @font-face {
-    font-family: 'share_tech_monoregular';
-    src: url(../font/sharetechmono-regular-webfont.584a36c6.eot);
-    src: url(../font/sharetechmono-regular-webfont.584a36c6.eot?#iefix) format("embedded-opentype"),
-        url(../font/sharetechmono-regular-webfont.f5f51d2a.woff) format("woff"),
-        url(../font/sharetechmono-regular-webfont.cb6af6dd.ttf) format("truetype"),
-        url(../font/sharetechmono-regular-webfont.b418792a.svg#share_tech_monoregular) format("svg");
+    font-family: 'Share Tech Mono';
+    font-style: normal;
     font-weight: 400;
-    font-style: normal
+    src: url('/website/fonts/share-tech-mono-v15-latin-regular.eot');
+    /* IE9 Compat Modes */
+    src: local(''),
+        url('/website/fonts/share-tech-mono-v15-latin-regular.eot?#iefix') format('embedded-opentype'),
+        /* IE6-IE8 */
+        url('/website/fonts/share-tech-mono-v15-latin-regular.woff2') format('woff2'),
+        /* Super Modern Browsers */
+        url('/website/fonts/share-tech-mono-v15-latin-regular.woff') format('woff'),
+        /* Modern Browsers */
+        url('/website/fonts/share-tech-mono-v15-latin-regular.ttf') format('truetype'),
+        /* Safari, Android, iOS */
+        url('/website/fonts/share-tech-mono-v15-latin-regular.svg#ShareTechMono') format('svg');
+    /* Legacy iOS */
 }
+
 
 @keyframes blink {
 
@@ -1134,7 +1144,7 @@ html {
 body {
     background-color: #2b2d2d;
     color: #fff;
-    font: 16px/1.2 "share_tech_monoregular", monospace;
+    font: 16px/1.2 "Share Tech Mono", monospace;
     -webkit-font-smoothing: antialiased
 }
 
@@ -1185,12 +1195,13 @@ body {
 }
 
 @media only screen and (max-width:1023px) {
-    .foo-logo{
+    .foo-logo {
         float: top;
         border-bottom: 1px solid #35bdb8;
         position: relative;
         text-align: left;
     }
+
     .foo-logo img {
         margin-left: 3%;
         margin-top: 3%;
@@ -1286,7 +1297,7 @@ body {
 
 @media only screen and (min-width:1024px) {
     .foo-interface {
-        
+
         top: 0;
         left: 140px
     }
@@ -1425,7 +1436,7 @@ body {
 
 .foo-console,
 .foo-console .foo-cmd {
-    font-family: "share_tech_monoregular", monospace;
+    font-family: "Share Tech Mono", monospace;
     color: #fff
 }
 
@@ -1589,7 +1600,7 @@ body {
 }
 
 .foo-ace_editor {
-    font-family: "share_tech_monoregular", monospace !important;
+    font-family: "Share Tech Mono", monospace !important;
     line-height: 1.4 !important;
     font-size: 16px !important
 }
@@ -1832,7 +1843,7 @@ body {
 }
 
 .foo-prompter__text input {
-    font-family: "share_tech_monoregular", monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 16px;
     line-height: 1.2;
     -webkit-font-smoothing: antialiased;
@@ -1953,4 +1964,3 @@ body {
 .foo-cf:after {
     clear: both
 }
-
