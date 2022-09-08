@@ -1,8 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="65" height="60"
 
-shape-rendering="crispEdges"><style type="text/css">.color {
-    animation:
-        col 20s linear infinite;
+shape-rendering="crispEdges"><style type="text/css">
+.color {
+    -webkit-animation: col 300s linear infinite;
+    -moz-animation: col 300s linear infinite;
+    -o-animation: col 300s linear infinite;
+    animation: col 300s linear infinite;
 }
 
 @keyframes col {
@@ -47,8 +50,10 @@ shape-rendering="crispEdges"><style type="text/css">.color {
 }
 
 .rcolor {
-    animation:
-        rcol 20s linear infinite;
+    -webkit-animation: rcol 300s linear infinite;
+    -moz-animation: rcol 300s linear infinite;
+    -o-animation: rcol 300s linear infinite;
+    animation: rcol 300s linear infinite;
 }
 
 @keyframes rcol {
