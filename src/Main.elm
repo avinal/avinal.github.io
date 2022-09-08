@@ -147,7 +147,11 @@ update msg model =
         GotBlogMsg blogMsg ->
             case model.page of
                 BlogPage blog ->
-                    toBlog model (Blog.update blogMsg blog)
+                    toBlog
+                        { model
+                            | title = blog.blog.title ++ " | " ++ model.title
+                        }
+                        (Blog.update blogMsg blog)
 
                 _ ->
                     ( model, Cmd.none )
