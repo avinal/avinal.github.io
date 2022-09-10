@@ -7,62 +7,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/website/post-style.css">
     <link rel="stylesheet" href="/website/foo-style.css">
-    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
-    crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'" />
+    <!-- <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+        crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'" /> -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.6.0/build/styles/github-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.6.0/build/highlight.min.js"></script>
     <title>Document</title>
     <script src="/website/redirect.js"></script>
 </head>
 
 <body>
     <div id="app"></div>
-   
+
     <script src="/website/app.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js"
-        crossorigin="anonymous"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js"
+        crossorigin="anonymous"></script> -->
     <script>
         var app = Elm.Main.init({ node: document.getElementById("app") });
 
-        $(function () {
-            // copy-btn HTML
-            var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
-            btn += '<i class="far fa-clone"></i>';
-            btn += '</span>';
-            // mount it!
-            $(".highlight table").before(btn);
-            var clip = new ClipboardJS('.btn-copy', {
-                text: function (trigger) {
-                    return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str, it) => str + it.innerText + '\n', '')
-                }
-            });
-            clip.on('success', function (e) {
-                e.trigger.setAttribute('aria-label', "Copied!");
-                e.clearSelection();
-            })
-        });
+        // $(function () {
+        //     // copy-btn HTML
+        //     var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+        //     btn += '<i class="far fa-clone"></i>';
+        //     btn += '</span>';
+        //     // mount it!
+        //     $(".highlight table").before(btn);
+        //     var clip = new ClipboardJS('.btn-copy', {
+        //         text: function (trigger) {
+        //             return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str, it) => str + it.innerText + '\n', '')
+        //         }
+        //     });
+        //     clip.on('success', function (e) {
+        //         e.trigger.setAttribute('aria-label', "Copied!");
+        //         e.clearSelection();
+        //     })
+        // });
     </script>
 
-    
 
-     <!-- <script type="text/javascript">
-        $(function () {
-            // copy-btn HTML
-            var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
-            btn += '<i class="far fa-clone"></i>';
-            btn += '</span>';
-            // mount it!
-            $(".highlight table").before(btn);
-            var clip = new ClipboardJS('.btn-copy', {
-                text: function (trigger) {
-                    return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str, it) => str + it.innerText + '\n', '')
-                }
-            });
-            clip.on('success', function (e) {
-                e.trigger.setAttribute('aria-label', "Copied!");
-                e.clearSelection();
-            })
-        })
-    </script> -->
 </body>
 
 </html>

@@ -4,7 +4,7 @@ import Blog as Blog
 import Browser exposing (Document)
 import Browser.Navigation as Nav
 import Html exposing (Html, a, div, footer, header, img, li, text, ul)
-import Html.Attributes exposing (class, href, src)
+import Html.Attributes exposing (class, href, src, target)
 import Html.Lazy exposing (lazy)
 import Splash as Splash
 import Static as Static
@@ -35,10 +35,10 @@ type alias Model =
 
 {-| Page designs
 
-    BlogPage: Page design for blogs
-    TerminalPage: Page design for terminal
-    StaticPage: Page design for static pages
-    NotFound: Page design for 404 page
+    BlogPage:       Page design for blogs
+    TerminalPage:   Page design for terminal
+    StaticPage:     Page design for static pages
+    NotFound:       Page design for 404 page
 
 -}
 type Page
@@ -106,7 +106,7 @@ viewHeader page =
 
                 _ ->
                     header [ class "foo-logo" ]
-                        [ img [ src "/website/logo-static.svg" ]
+                        [ img [ src "/website/logo-static.svg", target urlPrefix ]
                             []
                         ]
     in
@@ -220,12 +220,18 @@ type Route
     | Static
 
 
+
+-- | BlogPost String String
+
+
 parser : Parser (Route -> a) a
 parser =
     Parser.oneOf
         [ Parser.map Splash Parser.top
         , Parser.map Splash (s urlPrefix)
         , Parser.map Blog (s urlPrefix </> s "posts")
+
+        -- , Parser.map BlogPost (s urlPrefix </> s "posts" </> Parser.string </> Parser.string)
         , Parser.map Static (s urlPrefix </> s "pages")
         , Parser.map Terminal (s urlPrefix </> s "terminal")
         ]
@@ -242,6 +248,9 @@ updateUrl model =
             Blog.init ()
                 |> toBlog model
 
+        -- Just (BlogPost category slug) ->
+        --     Blog.init { category = category, slug = slug }
+        --         |> toBlog model
         Just Terminal ->
             Terminal.init ()
                 |> toTerminal model
