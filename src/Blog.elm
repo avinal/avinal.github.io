@@ -1,12 +1,11 @@
-module Blog exposing (..)
+port module Blog exposing (..)
 
+import Base exposing (urlPrefix)
 import Html exposing (..)
-import Html.Attributes exposing (class, placeholder, value)
-import Html.Events exposing (onClick, onInput)
+import Html.Attributes exposing (class, href, id, style)
 import Html.Parser
 import Html.Parser.Util
 import Http exposing (Error(..))
-import Markdown exposing (defaultOptions)
 import Url exposing (Protocol(..))
 
 
@@ -37,27 +36,77 @@ type alias Blog =
     }
 
 
+
+-- PORT
+
+
+port sendString : String -> Cmd msg
+
+
 view : Model -> Html Msg
 view model =
     div [ class "foo-interface" ]
         [ div [ class "foo-console foo-terminal foo-active" ]
-            [ div [ class "max-width mx-auto px3 ltr" ]
-                [ div
-                    [ class "foo-term-story" ]
-                    [ input
-                        [ placeholder "Enter URL to a markdown file"
-                        , value model.markDownUrl
-                        , onInput StoreInput
-                        ]
-                        []
-                    , button [ onClick GetMarkdown ] [ text "Get Markdown" ]
-                    ]
-                , div [ class "content index py4" ]
-                    [ if model.success then
-                        markdownToHtml model
+            [ div [ class "main-wrapper" ]
+                [ viewToc model.success
+                , main_ [ class "main-content", id "content" ]
+                    [ viewArticle ]
+                ]
+            ]
+        ]
 
-                      else
-                        div [ class "foo-error" ] [ text model.markDown ]
+
+viewToc : Bool -> Html Msg
+viewToc show =
+    if show then
+        div
+            [ class "toc"
+            , style "display"
+                (if show then
+                    "block"
+
+                 else
+                    "none"
+                )
+            ]
+            [ aside [ class "document-toc-container" ]
+                [ section [ class "document-toc" ]
+                    [ h2 [ class "document-toc-heading" ] [ text "In this page" ]
+                    , ul
+                        [ class "document-toc-list", id "toc-entries" ]
+                        []
+                    ]
+                ]
+            ]
+
+    else
+        div [] []
+
+
+viewArticle : Html Msg
+viewArticle =
+    article
+        [ class "main-page-content" ]
+        [ div [ id "insert-here" ] []
+        , viewMetadata
+        ]
+
+
+viewMetadata : Html Msg
+viewMetadata =
+    aside [ class "metadata" ]
+        [ div [ class "metadata-content-container" ]
+            [ div [ class "on-github" ]
+                [ h3 [] [ text "Found a problem" ]
+                , ul []
+                    [ li []
+                        [ a [ href "https://github.com/avinal" ]
+                            [ text "open an issue" ]
+                        ]
+                    , li []
+                        [ a [ href "https://avinal.space" ]
+                            [ text "Website" ]
+                        ]
                     ]
                 ]
             ]
@@ -66,27 +115,56 @@ view model =
 
 type Msg
     = GetMarkdown
-    | StoreInput String
     | DataReceived (Result Http.Error String)
 
 
-init : () -> ( Model, Cmd Msg )
-init _ =
-    ( { blog =
-            { title = "My First Blog Post"
-            , url = "my-first-blog-post"
-            , description = "This is my first blog post"
-            , content = "This is the content of my first blog post"
-            , category = "category"
-            , tags = [ "elm", "blog" ]
-            , date = "2018-01-01"
-            }
-      , markDownUrl = ""
+init : Maybe String -> ( Model, Cmd Msg )
+init slug =
+    ( { blog = initBlog
+      , markDownUrl = finalUrl slug
       , markDown = ""
-      , success = True
+      , success = False
       }
-    , Cmd.none
+    , getMarkdown <| finalUrl slug
     )
+
+
+getMarkdown : String -> Cmd Msg
+getMarkdown url =
+    Http.get
+        { url = url
+        , expect = Http.expectString DataReceived
+        }
+
+
+finalUrl : Maybe String -> String
+finalUrl slug =
+    let
+        resolvedSlug =
+            Maybe.withDefault "error" slug
+    in
+    case resolvedSlug of
+        "error" ->
+            "https://raw.githubusercontent.com/avinal/avinal.space/content/posts/error.md"
+
+        _ ->
+            "https://raw.githubusercontent.com/avinal/"
+                ++ urlPrefix
+                ++ "/content/posts/"
+                ++ resolvedSlug
+                ++ ".md"
+
+
+initBlog : Blog
+initBlog =
+    { title = ""
+    , url = ""
+    , description = ""
+    , content = ""
+    , category = ""
+    , tags = []
+    , date = ""
+    }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -96,13 +174,10 @@ update msg model =
             ( model, Http.get { url = model.markDownUrl, expect = Http.expectString DataReceived } )
 
         DataReceived (Ok data) ->
-            ( { model | markDown = data, success = True }, Cmd.none )
+            ( { model | markDown = data, success = True }, sendString data )
 
         DataReceived (Err err) ->
             ( { model | success = False, markDown = errorToString err }, Cmd.none )
-
-        StoreInput input ->
-            ( { model | markDownUrl = input }, Cmd.none )
 
 
 errorToString : Http.Error -> String
@@ -140,11 +215,26 @@ textToHtml text =
             []
 
 
-markdownToHtml : Model -> Html Msg
-markdownToHtml model =
-    Markdown.toHtmlWith
-        { defaultOptions
-            | githubFlavored = Just { tables = True, breaks = False }
-        }
-        []
-        model.markDown
+
+-- main : Program (String, String) Model Msg
+-- main =
+--     Browser.element
+--         { init = init
+--         , view = view
+--         , update = update
+--         , subscriptions = \_ -> Sub.none
+--         }
+-- div
+--                             [ class "foo-term-story section-content" ]
+--                             [ input
+--                                 [ placeholder "Enter URL to a markdown file"
+--                                 , value model.markDownUrl
+--                                 , onInput StoreInput
+--                                 ]
+--                                 []
+--                             , button [ class "button secondary", onClick GetMarkdown ] [ text "Get Markdown" ]
+--                             , if model.success then
+--                                 div [] []
+--                               else
+--                                 div [ class "foo-error" ] [ text model.markDown ]
+--                             ]

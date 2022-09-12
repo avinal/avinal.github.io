@@ -1,5 +1,6 @@
 module Main exposing (main)
 
+import Base exposing (urlPrefix)
 import Blog as Blog
 import Browser exposing (Document)
 import Browser.Navigation as Nav
@@ -80,9 +81,11 @@ view model =
     in
     { title = model.title
     , body =
-        [ lazy viewHeader model.page
-        , content
-        , lazy viewFooter model.page
+        [ div [ class "foo-content" ]
+            [ lazy viewHeader model.page
+            , content
+            , lazy viewFooter model.page
+            ]
         ]
     }
 
@@ -218,6 +221,7 @@ type Route
     | Blog
     | Terminal
     | Static
+    | BlogPost String String
 
 
 
@@ -230,8 +234,7 @@ parser =
         [ Parser.map Splash Parser.top
         , Parser.map Splash (s urlPrefix)
         , Parser.map Blog (s urlPrefix </> s "posts")
-
-        -- , Parser.map BlogPost (s urlPrefix </> s "posts" </> Parser.string </> Parser.string)
+        , Parser.map BlogPost (s urlPrefix </> s "posts" </> Parser.string </> Parser.string)
         , Parser.map Static (s urlPrefix </> s "pages")
         , Parser.map Terminal (s urlPrefix </> s "terminal")
         ]
@@ -245,12 +248,13 @@ updateUrl model =
                 |> toSplash model
 
         Just Blog ->
-            Blog.init ()
+            Blog.init Nothing
                 |> toBlog model
 
-        -- Just (BlogPost category slug) ->
-        --     Blog.init { category = category, slug = slug }
-        --         |> toBlog model
+        Just (BlogPost category slug) ->
+            Blog.init (Just (category ++ slug))
+                |> toBlog model
+
         Just Terminal ->
             Terminal.init ()
                 |> toTerminal model
@@ -278,12 +282,3 @@ main =
         , onUrlChange = ChangeUrl
         , onUrlRequest = ClickedLink
         }
-
-
-
--- URLPREFIX
-
-
-urlPrefix : String
-urlPrefix =
-    "website"
