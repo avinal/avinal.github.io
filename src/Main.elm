@@ -252,7 +252,7 @@ updateUrl model =
                 |> toBlog model
 
         Just (BlogPost category slug) ->
-            Blog.init (Just (category ++ slug))
+            Blog.init (Just (category ++ "/" ++ slug))
                 |> toBlog model
 
         Just Terminal ->
