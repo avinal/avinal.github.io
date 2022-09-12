@@ -50,7 +50,7 @@ view model =
             [ div [ class "main-wrapper" ]
                 [ viewToc model.success
                 , main_ [ class "main-content", id "content" ]
-                    [ viewArticle ]
+                    [ viewArticle model.success ]
                 ]
             ]
         ]
@@ -83,18 +83,27 @@ viewToc show =
         div [] []
 
 
-viewArticle : Html Msg
-viewArticle =
+viewArticle : Bool -> Html Msg
+viewArticle show =
     article
         [ class "main-page-content" ]
         [ div [ id "insert-here" ] []
-        , viewMetadata
+        , viewMetadata show
         ]
 
 
-viewMetadata : Html Msg
-viewMetadata =
-    aside [ class "metadata" ]
+viewMetadata : Bool -> Html Msg
+viewMetadata show =
+    aside
+        [ class "metadata"
+        , style "display"
+            (if show then
+                "block"
+
+             else
+                "none"
+            )
+        ]
         [ div [ class "metadata-content-container" ]
             [ div [ class "on-github" ]
                 [ h3 [] [ text "Found a problem" ]
@@ -150,7 +159,7 @@ finalUrl slug =
         _ ->
             "https://raw.githubusercontent.com/avinal/"
                 ++ urlPrefix
-                ++ "/content/posts/"
+                ++ "/main/content/posts/"
                 ++ resolvedSlug
                 ++ ".md"
 
