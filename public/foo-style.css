@@ -15,7 +15,7 @@ canvas,
 caption,
 center,
 cite,
-code,
+/* code, */
 dd,
 del,
 details,
@@ -51,10 +51,10 @@ mark,
 menu,
 nav,
 object,
-ol,
+/* ol, */
 output,
-p,
-pre,
+/* p, */
+/* pre, */
 q,
 ruby,
 s,
@@ -68,13 +68,13 @@ sub,
 summary,
 sup,
 /* table, */
-tbody,
-td,
-tfoot,
-th,
-thead,
+/* tbody, */
+/* td, */
+/* tfoot, */
+/* th, */
+/* thead, */
 time,
-tr,
+/* tr, */
 tt,
 u,
 ul,
@@ -109,7 +109,7 @@ section {
     display: block
 }
 
-ol,
+/* ol, */
 ul {
     list-style: none
 }
@@ -943,18 +943,18 @@ q:before {
     font-family: 'Share Tech Mono';
     font-style: normal;
     font-weight: 400;
-    src: url('/website/fonts/share-tech-mono-v15-latin-regular.eot');
+    src: url('fonts/share-tech-mono-v15-latin-regular.eot');
     /* IE9 Compat Modes */
     src: local(''),
-        url('/website/fonts/share-tech-mono-v15-latin-regular.eot?#iefix') format('embedded-opentype'),
+        url('fonts/share-tech-mono-v15-latin-regular.eot?#iefix') format('embedded-opentype'),
         /* IE6-IE8 */
-        url('/website/fonts/share-tech-mono-v15-latin-regular.woff2') format('woff2'),
+        url('fonts/share-tech-mono-v15-latin-regular.woff2') format('woff2'),
         /* Super Modern Browsers */
-        url('/website/fonts/share-tech-mono-v15-latin-regular.woff') format('woff'),
+        url('fonts/share-tech-mono-v15-latin-regular.woff') format('woff'),
         /* Modern Browsers */
-        url('/website/fonts/share-tech-mono-v15-latin-regular.ttf') format('truetype'),
+        url('fonts/share-tech-mono-v15-latin-regular.ttf') format('truetype'),
         /* Safari, Android, iOS */
-        url('/website/fonts/share-tech-mono-v15-latin-regular.svg#ShareTechMono') format('svg');
+        url('fonts/share-tech-mono-v15-latin-regular.svg#ShareTechMono') format('svg');
     /* Legacy iOS */
 }
 
