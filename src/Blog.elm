@@ -302,8 +302,8 @@ metaDecoder =
     Yaml.map7 YamlMeta
         (field "title" string)
         (field "date" string)
-        (field "description" (Yaml.maybe string))
+        (Yaml.maybe (field "description" string))
         (field "tags" (list string))
         (field "category" string)
-        (field "image" (Yaml.maybe string))
-        (field "modified" (Yaml.maybe string))
+        (Yaml.maybe (field "image" string))
+        (Yaml.maybe (field "modified" string))
