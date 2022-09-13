@@ -3,10 +3,9 @@ port module Blog exposing (..)
 import Base exposing (urlPrefix)
 import Html exposing (..)
 import Html.Attributes exposing (class, href, id, style)
-import Html.Parser
-import Html.Parser.Util
 import Http exposing (Error(..))
 import Url exposing (Protocol(..))
+import Yaml.Decode as Yaml exposing (Decoder, field, list, string)
 
 
 
@@ -14,10 +13,10 @@ import Url exposing (Protocol(..))
 
 
 type alias Model =
-    { blog : Blog
-    , markDownUrl : String
-    , markDown : String
+    { blog : Maybe Blog
+    , markdownUrl : String
     , success : Bool
+    , fragment : String
     }
 
 
@@ -26,13 +25,17 @@ type alias Model =
 
 
 type alias Blog =
-    { title : String
-    , url : String
-    , description : String
+    { meta : YamlMeta
     , content : String
-    , category : String
-    , tags : List String
-    , date : String
+    }
+
+
+initialModel : Model
+initialModel =
+    { blog = Nothing
+    , markdownUrl = ""
+    , success = False
+    , fragment = ""
     }
 
 
@@ -48,8 +51,7 @@ view model =
     div [ class "foo-interface" ]
         [ div [ class "foo-console foo-terminal foo-active" ]
             [ div [ class "main-wrapper" ]
-                [ viewToc model.success
-                , main_ [ class "main-content", id "content" ]
+                [ main_ [ class "main-content", id "content" ]
                     [ viewArticle model.success ]
                 ]
             ]
@@ -61,17 +63,16 @@ viewToc show =
     if show then
         div
             [ class "toc"
-            , style "display"
-                (if show then
-                    "block"
-
-                 else
-                    "none"
-                )
             ]
             [ aside [ class "document-toc-container" ]
                 [ section [ class "document-toc" ]
-                    [ h2 [ class "document-toc-heading" ] [ text "In this page" ]
+                    [ h2 [ class "document-toc-heading" ]
+                        [ if show then
+                            text "In this page"
+
+                          else
+                            text ""
+                        ]
                     , ul
                         [ class "document-toc-list", id "toc-entries" ]
                         []
@@ -125,17 +126,43 @@ viewMetadata show =
 type Msg
     = GetMarkdown
     | DataReceived (Result Http.Error String)
+    | NoSuchPage
 
 
-init : Maybe String -> ( Model, Cmd Msg )
-init slug =
-    ( { blog = initBlog
-      , markDownUrl = finalUrl slug
-      , markDown = ""
-      , success = False
-      }
-    , getMarkdown <| finalUrl slug
-    )
+init : List String -> ( Model, Cmd Msg )
+init pathList =
+    case pathList of
+        [ category, slug, fragment ] ->
+            ( { initialModel
+                | markdownUrl = Base.contentUrlPrefix ++ "posts/" ++ category ++ "/" ++ slug ++ ".md"
+                , fragment = fragment
+              }
+            , getMarkdown (Base.contentUrlPrefix ++ "posts/" ++ category ++ "/" ++ slug ++ ".md")
+            )
+
+        [ category, slug ] ->
+            ( { initialModel
+                | markdownUrl = Base.contentUrlPrefix ++ "posts/" ++ category ++ "/" ++ slug ++ ".md"
+              }
+            , getMarkdown (Base.contentUrlPrefix ++ "posts/" ++ category ++ "/" ++ slug ++ ".md")
+            )
+
+        -- [ "categories" ] ->
+        --     ( { blog = Nothing
+        --       , markdownUrl = urlPrefix ++ "/categories" ++ ".md"
+        --       , markDown = ""
+        --       , success = False
+        --       , fragment = ""
+        --       }
+        --     , getMarkdown (urlPrefix ++ "/categories" ++ ".md")
+        --     )
+        [] ->
+            ( initialModel
+            , Cmd.none
+            )
+
+        _ ->
+            ( initialModel, Cmd.none )
 
 
 getMarkdown : String -> Cmd Msg
@@ -164,29 +191,25 @@ finalUrl slug =
                 ++ ".md"
 
 
-initBlog : Blog
-initBlog =
-    { title = ""
-    , url = ""
-    , description = ""
-    , content = ""
-    , category = ""
-    , tags = []
-    , date = ""
-    }
-
-
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GetMarkdown ->
-            ( model, Http.get { url = model.markDownUrl, expect = Http.expectString DataReceived } )
+            ( model, Http.get { url = model.markdownUrl, expect = Http.expectString DataReceived } )
 
         DataReceived (Ok data) ->
-            ( { model | markDown = data, success = True }, sendString data )
+            case splitMetaContent data of
+                Ok blog ->
+                    ( { model | blog = Just blog, success = True }, sendString blog.content )
 
-        DataReceived (Err err) ->
-            ( { model | success = False, markDown = errorToString err }, Cmd.none )
+                Err _ ->
+                    ( { model | success = False }, Cmd.none )
+
+        DataReceived (Err _) ->
+            ( { model | success = False }, Cmd.none )
+
+        NoSuchPage ->
+            ( { model | success = False }, Cmd.none )
 
 
 errorToString : Http.Error -> String
@@ -214,16 +237,6 @@ errorToString error =
             errorMessage
 
 
-textToHtml : String -> List (Html.Html msg)
-textToHtml text =
-    case Html.Parser.run text of
-        Ok nodes ->
-            Html.Parser.Util.toVirtualDom nodes
-
-        Err _ ->
-            []
-
-
 
 -- main : Program (String, String) Model Msg
 -- main =
@@ -237,7 +250,7 @@ textToHtml text =
 --                             [ class "foo-term-story section-content" ]
 --                             [ input
 --                                 [ placeholder "Enter URL to a markdown file"
---                                 , value model.markDownUrl
+--                                 , value model.markdownUrl
 --                                 , onInput StoreInput
 --                                 ]
 --                                 []
@@ -247,3 +260,50 @@ textToHtml text =
 --                               else
 --                                 div [ class "foo-error" ] [ text model.markDown ]
 --                             ]
+-- YAML Stuff
+
+
+type alias YamlMeta =
+    { title : String
+    , date : String
+    , description : Maybe String
+    , tags : List String
+    , category : String
+    , image : Maybe String
+    , modified : Maybe String
+    }
+
+
+splitMetaContent : String -> Result String Blog
+splitMetaContent data =
+    let
+        headIndices : List Int
+        headIndices =
+            String.indices "---" data |> List.take 2
+
+        metadata =
+            String.slice ((Maybe.withDefault 0 <| List.head headIndices) + 3)
+                ((Maybe.withDefault 0 <| List.head <| List.reverse headIndices) - 1)
+                data
+
+        content =
+            String.dropLeft ((Maybe.withDefault 0 <| List.head <| List.reverse headIndices) + 3) data
+    in
+    case Yaml.fromString metaDecoder metadata of
+        Ok meta ->
+            Ok { meta = meta, content = content }
+
+        Err _ ->
+            Err "YAML front matter parsing failed"
+
+
+metaDecoder : Decoder YamlMeta
+metaDecoder =
+    Yaml.map7 YamlMeta
+        (field "title" string)
+        (field "date" string)
+        (field "description" (Yaml.maybe string))
+        (field "tags" (list string))
+        (field "category" string)
+        (field "image" (Yaml.maybe string))
+        (field "modified" (Yaml.maybe string))

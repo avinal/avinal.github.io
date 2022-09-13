@@ -149,12 +149,21 @@ update msg model =
 
         GotBlogMsg blogMsg ->
             case model.page of
-                BlogPage blog ->
+                BlogPage blogModel ->
+                    let
+                        title =
+                            case blogModel.blog of
+                                Just blog ->
+                                    blog.meta.title
+
+                                Nothing ->
+                                    "Blog"
+                    in
                     toBlog
                         { model
-                            | title = blog.blog.title ++ " | " ++ model.title
+                            | title = title ++ " | " ++ model.title
                         }
-                        (Blog.update blogMsg blog)
+                        (Blog.update blogMsg blogModel)
 
                 _ ->
                     ( model, Cmd.none )
@@ -219,9 +228,9 @@ init _ url key =
 type Route
     = Splash
     | Blog
+    | BlogPost String String (Maybe String)
     | Terminal
     | Static
-    | BlogPost String String
 
 
 
@@ -234,7 +243,7 @@ parser =
         [ Parser.map Splash Parser.top
         , Parser.map Splash (s urlPrefix)
         , Parser.map Blog (s urlPrefix </> s "posts")
-        , Parser.map BlogPost (s urlPrefix </> s "posts" </> Parser.string </> Parser.string)
+        , Parser.map BlogPost (s urlPrefix </> s "posts" </> Parser.string </> Parser.string </> Parser.fragment identity)
         , Parser.map Static (s urlPrefix </> s "pages")
         , Parser.map Terminal (s urlPrefix </> s "terminal")
         ]
@@ -248,12 +257,18 @@ updateUrl model =
                 |> toSplash model
 
         Just Blog ->
-            Blog.init Nothing
+            Blog.init []
                 |> toBlog model
 
-        Just (BlogPost category slug) ->
-            Blog.init (Just (category ++ "/" ++ slug))
-                |> toBlog model
+        Just (BlogPost category title fragment) ->
+            case fragment of
+                Just something ->
+                    Blog.init [ category, title, something ]
+                        |> toBlog model
+
+                Nothing ->
+                    Blog.init [ category, title ]
+                        |> toBlog model
 
         Just Terminal ->
             Terminal.init ()

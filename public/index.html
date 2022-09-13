@@ -16,9 +16,9 @@
     <div id="app"></div>
 
     <script src="/website/app.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js"
-        crossorigin="anonymous"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js"
+        crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="/website/prism.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
@@ -73,25 +73,25 @@
                 }
             })
             document.getElementById("insert-here").innerHTML = marked.parse(markdowndata);
-            document.getElementById("toc-entries").innerHTML = toc;
+            // document.getElementById("toc-entries").innerHTML = toc;
         });
-        // $(function () {
-        //     // copy-btn HTML
-        //     var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
-        //     btn += '<i class="far fa-clone"></i>';
-        //     btn += '</span>';
-        //     // mount it!
-        //     $(".highlight table").before(btn);
-        //     var clip = new ClipboardJS('.btn-copy', {
-        //         text: function (trigger) {
-        //             return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str, it) => str + it.innerText + '\n', '')
-        //         }
-        //     });
-        //     clip.on('success', function (e) {
-        //         e.trigger.setAttribute('aria-label', "Copied!");
-        //         e.clearSelection();
-        //     })
-        // });
+        $(function () {
+            // copy-btn HTML
+            var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+            btn += '<i class="far fa-clone"></i>';
+            btn += '</span>';
+            // mount it!
+            $(".highlight table").before(btn);
+            var clip = new ClipboardJS('.btn-copy', {
+                text: function (trigger) {
+                    return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str, it) => str + it.innerText + '\n', '')
+                }
+            });
+            clip.on('success', function (e) {
+                e.trigger.setAttribute('aria-label', "Copied!");
+                e.clearSelection();
+            })
+        });
     </script>
 
 
