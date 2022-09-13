@@ -1,6 +1,6 @@
 ---
+title: प्रेम रतन धन पायो
 date: 2019-09-21 15:47
-slug: for-sunshine
 category: article
 tags: [love, article, hindi]
 ---
