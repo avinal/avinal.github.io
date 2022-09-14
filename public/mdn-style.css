@@ -4740,7 +4740,7 @@ body {
     --text-primary: #fff;
     --text-secondary: #cdcdcd;
     --text-inactive: #cdcdcda6;
-    --text-link: #8cb4ff;
+    --text-link: #35bdb8;
     --text-invert: #1b1b1b;
     --background-primary: #1b1b1b;
     --background-secondary: #343434;
@@ -4839,7 +4839,7 @@ body {
     color-scheme: dark
 }
 
-@media(prefers-color-scheme:light) {
+/* @media(prefers-color-scheme:light) {
     :root:not(.light):not(.dark) {
         --text-primary: #1b1b1b;
         --text-secondary: #4e4e4e;
@@ -4942,9 +4942,9 @@ body {
         --text-primary-yellow: #746a00;
         color-scheme: light
     }
-}
+} */
 
-@media(prefers-color-scheme:dark) {
+/* @media(prefers-color-scheme:dark) {
     :root:not(.light):not(.dark) {
         --text-primary: #fff;
         --text-secondary: #cdcdcd;
@@ -5047,7 +5047,7 @@ body {
         --text-primary-yellow: #c7b700;
         color-scheme: dark
     }
-} 
+}  */
 
 .document-page .article-actions-container,
 .document-page .document-toc-container,

@@ -1,6 +1,6 @@
 module Main exposing (main)
 
-import Base exposing (urlPrefix)
+import Base exposing (websiteBase)
 import Blog as Blog
 import Browser exposing (Document)
 import Browser.Navigation as Nav
@@ -109,7 +109,7 @@ viewHeader page =
 
                 _ ->
                     header [ class "foo-logo" ]
-                        [ img [ src "/website/logo-static.svg", target urlPrefix ]
+                        [ img [ src "/website/logo-static.svg", target websiteBase ]
                             []
                         ]
     in
@@ -128,7 +128,7 @@ viewFooter page =
                     footer [ class "foo-footer" ]
                         [ ul []
                             [ li []
-                                [ a [ href urlPrefix ] [ text "Home" ]
+                                [ a [ href websiteBase ] [ text "Home" ]
                                 ]
                             ]
                         ]
@@ -241,11 +241,12 @@ parser : Parser (Route -> a) a
 parser =
     Parser.oneOf
         [ Parser.map Splash Parser.top
-        , Parser.map Splash (s urlPrefix)
-        , Parser.map Blog (s urlPrefix </> s "posts")
-        , Parser.map BlogPost (s urlPrefix </> s "posts" </> Parser.string </> Parser.string </> Parser.fragment identity)
-        , Parser.map Static (s urlPrefix </> s "pages")
-        , Parser.map Terminal (s urlPrefix </> s "terminal")
+
+        -- , Parser.map Splash (s urlPrefix)
+        , Parser.map Blog (s "posts")
+        , Parser.map BlogPost (s "posts" </> Parser.string </> Parser.string </> Parser.fragment identity)
+        , Parser.map Static (s "pages")
+        , Parser.map Terminal (s "terminal")
         ]
 
 
@@ -289,7 +290,6 @@ subscriptions model =
         -- BlogPage blogModel ->
         --     Blog.subscriptions blogModel
         --         |> Sub.map GotBlogMsg
-
         _ ->
             Sub.none
 

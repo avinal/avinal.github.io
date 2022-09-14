@@ -1,9 +1,6 @@
-module Base exposing (urlPrefix, contentUrlPrefix)
+module Base exposing (contentUrlPrefix, urlPrefix, websiteBase)
 
 {-| The base URL for accessing the content for the site
-
-    Using Github CDN for now, but this could be changed to a custom domain
-
 -}
 
 
@@ -21,9 +18,14 @@ user =
 
 urlPrefix : String
 urlPrefix =
-    "website"
+    "avinal.github.io"
 
 
 contentUrlPrefix : String
 contentUrlPrefix =
     contentBase ++ "/" ++ user ++ "/" ++ urlPrefix ++ "/main/content/"
+
+
+websiteBase : String
+websiteBase =
+    "https://avinal.space"
