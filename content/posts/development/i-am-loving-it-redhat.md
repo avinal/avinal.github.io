@@ -31,9 +31,7 @@ At RedHat, a lot of open source developer tools of industry standards
 are developed. There are many, OpenShift, Tekton, CodeReady containers,
 and many more.
 
-## Learning on the <img src="/images/golang.png" class="align-top" style="width:2.5em"
-
-alt="golang_logo" />
+## Learning on the Go
 
 There was a lot of learning and still a lot to learn. In a meeting with
 my manager Pradeepto Bhattacharya, I was told that I will be working on
@@ -46,9 +44,6 @@ with their category.
 
 ### [Golang](https://go.dev/)
 
-<img src="/images/goladder.png"
-class="float-md-right rounded ml-3 float-md-right rounded ml-3"
-style="height:20em" alt="Gopher on the ladder" />
 
 One of Golang's biggest advantages is that it offers the clarity and
 ease of use that other languages lack. Golang's advantages make it easy
