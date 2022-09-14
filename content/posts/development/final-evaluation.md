@@ -53,9 +53,9 @@ The new build system and CI brings a lot of improvements and features.
 The list below describes them.
 
 - CMake enforces out-of-source builds. This was already possible with
-  the previous build system but not a strict requirement. This feature
-  keeps the source code clean and makes cleaning the build artifacts
-  easy. (Just remove the build folder :)
+the previous build system but not a strict requirement. This feature
+keeps the source code clean and makes cleaning the build artifacts
+easy. (Just remove the build folder :)
 - One of the major improvements over the previous build system is faster
   build times. CMake generates parallel build-enabled configurations for
   all generators. In our tests, the new build system is at least twice
@@ -78,21 +78,16 @@ The list below describes them.
 
 ## Deliverables
 
-<div class="alert alert-info" role="alert">
-<ul class="simple">
-<li>Final Pull Request <a class="badge badge-info" href="https://github.com/fossology/fossology/pull/2075">#2075</a></li>
-<li>Pull Request Branch <a class="badge badge-info" href="https://github.com/avinal/fossology/tree/avinal/feat/buildsystem">avinal/feat/buildsystem</a></li>
-<li>Working Branch (individual commits) <ul>
-<li><a class="badge badge-info" href="https://github.com/avinal/fossology/tree/avinal/feat/cmake-buildsystem">avinal/feat/cmake-buildsystem</a></li>
-<li><a class="badge badge-info" href="https://github.com/avinal/fossology/tree/avinal/feat/testing">avinal/feat/testing</a></li>
-</ul></li>
-<li>Project Issue <a class="badge badge-info" href="https://github.com/fossology/fossology/issues/1913">#1913</a></li>
-<li>Project Discussion <a class="badge badge-info" href="https://github.com/fossology/fossology/discussions/1931">#1931</a></li>
-<li>Weekly Reports<ul>
-<li><a class="badge badge-info" href="https://gsoc.avinal.space">Personal Blog</a></li>
-<li><a class="badge badge-info" href="https://fossology.github.io/gsoc/docs/2021/buildsystem/">FOSSology Official Blog</a></li>
-</ul></li></ul>
-</div>
+- Final Pull Request [#2075](https://github.com/fossology/fossology/pull/2075)
+- Pull Request Branch [avinal/feat/buildsystem](https://github.com/avinal/fossology/tree/avinal/feat/buildsystem)
+- Working Branch (individual commits)
+  - [avinal/feat/cmake-buildsystem](https://github.com/avinal/fossology/tree/avinal/feat/cmake-buildsystem)
+  - [avinal/feat/testing](https://github.com/avinal/fossology/tree/avinal/feat/testing)
+- Project Issue [#1913](https://github.com/fossology/fossology/issues/1913)
+- Project Discussion [#1931](https://github.com/fossology/fossology/discussions/1931)
+- Weekly Reports
+  - [Personal Blog](https://gsoc.avinal.space)
+  - [FOSSology Official Blog](https://fossology.github.io/gsoc/docs/2021/buildsystem/)
 
 ### CMake Build System Tasks
 
@@ -564,129 +559,129 @@ described below.
     [#2075](https://github.com/fossology/fossology/pull/2075) pull
     request branch. Once you are in FOSSology root, run these commands.
 
-    > ```bash
-    > git fetch https://github.com/avinal/fossology avinal/feat/buildsystem:buildsystem
-    > git checkout buildsystem
-    > ```
+    ```bash
+    git fetch https://github.com/avinal/fossology avinal/feat/buildsystem:buildsystem
+    git checkout buildsystem
+    ```
 
 2. The first step towards building is to create a temporary directory
     for storing intermediate files and build artifacts. By convention we
     use a directory named `build`, but you can use any name. (**NOTE:
     For testing do not use other names**)
 
-    > ```bash
-    > mkdir build
-    > cd build
-    > ```
+    ```bash
+    mkdir build
+    cd build
+    ```
 
 3. In the next steps, we will configure the CMake project and generate
     the required configurations. You can use several flags to control
     the build. Given below are the flags available for this project.
 
-    > <table style="width:99%;">
-    > <colgroup>
-    > <col style="width: 34%" />
-    > <col style="width: 43%" />
-    > <col style="width: 20%" />
-    > </colgroup>
-    > <thead>
-    > <tr class="header">
-    > <th>CMake Flags</th>
-    > <th>Description</th>
-    > <th>Default</th>
-    > </tr>
-    > </thead>
-    > <tbody>
-    > <tr class="odd">
-    > <td><strong>-DCMAKE_INSTALL_PREFIX=&lt;path&gt;</strong></td>
-    > <td>Sets the install prefix.</td>
-    > <td><code>/usr/local</code></td>
-    > </tr>
-    > <tr class="even">
-    > <td><strong>-DAGENTS="agent1;agent2..."</strong></td>
-    > <td>Only configure these agents.</td>
-    > <td>ALL AGENTS</td>
-    > </tr>
-    > <tr class="odd">
-    > <td><strong>-DOFFLINE=&lt;ON/OFF&gt;</strong></td>
-    > <td>Controls vendor generation, ON=NO</td>
-    > <td><strong>OFF</strong></td>
-    > </tr>
-    > <tr class="even">
-    > <td><p><strong>-DCMAKE_BUILD_TYPE=&lt;type&gt;</strong></p>
-    > <blockquote>
-    > <ul>
-    > <li>Controls build type aka level optimisation</li>
-    > </ul>
-    > </blockquote></td>
-    > <td><ul>
-    > <li><code>Debug</code></li>
-    > <li><code>Release</code></li>
-    > <li><code>RelWithDebInfo</code></li>
-    > <li><code>MinSizeRel</code></li>
-    > </ul></td>
-    > <td><code>Debug</code></td>
-    > </tr>
-    > <tr class="odd">
-    > <td><strong>-DTESTING=&lt;ON/OFF&gt;</strong></td>
-    > <td>Controls testing config generation</td>
-    > <td><blockquote>
-    > <p><strong>OFF</strong></p>
-    > </blockquote></td>
-    > </tr>
-    > <tr class="even">
-    > <td><strong>-DMONOPACK=&lt;ON/OFF&gt;</strong></td>
-    > <td>Package adj2nest and ununpack seperately</td>
-    > <td><strong>OFF</strong></td>
-    > </tr>
-    > <tr class="odd">
-    > <td><strong>-GNinja</strong></td>
-    > <td>Use Ninja instead of Unix Makefiles</td>
-    > <td><em>Unix MakeFiles</em></td>
-    > </tr>
-    > </tbody>
-    > </table>
-    >
-    > There are lots of inbuilt CMake command-line options you can see
-    > them in the official
-    > [documentation](https://cmake.org/cmake/help/v3.10/manual/cmake.1.html).
-    > Once you have chosen your flags we can now configure the project
-    > using the following commands.
-    >
-    > ```bash
-    > # From build folder
-    > cd <name-of-build-directory>
-    > cmake <flags> ..
-    > ```
+    <table style="width:99%;">
+    <colgroup>
+    <col style="width: 34%" />
+    <col style="width: 43%" />
+    <col style="width: 20%" />
+    </colgroup>
+    <thead>
+    <tr class="header">
+    <th>CMake Flags</th>
+    <th>Description</th>
+    <th>Default</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="odd">
+    <td><strong>-DCMAKE_INSTALL_PREFIX=&lt;path&gt;</strong></td>
+    <td>Sets the install prefix.</td>
+    <td><code>/usr/local</code></td>
+    </tr>
+    <tr class="even">
+    <td><strong>-DAGENTS="agent1;agent2..."</strong></td>
+    <td>Only configure these agents.</td>
+    <td>ALL AGENTS</td>
+    </tr>
+    <tr class="odd">
+    <td><strong>-DOFFLINE=&lt;ON/OFF&gt;</strong></td>
+    <td>Controls vendor generation, ON=NO</td>
+    <td><strong>OFF</strong></td>
+    </tr>
+    <tr class="even">
+    <td><p><strong>-DCMAKE_BUILD_TYPE=&lt;type&gt;</strong></p>
+    <blockquote>
+    <ul>
+    <li>Controls build type aka level optimisation</li>
+    </ul>
+    </blockquote></td>
+    <td><ul>
+    <li><code>Debug</code></li>
+    <li><code>Release</code></li>
+    <li><code>RelWithDebInfo</code></li>
+    <li><code>MinSizeRel</code></li>
+    </ul></td>
+    <td><code>Debug</code></td>
+    </tr>
+    <tr class="odd">
+    <td><strong>-DTESTING=&lt;ON/OFF&gt;</strong></td>
+    <td>Controls testing config generation</td>
+    <td><blockquote>
+    <p><strong>OFF</strong></p>
+    </blockquote></td>
+    </tr>
+    <tr class="even">
+    <td><strong>-DMONOPACK=&lt;ON/OFF&gt;</strong></td>
+    <td>Package adj2nest and ununpack seperately</td>
+    <td><strong>OFF</strong></td>
+    </tr>
+    <tr class="odd">
+    <td><strong>-GNinja</strong></td>
+    <td>Use Ninja instead of Unix Makefiles</td>
+    <td><em>Unix MakeFiles</em></td>
+    </tr>
+    </tbody>
+    </table>
+  
+    There are lots of inbuilt CMake command-line options you can see
+    them in the official
+    [documentation](https://cmake.org/cmake/help/v3.10/manual/cmake.1.html).
+    Once you have chosen your flags we can now configure the project
+    using the following commands.
+  
+    ```bash
+    # From build folder
+    cd <name-of-build-directory>
+    cmake <flags> ..
+    ```
 
 4. The next step is to build the project. You can use parallel jobs to
     build faster. For more options you can type `cmake --help` or
     `make --help` or `ninja --help`.
 
-    > ```bash
-    > # Common build command for all generators, 
-    > # Default number of parallel builds depends on generator used
-    > cmake --build . --parallel <no-of-processes>
-    >
-    > # For Unix Makefiles, no parallel build by default
-    > make -j <no-of-processes>
-    >
-    > # For Ninja, 8+ parallel build by default (depends on system)
-    > ninja -j <no-of-processes>
-    > ```
+    ```bash
+    # Common build command for all generators, 
+    # Default number of parallel builds depends on generator used
+    cmake --build . --parallel <no-of-processes>
+  
+    # For Unix Makefiles, no parallel build by default
+    make -j <no-of-processes>
+  
+    # For Ninja, 8+ parallel build by default (depends on system)
+    ninja -j <no-of-processes>
+    ```
 
 5. Installing is also as easy as building. You can choose to install
     only certain components even if you have built the whole project. If
     you directly invoke the install command without building the
     project, it will automatically build the project first.
 
-    > ```bash
-    > # For Unix Makefiles
-    > make install
-    >
-    > # For Ninja
-    > ninja install
-    > ```
+    ```bash
+    # For Unix Makefiles
+    make install
+  
+    # For Ninja
+    ninja install
+    ```
 
 6. While testing has some issues, most of the testing is working fine.
     For now, you must build and run any test from the FOSSology root
@@ -694,16 +689,16 @@ described below.
     want to test one agent only. See `ctest --help` for controlling test
     runs.
 
-    > ```bash
-    > # Common testing command
-    > ctest --parallel <no-of-processes>
-    >
-    > # For Unix Makefiles
-    > make test
-    >
-    > # For Ninja
-    > ninja test
-    > ```
+    ```bash
+    # Common testing command
+    ctest --parallel <no-of-processes>
+  
+    # For Unix Makefiles
+    make test
+  
+    # For Ninja
+    ninja test
+    ```
 
 7. You can package FOSSology, the packaging currently lacks copyright
     and conf files. But for testing purposes, you can use the following
@@ -711,16 +706,16 @@ described below.
     without building the project, it will automatically build the
     project first. See `cpack --help` for more packaging options.
 
-    > ```bash
-    > # Common testing command
-    > cpack
-    >
-    > # For Unix Makefiles
-    > make package
-    >
-    > # For Ninja
-    > ninja package
-    > ```
+    ```bash
+    # Common testing command
+    cpack
+  
+    # For Unix Makefiles
+    make package
+  
+    # For Ninja
+    ninja package
+    ```
 
 ## Known Issues and Drawbacks
 
@@ -729,9 +724,7 @@ Actions is almost complete and working as expected. But it is not free
 of drawbacks and issues. This section outlines the known issues at the
 time of writing.
 
-<img src="https://imgs.xkcd.com/comics/conference_question.png"
-class="float-md-right rounded border border-info ml-3 float-md-right rounded border border-info ml-3"
-width="350" alt="A Bug Meme" />
+![A Bug Meme](https://imgs.xkcd.com/comics/conference_question.png)
 
 - Coverage builds may fail with linking errors.
 - Packaging prefix is the same as the install prefix. This requires the
@@ -759,8 +752,7 @@ width="350" alt="A Bug Meme" />
   [#2084](https://github.com/fossology/fossology/issues/2084) to track
   the progress on fixing these tests.
 - CMake doesn't generate uninstall targets. The closest thing to
-  uninstall is [this
-  snippet](https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#can-i-do-make-uninstall-with-cmake).
+  uninstall is [this snippet](https://gitlab.kitware.com/cmake/community/-/wikis/FAQ#can-i-do-make-uninstall-with-cmake).
   This will be later added to the FOSSology.
 
 ## Challenges Faced

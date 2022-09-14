@@ -4,6 +4,7 @@ date: 2012-02-27 22:47
 tags: [ants, sav] 
 category: article
 description: 'The Big Red Ants'
+image: /images/ants.jpg
 ---
 
 # The Big Red Ants
@@ -55,3 +56,5 @@ touch their anteena to communicate. When they walk in a queue, they seem
 like twinkling dots and dashes. I want to conclude that **All tiny
 things are not really tiny. It may be as a space having infinite
 mysteries one has to explore it.**
+
+Photo Attribution : Photo by Michael Willinger from Pexels:

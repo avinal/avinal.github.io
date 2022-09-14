@@ -42,8 +42,7 @@ Kubernetes. We were provided plenty of good resources and my teammates
 also helped with many awesome resources. I am listing all the resources
 with their category.
 
-### [Golang](https://go.dev/)
-
+### Go Programming Language
 
 One of Golang's biggest advantages is that it offers the clarity and
 ease of use that other languages lack. Golang's advantages make it easy
@@ -66,7 +65,7 @@ veterans to easily read each other's code.
   Nana](https://youtu.be/yyUHQIec83I) *if you prefer video tutorials, I
   don't :)*
 
-### [Docker](https://www.docker.com/)
+### Docker
 
 Docker takes away repetitive, mundane configuration tasks and is used
 throughout the development lifecycle for fast, easy, and portable
@@ -75,9 +74,7 @@ end-to-end platform includes UIs, CLIs, APIs, and security that are
 engineered to work together across the entire application delivery
 lifecycle.
 
-<img src="/images/docker-architecture.png"
-class="float-md-right img-fluid my-3 float-md-right img-fluid my-3"
-alt="The Docker Architecture" />
+![The Docker Architecture](/images/docker-architecture.png)
 
 - [Docker and Containers -
   Katacoda](https://www.katacoda.com/courses/docker) *interactive
@@ -86,11 +83,9 @@ alt="The Docker Architecture" />
 - [Docker Tutorial for Beginners | TechWorld with
   Nana](https://youtu.be/3c-iBn73dDE) *video tutorial*
 
-### [Kubernetes](https://kubernetes.io/)
+### Kubernetes
 
-<img src="/images/kubernetes-meme.png"
-class="float-md-left border mr-3 float-md-left border mr-3" width="200"
-alt="Kubernetes tech" />
+![Kubernetes tech](/images/kubernetes-architecture.png)
 
 **Kubernetes** is the Greek word for a ship's captain. We get the words
 Cybernetic and Gubernatorial from it. The Kubernetes project focuses on

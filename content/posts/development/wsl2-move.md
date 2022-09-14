@@ -16,28 +16,21 @@ It is real pain when you have small SSD and Windows Subsystem for Linux
 WSL installation to another drive. Here in this blog I will discuss how
 to tackle this problem with bite size steps.
 
-1. Open a PowerShell
-    <img src="/images/powershell.png" class="align-middle"
-    style="width:5.0%" alt="powershell" /> or Command Prompt
-    <img src="/images/command-line.png" class="align-middle"
-    style="width:5.0%" alt="command-line" /> with *Admin* access. For
-    this you can use
-    <img src="/images/windows10.png" class="align-middle" style="width:5.0%"
-    alt="WinKey" /> + X shortcut and select **Windows
-    PowerShell(Admin)**.
+1. Open a PowerShell or Command Prompt with *Admin* access. For this you can
+use WinKey + X shortcut and select **Windows PowerShell(Admin)**.
 2. Check if the WSL 2 installation you are planning to move is is
-  currently running/stopped.
+currently running/stopped.
 
-  ```powershell
-  PS C:\\Users\\Avinal> wsl -l -v
-  PS C:\\Users\\Avinal>
-    NAME      STATE           VERSION
-  * Ubuntu    Running         2
-    Kali      Stopped         2
-  ```
+```powershell
+PS C:\\Users\\Avinal> wsl -l -v
+PS C:\\Users\\Avinal>
+  NAME      STATE           VERSION
+* Ubuntu    Running         2
+  Kali      Stopped         2
+```
 
 3. If its running then you must stop the particular WSL distribution.
-    (*Ubuntu* used as example)
+(*Ubuntu* used as example)
 
 ```powershell
 PS C:\\Users\\Avinal> wsl -t Ubuntu
