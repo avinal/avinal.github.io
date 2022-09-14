@@ -1,16 +1,16 @@
 ---
 title: How I implemented WakaTime embeddable Coding Graph GHA?
 date: 2021-02-02 21:47
-tags: wakatime, github-action, coding
+tags: [wakatime, github-action, coding]
 category: development
-description: if you use WakaTime to track your coding activity. You can add that to 
+description: 'If you use WakaTime to track your coding activity. You can add that to 
 your README as a bar graph or embed it in your blog/portfolio. Just add this 
-action to any of your repositories and there you have it.
+action to any of your repositories and there you have it.'
 ---
 
 # How I implemented WakaTime embeddable Coding Graph GHA?
 
-<a href="https://github.com/avinal/Profile-Readme-WakaTime"><img src="https://raw.githubusercontent.com/avinal/Profile-Readme-WakaTime/b281d074ee75f9626b39d10e2e518c6a297208a3/waka.png" class="img-fluid"></a>
+![Profile Readme Wakatime Banner](https://raw.githubusercontent.com/avinal/Profile-Readme-WakaTime/b281d074ee75f9626b39d10e2e518c6a297208a3/waka.png)
 
 ## Implementation Details
 
@@ -24,7 +24,7 @@ into technical details. Three parts are as below.
     - [Getting JSON data file via WakaTime
     API](https://github.com/avinal/Profile-Readme-WakaTime/blob/master/main.py#L52)
 
-    ``` python
+    ```python
     def get_stats() -> list:
         ...
         return data_list
@@ -39,7 +39,7 @@ into technical details. Three parts are as below.
     - [Setting the
     Timeline](https://github.com/avinal/Profile-Readme-WakaTime/blob/master/main.py#L13)
 
-    ``` python
+    ```python
     def this_week(dates: list) -> str:
         ...
         return f"Coding Activity During: {week_start.strftime('%d %B, %Y')} to {week_end.strftime('%d %B, %Y')}"
@@ -49,7 +49,7 @@ into technical details. Three parts are as below.
     to set the timeline. Because date in JSON is provided in UTC as below
     :
 
-    ``` json
+    ```json
     date:   "YYYY-MM-DDTHH:MM:SSZ"
     ```
 
@@ -61,7 +61,7 @@ into technical details. Three parts are as below.
     - [Creating a bar
     graph](https://github.com/avinal/Profile-Readme-WakaTime/blob/master/main.py#L21)
 
-    ``` python
+    ```python
     def make_graph(data: list):
         ...
         savefig(...)
@@ -87,7 +87,7 @@ into technical details. Three parts are as below.
     doesn't allow to commit without a username and email. So I used
     **github-actions** bot email.
 
-    ``` bash
+    ```bash
     remote_repo-"https://${GITHUB_ACTOR}:${INPUT_GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
     git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
     git config user.name "GitHub Actions"
@@ -97,13 +97,12 @@ into technical details. Three parts are as below.
     where I found them 🙂.
 
     Another problem was to separate repository name from combined
-    *username/repository-name* provided by <span
-    class="title-ref">\${GITHUB_REPOSITORY}</span>. GitHub doesn't
+    *username/repository-name* provided by `${GITHUB_REPOSITORY}`. GitHub doesn't
     provides a direct way to get just the repo name. We used *Internal
     Field Separator*. It returns an array and works similar to `split()`
     command in Python and Java.
 
-    ``` bash
+    ```bash
     # '/' is the seperator
     IFS-'/' read -ra reponame <<< "${GITHUB_REPOSITORY}"
     # returned {username, repository}
@@ -130,7 +129,7 @@ into technical details. Three parts are as below.
     clubbed process. I did that by combining the python script run and shell
     script run.
 
-    ``` dockerfile
+    ```dockerfile
     CMD python3 /main.py && /entrypoint.sh
     ```
 
@@ -140,7 +139,7 @@ into technical details. Three parts are as below.
 ## How to use this GitHub Actions?
 
 1. First get your WakaTime API Key. You can get it from your
-    \[WakaTime\](<https://wakatime.com>) account settings.
+    [WakaTime](<https://wakatime.com>) account settings.
 
 2. Save WakaTime API Key to Repository Secret. Find that by clicking
     the Settings tab. Keep the name of the secret as
@@ -148,9 +147,9 @@ into technical details. Three parts are as below.
 
 3. Add the following line in your README.md of your repo.
 
-    ``` html
-    <img src-"https://github.com/<username>/<repository-name>/blob/<branch-name>/images/stat.svg" alt-"Alternative Text"/>
-    Example: <img src-"https://github.com/avinal/avinal/blob/main/images/stat.svg" alt-"Avinal WakaTime Activity"/>
+    ```html
+    <img src="https://github.com/<username>/<repository-name>/blob/<branch-name>/images/stat.svg" alt="Alternative Text"/>
+    Example: <img src="https://github.com/avinal/avinal/blob/main/images/stat.svg" alt="Avinal WakaTime Activity"/>
     ```
 
     > You can use this method to embed in web pages too. **Do not use the
@@ -162,7 +161,7 @@ into technical details. Three parts are as below.
 5. Copy the following code into the opened file, you can search for
     **WakaTime Stat** in the marketplace tab for assistance.
 
-    ``` yaml
+    ```yaml
     name: WakaTime status update
 
     on:
@@ -192,11 +191,11 @@ into technical details. Three parts are as below.
 
 6. Please wait till 12 AM UTC to run this workflow automatically. Or
     you can force run it by going to the Actions tab. Or you can add the
-    following lines under <span class="title-ref">on:</span> to run with
+    following lines under `on:` to run with
     every push. Search for 12 AM UTC to find the equivalent time in your
     time zone.
 
-    ``` yaml
+    ```yaml
     on:
       push:
         branches: [ master ]
@@ -206,4 +205,4 @@ into technical details. Three parts are as below.
 
 ## My Coding Activity
 
-<img class="img-fluid" src="https://raw.githubusercontent.com/avinal/avinal/main/images/stat.svg">
+![Avinal's GitHub stats](https://raw.githubusercontent.com/avinal/avinal/main/images/stat.svg)

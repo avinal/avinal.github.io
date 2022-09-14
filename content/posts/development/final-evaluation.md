@@ -1,30 +1,11 @@
 ---
 title: Google Summer of Code 2021
 date: 2021-08-19 23:07
-tags: gsoc, FOSSology
+tags: [gsoc, FOSSology]
 category: development
 description: This is the final report of my Google Summer of Code 2021 at The FOSSology Project. 
 ---
 # Google Summer of Code 2021
-
-date  
-2021-08-19 23:07
-
-tags  
-gsoc, FOSSology
-
-category  
-report
-
-summary  
-This is the final report of my Google Summer of Code 2021 at The
-FOSSology Project.
-
-slug  
-final-evaluation
-
-status  
-published
 
 <style>
 .rd {color:red;font-weight:bold}
@@ -57,7 +38,7 @@ Since the FOSSology project moved on Github, it has used only the free
 Travis CI service for OSS projects. At the time of writing Travis CI has
 reduced its free tier CI services. GitHub Actions provides faster
 builds. Since GitHub Actions is a fully managed service by GitHub, we
-don’t need to know how to scale and operate the infrastructure to run
+don't need to know how to scale and operate the infrastructure to run
 it.
 
 It is straightforward to use with GitHub because when we fork a
@@ -508,7 +489,7 @@ The list below describes them.
 
 ### GitHub Actions CI Tasks
 
-| \#  | CI Tasks                                | Status                                                   |
+| #  | CI Tasks                                | Status                                                   |
 |-----|-----------------------------------------|----------------------------------------------------------|
 | 1   | <span class="gr">build</span>           | Added Ubuntu 20.04 GCC 8, 9 and Clang, GCC 7 not working |
 | 2   | <span class="gr">c/cpp unit test</span> | Added, delagent, scheduler and ununpack not working      |
@@ -580,10 +561,10 @@ described below.
 
 1. Since the new build system is still in review. You must fork
     FOSSology and pull the
-    [\#2075](https://github.com/fossology/fossology/pull/2075) pull
+    [#2075](https://github.com/fossology/fossology/pull/2075) pull
     request branch. Once you are in FOSSology root, run these commands.
 
-    > ``` bash
+    > ```bash
     > git fetch https://github.com/avinal/fossology avinal/feat/buildsystem:buildsystem
     > git checkout buildsystem
     > ```
@@ -593,7 +574,7 @@ described below.
     use a directory named `build`, but you can use any name. (**NOTE:
     For testing do not use other names**)
 
-    > ``` bash
+    > ```bash
     > mkdir build
     > cd build
     > ```
@@ -672,7 +653,7 @@ described below.
     > Once you have chosen your flags we can now configure the project
     > using the following commands.
     >
-    > ``` bash
+    > ```bash
     > # From build folder
     > cd <name-of-build-directory>
     > cmake <flags> ..
@@ -682,7 +663,7 @@ described below.
     build faster. For more options you can type `cmake --help` or
     `make --help` or `ninja --help`.
 
-    > ``` bash
+    > ```bash
     > # Common build command for all generators, 
     > # Default number of parallel builds depends on generator used
     > cmake --build . --parallel <no-of-processes>
@@ -699,7 +680,7 @@ described below.
     you directly invoke the install command without building the
     project, it will automatically build the project first.
 
-    > ``` bash
+    > ```bash
     > # For Unix Makefiles
     > make install
     >
@@ -713,7 +694,7 @@ described below.
     want to test one agent only. See `ctest --help` for controlling test
     runs.
 
-    > ``` bash
+    > ```bash
     > # Common testing command
     > ctest --parallel <no-of-processes>
     >
@@ -730,7 +711,7 @@ described below.
     without building the project, it will automatically build the
     project first. See `cpack --help` for more packaging options.
 
-    > ``` bash
+    > ```bash
     > # Common testing command
     > cpack
     >
@@ -768,14 +749,14 @@ width="350" alt="A Bug Meme" />
 - Packages don't contain copyright, readme, and license files. CMake
   doesn't provide a way to include these files. This is being tracked by
   issue
-  [\#21832](https://gitlab.kitware.com/cmake/cmake/-/issues/21832).
+  [#21832](https://gitlab.kitware.com/cmake/cmake/-/issues/21832).
 - While packaging the symbolic links may or may not be dereferenced and
   hence results in copying the folder too in the target directory.
 - Running tests locally may require switching to `fossy` user.
 - While configured for testing, it may give permission errors.
 - Scheduler, Ununpack, and Delagent unit and functional tests are not
   working. I have added an issue
-  [\#2084](https://github.com/fossology/fossology/issues/2084) to track
+  [#2084](https://github.com/fossology/fossology/issues/2084) to track
   the progress on fixing these tests.
 - CMake doesn't generate uninstall targets. The closest thing to
   uninstall is [this
@@ -807,12 +788,12 @@ new build system.
 ## Related Resources and Links
 
 - Fix FOSSology agent tests issue
-  [\#2084](https://github.com/fossology/fossology/issues/2084)
+  [#2084](https://github.com/fossology/fossology/issues/2084)
 - feat(CI): Migrate API docs generation and deployment to GitHub Actions
   pull request
-  [\#1917](https://github.com/fossology/fossology/pull/1917)
+  [#1917](https://github.com/fossology/fossology/pull/1917)
 - feat(CI): Migrate Static Checks and Analysis to GitHub Actions from
-  Travis CI [\#1919](https://github.com/fossology/fossology/pull/1919)
+  Travis CI [#1919](https://github.com/fossology/fossology/pull/1919)
 
 ## Future Development Plans
 

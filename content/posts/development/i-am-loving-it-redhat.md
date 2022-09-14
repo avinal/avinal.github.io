@@ -2,7 +2,7 @@
 title: I am loving it! RedHat
 date: 2022-02-25 20:47
 category: development
-tags: kubernetes, redhat, docker, golang, tekton, openshift, intern
+tags: [kubernetes, redhat, docker, golang, tekton, openshift, intern]
 description: I made it to the Red Hat as a DevTools intern. This post is about onboarding and how I prepared myself for working on the actual project.
 ---
 # My internship at Red Hat
@@ -50,10 +50,10 @@ with their category.
 class="float-md-right rounded ml-3 float-md-right rounded ml-3"
 style="height:20em" alt="Gopher on the ladder" />
 
-One of Golang’s biggest advantages is that it offers the clarity and
-ease of use that other languages lack. Golang’s advantages make it easy
+One of Golang's biggest advantages is that it offers the clarity and
+ease of use that other languages lack. Golang's advantages make it easy
 for new programmers to quickly understand the language and for seasoned
-veterans to easily read each other’s code.
+veterans to easily read each other's code.
 
 - [Official Go Documentation](https://go.dev/doc/) - *Start from here*
 - [Go by Example](https://gobyexample.com/) - *bite-size examples for
@@ -67,7 +67,7 @@ veterans to easily read each other’s code.
   ide*
 - [The Go Programming Language - Book](https://www.gopl.io/) *for
   learning advanced level golang*
-- [Golang Tutorial for Beginners \| Full Go Course - TechWorld with
+- [Golang Tutorial for Beginners | Full Go Course - TechWorld with
   Nana](https://youtu.be/yyUHQIec83I) *if you prefer video tutorials, I
   don't :)*
 
@@ -75,7 +75,7 @@ veterans to easily read each other’s code.
 
 Docker takes away repetitive, mundane configuration tasks and is used
 throughout the development lifecycle for fast, easy, and portable
-application development - desktop and cloud. Docker’s comprehensive
+application development - desktop and cloud. Docker's comprehensive
 end-to-end platform includes UIs, CLIs, APIs, and security that are
 engineered to work together across the entire application delivery
 lifecycle.
@@ -88,7 +88,7 @@ alt="The Docker Architecture" />
   Katacoda](https://www.katacoda.com/courses/docker) *interactive
   lessons on docker and containers*
 - [Docker for beginners](https://docker-curriculum.com/)
-- [Docker Tutorial for Beginners \| TechWorld with
+- [Docker Tutorial for Beginners | TechWorld with
   Nana](https://youtu.be/3c-iBn73dDE) *video tutorial*
 
 ### [Kubernetes](https://kubernetes.io/)
@@ -97,7 +97,7 @@ alt="The Docker Architecture" />
 class="float-md-left border mr-3 float-md-left border mr-3" width="200"
 alt="Kubernetes tech" />
 
-**Kubernetes** is the Greek word for a ship’s captain. We get the words
+**Kubernetes** is the Greek word for a ship's captain. We get the words
 Cybernetic and Gubernatorial from it. The Kubernetes project focuses on
 building a robust platform for running thousands of containers in
 production.

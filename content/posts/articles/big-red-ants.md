@@ -1,22 +1,18 @@
 ---
 title: The Big Red Ants
 date: 2012-02-27 22:47
-tags: ants, sav 
+tags: [ants, sav] 
 category: article
-description: In a bird’s eye view if we see around us, ants are the common and 
-tiniest living entitiy seen by naked eye. One of them are the big red ants, in 
-my view they are unique from others in two ways, first they live on trees and 
-second their anteenas are too long and bent in middle, seems like their fore 
-legs. Their mandible (mouth) seems like eagle’s beak.
+description: 'The Big Red Ants'
 ---
 
 # The Big Red Ants
 
-In a bird’s eye view if we see around us, ants are the common and
+In a bird's eye view if we see around us, ants are the common and
 tiniest living entitiy seen by naked eye. One of them are the big red
 ants, in my view they are unique from others in two ways, first they
 live on trees and second their anteenas are too long and bent in middle,
-seems like their fore legs. Their mandible (mouth) seems like eagle’s
+seems like their fore legs. Their mandible (mouth) seems like eagle's
 beak.
 
 As I observed them making and reparing their nests, I concluded that
@@ -32,13 +28,13 @@ translucent cloth like structure to cover remainings of leaf. A nest
 hangs by a branch of the trees.
 
 A nest is skillfully divided into living rooms, barracks, storehouse,
-egg room and queen’s room. The eggroom, lies at the center of nest to
-protect from outer attack until last time. Besides that, lies queen’s
+egg room and queen's room. The eggroom, lies at the center of nest to
+protect from outer attack until last time. Besides that, lies queen's
 room. Living rooms are sequenncly joined with eggroom. There are
 different rooms for workers, food searchers etc. The partition of the
-room resembles atom’s electron shell, one upon another. At last barracks
+room resembles atom's electron shell, one upon another. At last barracks
 are the outermost rooms, just like outermost orbit of electron. The
-defence system is strongest at the nest’s opening. A nest may size as
+defence system is strongest at the nest's opening. A nest may size as
 2-3 footballs and have 50 to 10000 ants. There may be more openings.
 
 Now about their attacking and protecting skills. A solider is unique

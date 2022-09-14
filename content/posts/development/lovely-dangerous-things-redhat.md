@@ -102,7 +102,7 @@ rules? Hell no! But this time, let us go step-by-step.
 resource. Let us define a CRD called `spacetime`. To do this you can write a
 YAML file like below.
 
-``` yaml
+```yaml
 # file: spacetime-crd.yaml
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -148,7 +148,7 @@ The CRD that we defined above corresponds to the `CustomResource` given
 below. Once you apply the above file you will be able to see the
 `spacetime` custom resource on your Kubernetes/OpenShift cluster.
 
-``` yaml
+```yaml
 # file: spacetime-cr.yaml
 apiVersion: spacetimes.example.com/v1alpha1
 kind: SpaceTime
@@ -160,7 +160,7 @@ spec:
 
 Apply them using the following commands:
 
-``` bash
+```bash
 kubectl apply -f spacetime-crd.yaml
 kubectl apply -f spacetime-cr.yaml
 ```
@@ -172,14 +172,14 @@ kubectl apply -f spacetime-cr.yaml
     now you know. Create a package structure for a golang project and
     add the definition of the type as given below.
 
-``` bash
+```bash
 mkdir -p pkg/api/spacetime/v1alpha1
 touch pkg/api/spacetime/v1alpha1/{spacetime_types,register,doc}.go pkg/api/spacetime/register.go
 ```
 
 Add the following content to the corresponding files.
 
-``` go
+```go
 // file: /pkg/api/spacetime/v1alpha1/spacetime_types.go
 package v1alpha1
 
