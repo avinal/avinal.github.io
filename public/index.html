@@ -21,7 +21,7 @@
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
     <script>
         var app = Elm.Main.init({ node: document.getElementById("app") });
-
+        var renderSuccess = false;
         app.ports.sendString.subscribe(function (markdowndata) {
 
             var numberOfHeadings = 0;
@@ -68,11 +68,17 @@
                     return Prism.highlight(code, grammar, lang);
                 }
             })
-            document.getElementById("insert-here").innerHTML = marked.parse(markdowndata, function () {
-                app.ports.isRenderComplete.send(true);
+            document.getElementById("insert-here").innerHTML = marked.parse(markdowndata, function (err, parsed) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    renderSuccess = true;
+                }
             });
             // document.getElementById("toc-entries").innerHTML = toc;
         });
+
+        app.ports.isRenderComplete.send(renderSuccess);
     </script>
 </body>
 

@@ -19,6 +19,7 @@ type alias Model =
     , markdownUrl : String
     , success : Bool
     , fragment : String
+    , error : Maybe String
     }
 
 
@@ -38,6 +39,7 @@ initialModel =
     , markdownUrl = ""
     , success = False
     , fragment = ""
+    , error = Nothing
     }
 
 
@@ -215,11 +217,11 @@ update msg model =
                 Ok blog ->
                     ( { model | blog = Just blog, success = True }, sendString blog.content )
 
-                Err _ ->
-                    ( { model | success = False }, Cmd.none )
+                Err err ->
+                    ( { model | success = False, error = Just err }, Cmd.none )
 
-        DataReceived (Err _) ->
-            ( { model | success = False }, Cmd.none )
+        DataReceived (Err err) ->
+            ( { model | success = False, error = Just (errorToString err) }, Cmd.none )
 
         ScrollToFragment _ _ ->
             ( model, scrollOnFragment model.fragment )
@@ -324,8 +326,8 @@ splitMetaContent data =
         Ok meta ->
             Ok { meta = meta, content = content }
 
-        Err _ ->
-            Err "YAML front matter parsing failed"
+        Err err ->
+            Err ("YAML front matter parsing failed: " ++ Yaml.errorToString err)
 
 
 metaDecoder : Decoder YamlMeta
