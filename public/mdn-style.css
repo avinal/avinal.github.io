@@ -5688,7 +5688,7 @@ pre code {
     color: var(--text-primary);
     padding: 0
 }
-
+/* 
 .example-bad,
 .example-good {
     padding: 0 1rem;
@@ -5841,7 +5841,7 @@ a.page-not-created:not([href]) {
     color: var(--icon-critical);
     -webkit-text-decoration: underline wavy;
     text-decoration: underline wavy
-}
+} */
 
 .badge {
     border: 1px solid var(--border-primary);
@@ -5864,7 +5864,7 @@ kbd {
     font-size: .825rem;
     padding: .25rem
 }
-
+/* 
 .interactive {
     background-color: var(--background-secondary);
     border: 1px solid var(--border-primary);
@@ -6702,7 +6702,7 @@ article.settings .field-group ul li {
     grid-gap: 0 1rem;
     display: grid;
     gap: 0 1rem;
-     /* grid-template-columns: 1fr minmax(5em);  */
+    grid-template-columns: 1fr minmax(5em);
     margin: 2em 0
 }
 
@@ -6959,8 +6959,8 @@ main.contribute section h1:before {
     content: "";
     display: inline-block;
     height: 1.2em;
-     /* -webkit-mask: url(/static/media/m-logo.e19e04547be91a35c8ea.svg) no-repeat 50% 50%;
-    mask: url(/static/media/m-logo.e19e04547be91a35c8ea.svg) no-repeat 50% 50%;  */
+    -webkit-mask: url(/static/media/m-logo.e19e04547be91a35c8ea.svg) no-repeat 50% 50%;
+    mask: url(/static/media/m-logo.e19e04547be91a35c8ea.svg) no-repeat 50% 50%;
     -webkit-mask-size: cover;
     mask-size: cover;
     -webkit-transform: translate(-.2em, .2em);
@@ -7146,5 +7146,4 @@ main.contribute section .stats li .legend {
 body.full-screen-overlay .mdn-cta-container {
     display: none
 }
-
-/* # sourceMappingURL=main.b0105e4f.css.map */
+*/
