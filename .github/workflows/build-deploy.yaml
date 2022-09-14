@@ -39,7 +39,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
       - name: build
-        run: elm make src/Main.elm --output public/app.js --debug
+        run: elm make src/Main.elm --output public/app.js --optimize
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
