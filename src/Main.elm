@@ -283,6 +283,17 @@ updateUrl model =
                 |> toSplash model
 
 
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    case model.page of
+        BlogPage blogModel ->
+            Blog.subscriptions blogModel
+                |> Sub.map GotBlogMsg
+
+        _ ->
+            Sub.none
+
+
 
 -- ENTRYPOINT
 
@@ -293,7 +304,7 @@ main =
         { init = init
         , view = view
         , update = update
-        , subscriptions = \_ -> Sub.none
+        , subscriptions = subscriptions
         , onUrlChange = ChangeUrl
         , onUrlRequest = ClickedLink
         }

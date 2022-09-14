@@ -1,9 +1,11 @@
 port module Blog exposing (..)
 
 import Base exposing (urlPrefix)
+import Browser.Dom as Dom
 import Html exposing (..)
 import Html.Attributes exposing (class, href, id, style)
 import Http exposing (Error(..))
+import Task
 import Url exposing (Protocol(..))
 import Yaml.Decode as Yaml exposing (Decoder, field, list, string)
 
@@ -44,6 +46,9 @@ initialModel =
 
 
 port sendString : String -> Cmd msg
+
+
+port isRenderComplete : (Bool -> msg) -> Sub msg
 
 
 view : Model -> Html Msg
@@ -123,9 +128,17 @@ viewMetadata show =
         ]
 
 
+scrollOnFragment : String -> Cmd Msg
+scrollOnFragment fragment =
+    Task.attempt ScrollAttempted
+        (Dom.getElement fragment |> Task.andThen (\info -> Dom.setViewport 0 info.element.y))
+
+
 type Msg
     = GetMarkdown
     | DataReceived (Result Http.Error String)
+    | ScrollToFragment Bool Bool
+    | ScrollAttempted (Result Dom.Error ())
     | NoSuchPage
 
 
@@ -208,8 +221,14 @@ update msg model =
         DataReceived (Err _) ->
             ( { model | success = False }, Cmd.none )
 
+        ScrollToFragment _ _ ->
+            ( model, scrollOnFragment model.fragment )
+
         NoSuchPage ->
             ( { model | success = False }, Cmd.none )
+
+        ScrollAttempted _ ->
+            ( model, Cmd.none )
 
 
 errorToString : Http.Error -> String
@@ -235,6 +254,18 @@ errorToString error =
 
         BadBody errorMessage ->
             errorMessage
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    isRenderComplete
+        (ScrollToFragment <|
+            if model.fragment == "" then
+                False
+
+            else
+                True
+        )
 
 
 
