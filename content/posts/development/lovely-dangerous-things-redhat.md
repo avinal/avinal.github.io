@@ -4,7 +4,7 @@ date: 2022-02-27 20:47
 modified: 2022-03-07 22:47
 category: development
 tags: [tekton, go, kubernetes, openshift, redhat, intern, golang, openshift-pipelines]
-description: This blog is a descreptive account of the development of Minimal Tekton Server. This is highly technical in nature, so please make sure that you have sufficient knowledge about Golang, Docker, Kubernetes and TektonCD. You can refer to my [previous blog]("https://avinal.space/posts/development/i-am-loving-it-redhat.html") to know about these topics.
+description: 'This blog is a descreptive account of the development of Minimal Tekton Server. This is highly technical in nature, so please make sure that you have sufficient knowledge about Golang, Docker, Kubernetes and TektonCD. You can refer to my [previous blog]("https://avinal.space/posts/development/i-am-loving-it-redhat.html") to know about these topics.'
 ---
 
 # Developing Minimal Tekton Server

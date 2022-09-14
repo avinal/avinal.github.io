@@ -1,14 +1,14 @@
 @charset "UTF-8";
 
 a,
-abbr,
+/* abbr, */
 acronym,
 address,
 applet,
-article,
+/* article, */
 aside,
 audio,
-b,
+/* b, */
 big,
 blockquote,
 canvas,
@@ -26,8 +26,8 @@ dt,
 em,
 embed,
 fieldset,
-figcaption,
-figure,
+/* figcaption, */
+/* figure, */
 footer,
 form,
 /* h1,
@@ -39,8 +39,8 @@ h6, */
 header,
 hgroup,
 html,
-i,
-iframe,
+/* i, */
+/* iframe, */
 img,
 ins,
 kbd,
@@ -59,7 +59,7 @@ q,
 ruby,
 s,
 samp,
-section,
+/* section, */
 small,
 /* span, */
 strike,
@@ -1436,7 +1436,7 @@ body {
 
 .foo-console,
 .foo-console .foo-cmd {
-    font-family: "Share Tech Mono", monospace;
+    /* font-family: "Share Tech Mono", monospace; */
     color: #fff
 }
 
