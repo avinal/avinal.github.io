@@ -50,7 +50,7 @@ initialModel =
 port sendString : String -> Cmd msg
 
 
-port isRenderComplete : (Bool -> msg) -> Sub msg
+-- port isRenderComplete : (Bool -> msg) -> Sub msg
 
 
 view : Model -> Html Msg
@@ -130,17 +130,17 @@ viewMetadata show =
         ]
 
 
-scrollOnFragment : String -> Cmd Msg
-scrollOnFragment fragment =
-    Task.attempt ScrollAttempted
-        (Dom.getElement fragment |> Task.andThen (\info -> Dom.setViewport 0 info.element.y))
+-- scrollOnFragment : String -> Cmd Msg
+-- scrollOnFragment fragment =
+--     Task.attempt ScrollAttempted
+--         (Dom.getElement fragment |> Task.andThen (\info -> Dom.setViewport 0 info.element.y))
 
 
 type Msg
     = GetMarkdown
     | DataReceived (Result Http.Error String)
-    | ScrollToFragment Bool Bool
-    | ScrollAttempted (Result Dom.Error ())
+    -- | ScrollToFragment Bool Bool
+    -- | ScrollAttempted (Result Dom.Error ())
     | NoSuchPage
 
 
@@ -223,14 +223,14 @@ update msg model =
         DataReceived (Err err) ->
             ( { model | success = False, error = Just (errorToString err) }, Cmd.none )
 
-        ScrollToFragment _ _ ->
-            ( model, scrollOnFragment model.fragment )
+        -- ScrollToFragment _ _ ->
+        --     ( model, scrollOnFragment model.fragment )
 
         NoSuchPage ->
             ( { model | success = False }, Cmd.none )
 
-        ScrollAttempted _ ->
-            ( model, Cmd.none )
+        -- ScrollAttempted _ ->
+        --     ( model, Cmd.none )
 
 
 errorToString : Http.Error -> String
@@ -258,16 +258,16 @@ errorToString error =
             errorMessage
 
 
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    isRenderComplete
-        (ScrollToFragment <|
-            if model.fragment == "" then
-                False
+-- subscriptions : Model -> Sub Msg
+-- subscriptions model =
+--     isRenderComplete
+--         (ScrollToFragment <|
+--             if model.fragment == "" then
+--                 False
 
-            else
-                True
-        )
+--             else
+--                 True
+--         )
 
 
 

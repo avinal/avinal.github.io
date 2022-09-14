@@ -179,7 +179,7 @@ touch pkg/api/spacetime/v1alpha1/{spacetime_types,register,doc}.go pkg/api/space
 
 Add the following content to the corresponding files.
 
-``` golang
+``` go
 // file: /pkg/api/spacetime/v1alpha1/spacetime_types.go
 package v1alpha1
 

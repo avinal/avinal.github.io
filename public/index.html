@@ -68,9 +68,7 @@
                     return Prism.highlight(code, grammar, lang);
                 }
             })
-            document.getElementById("insert-here").innerHTML = marked.parse(markdowndata, function () {
-                renderSuccess = true;
-            });
+            document.getElementById("insert-here").innerHTML = marked.parse(markdowndata);
             // document.getElementById("toc-entries").innerHTML = toc;
         });
 

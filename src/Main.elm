@@ -286,9 +286,9 @@ updateUrl model =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     case model.page of
-        BlogPage blogModel ->
-            Blog.subscriptions blogModel
-                |> Sub.map GotBlogMsg
+        -- BlogPage blogModel ->
+        --     Blog.subscriptions blogModel
+        --         |> Sub.map GotBlogMsg
 
         _ ->
             Sub.none

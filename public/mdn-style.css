@@ -56,7 +56,7 @@ a {
 
 img,
 picture {
-     display: block; 
+     /* display: block;  */
     max-width: 100%
 }
 
