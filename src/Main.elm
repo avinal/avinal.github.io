@@ -127,9 +127,11 @@ viewFooter page =
                 _ ->
                     footer [ class "foo-footer" ]
                         [ ul []
-                            [ li []
-                                [ a [ href websiteBase ] [ text "Home" ]
-                                ]
+                            [ li [] [ a [ href websiteBase ] [ text "Home" ] ]
+                            , li [] [ a [ href "https://avinal.space/pages/about-me" ] [ text "About me " ] ]
+                            , li [] [ a [ href "https://avinal.space/posts" ] [ text "Blog" ] ]
+                            , li [] [ a [ href "https://avinal.space/pages/projects" ] [ text "Projects" ] ]
+                            , li [] [ a [ href "https://gsoc.avinal.space" ] [ text "GSoC" ] ]
                             ]
                         ]
     in
