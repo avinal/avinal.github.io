@@ -1,7 +1,7 @@
 module Splash exposing (..)
 
-import Html exposing (Html, a, div, i, img, p, span, text)
-import Html.Attributes exposing (alt, class, height, href, src, style, width)
+import Html exposing (Html, a, div, i, img, span, text)
+import Html.Attributes exposing (alt, class, height, href, src, width)
 
 
 type alias Model =
@@ -38,6 +38,11 @@ type Msg
     = Nothing
 
 
+{-| How to get whitespace between html tags?
+
+    Link: <https://stackoverflow.com/a/55827562/11143805>
+
+-}
 withSpacing : (List (Html msg) -> Html msg) -> List (Html msg) -> Html msg
 withSpacing element =
     List.intersperse (text " ") >> element
@@ -50,9 +55,9 @@ notFound error =
         withSpacing (span [])
             [ i [ class "fa-solid fa-triangle-exclamation foo-term-yellow" ] []
             , text "I could not find anything on this"
-            , i [ class "fa-solid fa-link" ] []
-            , text error
-            , text ". If you think this is a mistake, please contact me."
+            , i [ class "fa-solid fa-link foo-term-red" ] []
+            , a [ href error ] [ text error ]
+            , text "If you think this is a mistake, please contact me."
             , i [ class "fa-solid fa-triangle-exclamation foo-term-yellow" ] []
             ]
     }
@@ -63,9 +68,9 @@ default =
     { support_message =
         withSpacing (span [])
             [ a [ href "https://github.com/avinal" ] [ i [ class "fa-brands fa-github" ] [] ]
-            , a [ href "https://www.linked.com/in/avinal" ] [ i [ class "fa-brands fa-linkedin" ] [] ]
+            , a [ href "https://www.linkedin.com/in/avinal" ] [ i [ class "fa-brands fa-linkedin" ] [] ]
             , a [ href "https://instagram.com/avinal.k" ] [ i [ class "fa-brands fa-instagram" ] [] ]
-            , a [ href "https://meet.avinal.space" ] [ i [ class "fa-solid fa-calandar-days" ] [] ]
+            , a [ href "https://meet.avinal.space" ] [ i [ class "fa-solid fa-calendar-days" ] [] ]
             , a [ href "mailto:ripple+blog@avinal.space" ] [ i [ class "fa-solid fa-envelope" ] [] ]
             , a [ href "https://avinal.space/terminal" ] [ i [ class "fa-solid fa-terminal" ] [] ]
             ]
