@@ -1,11 +1,9 @@
 port module Blog exposing (..)
 
-import Base exposing (urlPrefix)
-import Browser.Dom as Dom
+import Base exposing (..)
 import Html exposing (..)
-import Html.Attributes exposing (class, href, id, style)
+import Html.Attributes exposing (class, href, id, src, style)
 import Http exposing (Error(..))
-import Task
 import Url exposing (Protocol(..))
 import Yaml.Decode as Yaml exposing (Decoder, field, list, string)
 
@@ -50,6 +48,7 @@ initialModel =
 port sendString : String -> Cmd msg
 
 
+
 -- port isRenderComplete : (Bool -> msg) -> Sub msg
 
 
@@ -59,7 +58,19 @@ view model =
         [ div [ class "foo-console foo-terminal foo-active" ]
             [ div [ class "main-wrapper" ]
                 [ main_ [ class "main-content", id "content" ]
-                    [ viewArticle model.success ]
+                    [ case model.blog of
+                        Just blog ->
+                            case blog.meta.image of
+                                Just image ->
+                                    img [ src image ] []
+
+                                Nothing ->
+                                    text ""
+
+                        Nothing ->
+                            text ""
+                    , viewArticle model.success
+                    ]
                 ]
             ]
         ]
@@ -130,17 +141,9 @@ viewMetadata show =
         ]
 
 
--- scrollOnFragment : String -> Cmd Msg
--- scrollOnFragment fragment =
---     Task.attempt ScrollAttempted
---         (Dom.getElement fragment |> Task.andThen (\info -> Dom.setViewport 0 info.element.y))
-
-
 type Msg
     = GetMarkdown
     | DataReceived (Result Http.Error String)
-    -- | ScrollToFragment Bool Bool
-    -- | ScrollAttempted (Result Dom.Error ())
     | NoSuchPage
 
 
@@ -188,24 +191,6 @@ getMarkdown url =
         }
 
 
-finalUrl : Maybe String -> String
-finalUrl slug =
-    let
-        resolvedSlug =
-            Maybe.withDefault "error" slug
-    in
-    case resolvedSlug of
-        "error" ->
-            "https://raw.githubusercontent.com/avinal/avinal.space/content/posts/error.md"
-
-        _ ->
-            "https://raw.githubusercontent.com/avinal/"
-                ++ urlPrefix
-                ++ "/main/content/posts/"
-                ++ resolvedSlug
-                ++ ".md"
-
-
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -223,14 +208,8 @@ update msg model =
         DataReceived (Err err) ->
             ( { model | success = False, error = Just (errorToString err) }, Cmd.none )
 
-        -- ScrollToFragment _ _ ->
-        --     ( model, scrollOnFragment model.fragment )
-
         NoSuchPage ->
             ( { model | success = False }, Cmd.none )
-
-        -- ScrollAttempted _ ->
-        --     ( model, Cmd.none )
 
 
 errorToString : Http.Error -> String
@@ -256,44 +235,6 @@ errorToString error =
 
         BadBody errorMessage ->
             errorMessage
-
-
--- subscriptions : Model -> Sub Msg
--- subscriptions model =
---     isRenderComplete
---         (ScrollToFragment <|
---             if model.fragment == "" then
---                 False
-
---             else
---                 True
---         )
-
-
-
--- main : Program (String, String) Model Msg
--- main =
---     Browser.element
---         { init = init
---         , view = view
---         , update = update
---         , subscriptions = \_ -> Sub.none
---         }
--- div
---                             [ class "foo-term-story section-content" ]
---                             [ input
---                                 [ placeholder "Enter URL to a markdown file"
---                                 , value model.markdownUrl
---                                 , onInput StoreInput
---                                 ]
---                                 []
---                             , button [ class "button secondary", onClick GetMarkdown ] [ text "Get Markdown" ]
---                             , if model.success then
---                                 div [] []
---                               else
---                                 div [ class "foo-error" ] [ text model.markDown ]
---                             ]
--- YAML Stuff
 
 
 type alias YamlMeta =
