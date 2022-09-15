@@ -1,6 +1,6 @@
 module Splash exposing (..)
 
-import Html exposing (Html, a, div, i, img, span, text)
+import Html exposing (Html, a, b, div, i, img, span, text)
 import Html.Attributes exposing (alt, class, height, href, src, width)
 
 
@@ -25,10 +25,10 @@ view model =
             , div [ class "foo-support__message" ] [ model.support_message ]
             , div [ class "foo-error__message" ] [ model.error_message ]
             , withSpacing (div [ class "foo-support__message" ])
-                [ a [ href "https://avinal.space/pages/about-me" ] [ text "About me" ]
-                , a [ href "https://avinal.space/posts" ] [ text "Blog" ]
-                , a [ href "https://avinal.space/pages/projects" ] [ text "Projects" ]
-                , a [ href "https://gsoc.avinal.space" ] [ text "GSoC" ]
+                [ a [ href "https://avinal.space/pages/about-me" ] [ b [ class "foo-term-blue" ] [ text "A" ], text "bout" ]
+                , a [ href "https://avinal.space/posts" ] [ b [ class "foo-term-blue" ] [ text "B" ], text "log" ]
+                , a [ href "https://avinal.space/pages/projects" ] [ b [ class "foo-term-blue" ] [ text "P" ], text "rojects" ]
+                , a [ href "https://gsoc.avinal.space" ] [ b [ class "foo-term-blue" ] [ text "G" ], text "SoC" ]
                 ]
             ]
         ]
@@ -76,7 +76,9 @@ default =
             ]
     , error_message =
         withSpacing (span [])
-            [ text "I'm Avinal, and I work at Red Hat"
+            [ text "I'm"
+            , b [ class "foo-term-pink" ] [ text "Avinal" ]
+            , text "and I work at Red Hat"
             , i [ class "fa-brands fa-redhat foo-term-red" ] []
             , text "as an Associate Software Engineer for Hybrid Cloud Engineering."
             ]

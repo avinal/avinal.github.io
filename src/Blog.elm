@@ -56,20 +56,22 @@ view : Model -> Html Msg
 view model =
     div [ class "foo-interface" ]
         [ div [ class "foo-console foo-terminal foo-active" ]
-            [ div [ class "main-wrapper" ]
-                [ main_ [ class "main-content", id "content" ]
-                    [ case model.blog of
-                        Just blog ->
-                            case blog.meta.image of
-                                Just image ->
-                                    img [ src image ] []
+            [ div [ class "page-wrapper category-html document-page" ]
+                [ div [ class "main-wrapper" ]
+                    [ main_ [ class "main-content", id "content" ]
+                        [ case model.blog of
+                            Just blog ->
+                                case blog.meta.image of
+                                    Just image ->
+                                        img [ src image ] []
 
-                                Nothing ->
-                                    text ""
+                                    Nothing ->
+                                        text ""
 
-                        Nothing ->
-                            text ""
-                    , viewArticle model.success
+                            Nothing ->
+                                text ""
+                        , viewArticle model
+                        ]
                     ]
                 ]
             ]
@@ -102,21 +104,21 @@ viewToc show =
         div [] []
 
 
-viewArticle : Bool -> Html Msg
-viewArticle show =
+viewArticle : Model -> Html Msg
+viewArticle model =
     article
         [ class "main-page-content" ]
         [ div [ id "insert-here" ] []
-        , viewMetadata show
+        , viewMetadata model
         ]
 
 
-viewMetadata : Bool -> Html Msg
-viewMetadata show =
+viewMetadata : Model -> Html Msg
+viewMetadata model =
     aside
         [ class "metadata"
         , style "display"
-            (if show then
+            (if model.success then
                 "block"
 
              else
@@ -128,12 +130,23 @@ viewMetadata show =
                 [ h3 [] [ text "Found a problem" ]
                 , ul []
                     [ li []
-                        [ a [ href "https://github.com/avinal" ]
-                            [ text "open an issue" ]
+                        [ a
+                            [ href
+                                ("https://github.com/avinal/avinal.github.io/issues/new?title=blog:"
+                                    ++ (case model.blog of
+                                            Just blog ->
+                                                blog.meta.title
+
+                                            Nothing ->
+                                                model.markdownUrl
+                                       )
+                                )
+                            ]
+                            [ text "Open an issue on ", i [ class "fa-brands fa-github" ] [] ]
                         ]
                     , li []
-                        [ a [ href "https://avinal.space" ]
-                            [ text "Website" ]
+                        [ a [ href "mailto:ripple+blog@avinal.space" ]
+                            [ text "Contact me via email" ]
                         ]
                     ]
                 ]
@@ -147,24 +160,70 @@ type Msg
     | NoSuchPage
 
 
+{-| To maintain compatibility with old links
+
+    Old links: <https://avinal.space/posts/category/slug.html>
+    New links: <https://avinal.space/posts/category/slug>
+
+-}
+removeHtmlSuffix : String -> String
+removeHtmlSuffix slug =
+    if String.right 5 slug == ".html" then
+        String.dropRight 5 slug
+
+    else
+        slug
+
+
 init : List String -> ( Model, Cmd Msg )
 init pathList =
     case pathList of
         [ category, slug, fragment ] ->
+            let
+                requestUrl =
+                    Base.contentUrlPrefix
+                        ++ "posts/"
+                        ++ category
+                        ++ "/"
+                        ++ removeHtmlSuffix slug
+                        ++ ".md"
+            in
             ( { initialModel
-                | markdownUrl = Base.contentUrlPrefix ++ "posts/" ++ category ++ "/" ++ slug ++ ".md"
+                | markdownUrl = requestUrl
                 , fragment = fragment
               }
-            , getMarkdown (Base.contentUrlPrefix ++ "posts/" ++ category ++ "/" ++ slug ++ ".md")
+            , getMarkdown requestUrl
             )
 
         [ category, slug ] ->
+            let
+                requestUrl =
+                    Base.contentUrlPrefix
+                        ++ "posts/"
+                        ++ category
+                        ++ "/"
+                        ++ removeHtmlSuffix slug
+                        ++ ".md"
+            in
             ( { initialModel
-                | markdownUrl = Base.contentUrlPrefix ++ "posts/" ++ category ++ "/" ++ slug ++ ".md"
+                | markdownUrl = requestUrl
               }
-            , getMarkdown (Base.contentUrlPrefix ++ "posts/" ++ category ++ "/" ++ slug ++ ".md")
+            , getMarkdown requestUrl
             )
 
+        -- [ category ] ->
+        --     let
+        --         requestUrl =
+        --             Base.contentUrlPrefix
+        --                 ++ "posts/"
+        --                 ++ category
+        --                 ++ ".md"
+        --     in
+        --     ( { initialModel
+        --         | markdownUrl = requestUrl
+        --       }
+        --     , getMarkdown requestUrl
+        --     )
         -- [ "categories" ] ->
         --     ( { blog = Nothing
         --       , markdownUrl = urlPrefix ++ "/categories" ++ ".md"
@@ -181,6 +240,11 @@ init pathList =
 
         _ ->
             ( initialModel, Cmd.none )
+
+-- badPageError: String -> Cmd Msg
+-- badPageError url =
+    
+
 
 
 getMarkdown : String -> Cmd Msg
