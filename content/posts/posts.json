@@ -3,7 +3,7 @@
     "title": "The Big Red Ants",
     "date": "2012-02-27 22:47",
     "category": "article",
-    "description": "The Big Red Ants",
+    "description": "As I observed them making and reparing their nests, I concluded that they are laborious and intellectual. They create their nests bybinding two or more leaves (maybe up to 500) together. They stich the leaves using a stinky white substance either excreted by themselves or from trees.",
     "slug": "big-red-ants"
   },
   {
@@ -31,7 +31,7 @@
     "title": "Google Summer of Code 2021",
     "date": "2021-08-19 23:07",
     "category": "development",
-    "description": "This is the final report of my Google Summer of Code 2021 at The FOSSology Project.",
+    "description": "This is the final report of my Google Summer of Code 2021 at The FOSSology Project. One of the major improvements over the previous build system is faster build times. CMake generates parallel build-enabled configurations for all generators.",
     "slug": "final-evaulation"
   },
   {

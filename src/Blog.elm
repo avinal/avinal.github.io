@@ -5,7 +5,6 @@ import Html exposing (..)
 import Html.Attributes exposing (class, datetime, href, id, src, style)
 import Http exposing (Error(..))
 import Json.Decode as Json
-import Json.Decode.Pipeline exposing (required)
 import Url exposing (Protocol(..))
 import Yaml.Decode as Yaml
 
@@ -166,20 +165,18 @@ viewBlogListItem meta =
         , div [ class "foo-term-story" ]
             [ div []
                 [ span []
-                    [ i [ class "fa-regular fa-clock" ] []
+                    [ i [ class "fa-regular fa-clock" ] [ text " " ]
                     , time [ datetime meta.date ] [ text meta.date ]
                     , text " in "
-                    , i [ class "fa-regular fa-folder-open" ] []
+                    , i [ class "fa-regular fa-folder-open" ] [ text " " ]
                     , a [ href ("/posts/" ++ meta.category) ]
                         [ text meta.category ]
                     ]
                 ]
-            , br [] []
             , h2 []
                 [ a [ href ("/posts/" ++ meta.category ++ "/" ++ meta.slug) ]
                     [ text meta.title ]
                 ]
-            , br [] []
             , p [] [ text meta.description ]
             ]
         ]
@@ -303,12 +300,12 @@ getPostLists url =
 
 jsonMetaDecoder : Json.Decoder JsonMeta
 jsonMetaDecoder =
-    required "title" Json.string <|
-        required "date" Json.string <|
-            required "description" Json.string <|
-                required "category" Json.string <|
-                    required "slug" Json.string <|
-                        Json.succeed JsonMeta
+    Json.map5 JsonMeta
+        (Json.field "title" Json.string)
+        (Json.field "date" Json.string)
+        (Json.field "description" Json.string)
+        (Json.field "category" Json.string)
+        (Json.field "slug" Json.string)
 
 
 getMarkdown : String -> Cmd Msg
