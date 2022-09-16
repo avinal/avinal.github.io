@@ -61,8 +61,7 @@ view model =
         [ div [ class "foo-console foo-terminal foo-active" ]
             [ div [ class "page-wrapper category-html document-page" ]
                 [ div [ class "main-wrapper" ]
-                    [ div [] (viewBlogList model)
-                    , main_ [ class "main-content", id "content" ]
+                    [ main_ [ class "main-content", id "content" ]
                         [ case model.blog of
                             Just blog ->
                                 case blog.meta.image of
@@ -74,6 +73,7 @@ view model =
 
                             Nothing ->
                                 text ""
+                        , div [] (viewBlogList model)
                         , viewArticle model
                         ]
                     ]
@@ -86,8 +86,7 @@ viewToc : Bool -> Html Msg
 viewToc show =
     if show then
         div
-            [ class "toc"
-            ]
+            [ class "toc" ]
             [ aside [ class "document-toc-container" ]
                 [ section [ class "document-toc" ]
                     [ h2 [ class "document-toc-heading" ]
@@ -122,7 +121,7 @@ viewMetadata model =
     aside
         [ class "metadata"
         , style "display"
-            (if model.success then
+            (if model.bloglist == Nothing && model.success then
                 "block"
 
              else
@@ -162,6 +161,7 @@ viewBlogListItem : JsonMeta -> Html Msg
 viewBlogListItem meta =
     div []
         [ hr [] []
+        , br [] []
         , div [ class "foo-term-story" ]
             [ div []
                 [ span []
@@ -172,13 +172,14 @@ viewBlogListItem meta =
                     , a [ href ("/posts/" ++ meta.category) ]
                         [ text meta.category ]
                     ]
+                , h2 []
+                    [ a [ href ("/posts/" ++ meta.category ++ "/" ++ meta.slug) ]
+                        [ text meta.title ]
+                    ]
+                , p [] [ text meta.description ]
                 ]
-            , h2 []
-                [ a [ href ("/posts/" ++ meta.category ++ "/" ++ meta.slug) ]
-                    [ text meta.title ]
-                ]
-            , p [] [ text meta.description ]
             ]
+        , br [] []
         ]
 
 
