@@ -2,10 +2,12 @@ port module Blog exposing (..)
 
 import Base exposing (..)
 import Html exposing (..)
-import Html.Attributes exposing (class, href, id, src, style)
+import Html.Attributes exposing (class, datetime, href, id, src, style)
 import Http exposing (Error(..))
+import Json.Decode as Json
+import Json.Decode.Pipeline exposing (required)
 import Url exposing (Protocol(..))
-import Yaml.Decode as Yaml exposing (Decoder, field, list, string)
+import Yaml.Decode as Yaml
 
 
 
@@ -14,10 +16,11 @@ import Yaml.Decode as Yaml exposing (Decoder, field, list, string)
 
 type alias Model =
     { blog : Maybe Blog
-    , markdownUrl : String
+    , requestUrl : String
     , success : Bool
     , fragment : String
     , error : Maybe String
+    , bloglist : Maybe (List JsonMeta)
     }
 
 
@@ -34,10 +37,11 @@ type alias Blog =
 initialModel : Model
 initialModel =
     { blog = Nothing
-    , markdownUrl = ""
+    , requestUrl = ""
     , success = False
     , fragment = ""
     , error = Nothing
+    , bloglist = Nothing
     }
 
 
@@ -58,7 +62,8 @@ view model =
         [ div [ class "foo-console foo-terminal foo-active" ]
             [ div [ class "page-wrapper category-html document-page" ]
                 [ div [ class "main-wrapper" ]
-                    [ main_ [ class "main-content", id "content" ]
+                    [ div [] (viewBlogList model)
+                    , main_ [ class "main-content", id "content" ]
                         [ case model.blog of
                             Just blog ->
                                 case blog.meta.image of
@@ -138,7 +143,7 @@ viewMetadata model =
                                                 blog.meta.title
 
                                             Nothing ->
-                                                model.markdownUrl
+                                                model.requestUrl
                                        )
                                 )
                             ]
@@ -154,9 +159,46 @@ viewMetadata model =
         ]
 
 
+viewBlogListItem : JsonMeta -> Html Msg
+viewBlogListItem meta =
+    div []
+        [ hr [] []
+        , div [ class "foo-term-story" ]
+            [ div []
+                [ span []
+                    [ i [ class "fa-regular fa-clock" ] []
+                    , time [ datetime meta.date ] [ text meta.date ]
+                    , text " in "
+                    , i [ class "fa-regular fa-folder-open" ] []
+                    , a [ href ("/posts/" ++ meta.category) ]
+                        [ text meta.category ]
+                    ]
+                ]
+            , br [] []
+            , h2 []
+                [ a [ href ("/posts/" ++ meta.category ++ "/" ++ meta.slug) ]
+                    [ text meta.title ]
+                ]
+            , br [] []
+            , p [] [ text meta.description ]
+            ]
+        ]
+
+
+viewBlogList : Model -> List (Html Msg)
+viewBlogList model =
+    case model.bloglist of
+        Just bloglist ->
+            h1 [] [ text "Blog" ]
+                :: List.map viewBlogListItem bloglist
+
+        Nothing ->
+            []
+
+
 type Msg
-    = GetMarkdown
-    | DataReceived (Result Http.Error String)
+    = MdDataReceived (Result Http.Error String)
+    | JsonDataReceived (Result Http.Error (List JsonMeta))
     | NoSuchPage
 
 
@@ -189,7 +231,7 @@ init pathList =
                         ++ ".md"
             in
             ( { initialModel
-                | markdownUrl = requestUrl
+                | requestUrl = requestUrl
                 , fragment = fragment
               }
             , getMarkdown requestUrl
@@ -206,7 +248,7 @@ init pathList =
                         ++ ".md"
             in
             ( { initialModel
-                | markdownUrl = requestUrl
+                | requestUrl = requestUrl
               }
             , getMarkdown requestUrl
             )
@@ -220,13 +262,13 @@ init pathList =
         --                 ++ ".md"
         --     in
         --     ( { initialModel
-        --         | markdownUrl = requestUrl
+        --         | requestUrl = requestUrl
         --       }
         --     , getMarkdown requestUrl
         --     )
         -- [ "categories" ] ->
         --     ( { blog = Nothing
-        --       , markdownUrl = urlPrefix ++ "/categories" ++ ".md"
+        --       , requestUrl = urlPrefix ++ "/categories" ++ ".md"
         --       , markDown = ""
         --       , success = False
         --       , fragment = ""
@@ -234,34 +276,55 @@ init pathList =
         --     , getMarkdown (urlPrefix ++ "/categories" ++ ".md")
         --     )
         [] ->
-            ( initialModel
-            , Cmd.none
+            ( { initialModel | requestUrl = Base.contentUrlPrefix ++ "/posts/posts.json" }
+            , getPostLists (Base.contentUrlPrefix ++ "/posts/posts.json")
             )
 
         _ ->
             ( initialModel, Cmd.none )
 
--- badPageError: String -> Cmd Msg
--- badPageError url =
-    
 
+type alias JsonMeta =
+    { title : String
+    , date : String
+    , description : String
+    , category : String
+    , slug : String
+    }
+
+
+getPostLists : String -> Cmd Msg
+getPostLists url =
+    Http.get
+        { url = url
+        , expect = Http.expectJson JsonDataReceived (Json.list jsonMetaDecoder)
+        }
+
+
+jsonMetaDecoder : Json.Decoder JsonMeta
+jsonMetaDecoder =
+    required "title" Json.string <|
+        required "date" Json.string <|
+            required "description" Json.string <|
+                required "category" Json.string <|
+                    required "slug" Json.string <|
+                        Json.succeed JsonMeta
 
 
 getMarkdown : String -> Cmd Msg
 getMarkdown url =
     Http.get
         { url = url
-        , expect = Http.expectString DataReceived
+        , expect = Http.expectString MdDataReceived
         }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        GetMarkdown ->
-            ( model, Http.get { url = model.markdownUrl, expect = Http.expectString DataReceived } )
-
-        DataReceived (Ok data) ->
+        -- GetMarkdown ->
+        --     ( model, Http.get { url = model.requestUrl, expect = Http.expectString MdDataReceived } )
+        MdDataReceived (Ok data) ->
             case splitMetaContent data of
                 Ok blog ->
                     ( { model | blog = Just blog, success = True }, sendString blog.content )
@@ -269,7 +332,13 @@ update msg model =
                 Err err ->
                     ( { model | success = False, error = Just err }, Cmd.none )
 
-        DataReceived (Err err) ->
+        MdDataReceived (Err err) ->
+            ( { model | success = False, error = Just (errorToString err) }, Cmd.none )
+
+        JsonDataReceived (Ok data) ->
+            ( { model | blog = Nothing, success = True, bloglist = Just data }, Cmd.none )
+
+        JsonDataReceived (Err err) ->
             ( { model | success = False, error = Just (errorToString err) }, Cmd.none )
 
         NoSuchPage ->
@@ -335,13 +404,13 @@ splitMetaContent data =
             Err ("YAML front matter parsing failed: " ++ Yaml.errorToString err)
 
 
-metaDecoder : Decoder YamlMeta
+metaDecoder : Yaml.Decoder YamlMeta
 metaDecoder =
     Yaml.map7 YamlMeta
-        (field "title" string)
-        (field "date" string)
-        (Yaml.maybe (field "description" string))
-        (field "tags" (list string))
-        (field "category" string)
-        (Yaml.maybe (field "image" string))
-        (Yaml.maybe (field "modified" string))
+        (Yaml.field "title" Yaml.string)
+        (Yaml.field "date" Yaml.string)
+        (Yaml.maybe (Yaml.field "description" Yaml.string))
+        (Yaml.field "tags" (Yaml.list Yaml.string))
+        (Yaml.field "category" Yaml.string)
+        (Yaml.maybe (Yaml.field "image" Yaml.string))
+        (Yaml.maybe (Yaml.field "modified" Yaml.string))

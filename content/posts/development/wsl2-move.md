@@ -21,13 +21,13 @@ use WinKey + X shortcut and select **Windows PowerShell(Admin)**.
 2. Check if the WSL 2 installation you are planning to move is is
 currently running/stopped.
 
-```powershell
-PS C:\\Users\\Avinal> wsl -l -v
-PS C:\\Users\\Avinal>
-  NAME      STATE           VERSION
-* Ubuntu    Running         2
-  Kali      Stopped         2
-```
+  ```powershell
+  PS C:\\Users\\Avinal> wsl -l -v
+  PS C:\\Users\\Avinal>
+    NAME      STATE           VERSION
+  * Ubuntu    Running         2
+    Kali      Stopped         2
+  ```
 
 3. If its running then you must stop the particular WSL distribution.
 (*Ubuntu* used as example)
