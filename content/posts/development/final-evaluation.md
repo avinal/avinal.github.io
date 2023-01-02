@@ -497,9 +497,6 @@ INCOMPLETE, <span class="or">ORANGE</span>: NOT NEEDED/DEPRECATED)
 
 ## How does it work and how to use it?
 
-<div class="embed-responsive embed-responsive-16by9">
-    <iframe class="embed-responsive-item" src="/images/second-build.webm" allowfullscreen></iframe>
-</div>
 
 The new build system retains the modular and hierarchical structure of
 the previous build system. On the other hand, the new build system

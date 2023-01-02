@@ -5,6 +5,7 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
+  pull_request:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -30,22 +31,26 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Download and install elm
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "npm"
+          cache-dependency-path: ./package-lock.json
+      - name: Install elm-land and node packages
         run: |
-          curl -L -o elm.gz https://github.com/elm/compiler/releases/download/0.19.1/binary-for-linux-64-bit.gz
-          gunzip elm.gz
-          sudo mv elm /usr/bin/elm
-          sudo chmod +x /usr/bin/elm
-      - name: checkout
-        uses: actions/checkout@v3
+          npm install -g elm-land@latest
+          npm install
       - name: build
-        run: elm make src/Main.elm --output public/app.js --optimize
+        run: |
+          npx tailwindcss -i ./src/input.css -o ./static/main.css --minify
+          elm-land build
       - name: copy content for seving
-        run: cp -a content public/content 
+        run: cp -a content dist/content
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: public/
+          path: dist/
 
   # Deployment job
   deploy:
