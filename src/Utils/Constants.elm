@@ -28,7 +28,8 @@ iconLinks : List IconLink
 iconLinks =
     [ { url = "https://github.com/avinal", icon = "fa-brands fa-github" }
     , { url = "https://www.linkedin.com/in/avinal", icon = "fa-brands fa-linkedin" }
-    , { url = "https://instagram.com/avinal", icon = "fa-brands fa-instagram" }
+    , { url = "https://instagram.com/avinal.k", icon = "fa-brands fa-instagram" }
+    , { url = "https://twitter.com/Avinal_", icon = "fa-brands fa-twitter" }
     , { url = "mailto:ripple@avinal.space", icon = "fa-solid fa-envelope" }
     ]
 
