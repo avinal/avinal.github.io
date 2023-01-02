@@ -101,24 +101,6 @@ unsplash =
 view : Model -> View Msg
 view model =
     let
-        taglist =
-            []
-
-        categoryNtags : String -> List String -> Html msg
-        categoryNtags category tags =
-            Html.span [ class "flex flex-wrap py-6 space-x-2 border-t border-dashed border-teal-500" ]
-                (Html.b [ class "px-3 py-1 m-1 rounded-sm hover:underline dark:bg-pink-400 dark:text-gray-900" ]
-                    [ Html.text category
-                    ]
-                    :: List.map
-                        (\tag ->
-                            Html.i [ class "px-3 py-1 m-1 rounded-sm hover:underline dark:bg-cyan-500 dark:text-gray-900" ]
-                                [ Html.text tag
-                                ]
-                        )
-                        tags
-                )
-
         maincard : List JsonMeta -> Html msg
         maincard bloglist =
             case bloglist of
@@ -131,7 +113,7 @@ view model =
                                     [ Html.text first.title ]
                                 , Html.span [ class "text-gray-400" ] [ Html.text first.date ]
                                 , Html.p [] [ Html.text <| String.left 200 first.description ]
-                                , categoryNtags first.category taglist
+                                , UU.categoryNtags first.category []
                                 ]
                             ]
                         , Html.div [ class "grid justify-center grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" ] <| List.map card rest
@@ -148,7 +130,7 @@ view model =
                     [ Html.h3 [ class "text-2xl font-semibold group-hover:underline group-focus:underline" ] [ Html.text blog.title ]
                     , Html.span [ class " text-gray-400" ] [ Html.text blog.date ]
                     , Html.p [] [ Html.text <| String.left 200 blog.description ]
-                    , categoryNtags blog.category taglist
+                    , UU.categoryNtags blog.category []
                     ]
                 ]
 

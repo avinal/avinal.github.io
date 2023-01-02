@@ -14,9 +14,10 @@ customElements.define(
     runMarked() {
       const renderer = new marked.Renderer();
       const data = this.getAttribute("markdowndata");
+      var lead = 0;
       renderer.heading = (text, level) => {
         if (level === 1) {
-          return `<header>
+          return `<header class="text-center w-full">
             <h1>
                 ${text}</h1>
             </header>`;
@@ -32,6 +33,14 @@ customElements.define(
            #
           </a>
           </h${level}>`;
+      };
+
+      renderer.paragraph = (text) => {
+        lead++;
+        if (lead === 1) {
+          return `<p class="lead">${text}</p>`;
+        }
+        return `<p>${text}</p>`;
       };
 
       marked.setOptions({
