@@ -8,6 +8,7 @@ description: 'The project was to Create the VLC User Documentation for Android
 Mobile Port which was previously hosted on VLC wiki pages. The major portion 
 of this was to start everything from scratch including chapter separation, 
 section organization.'
+image: "/images/day-of-cone.webp"
 ---
 
 # Create the VLC User Documentation for one Mobile Port(Android)
@@ -273,3 +274,7 @@ thank every person at VLC and Google who were involved in this whole
 process. Thanks and Congrats to my fellow writer Abhishek Pratap Singh.
 This was a great opportunity to learn and meet awesome people. I learned
 a lot about Sphinx, reStructured Text and many other things.
+
+## ATTRIBUTION
+
+- [Image by Tom Bigelajzen](https://images.videolan.org/images/goodies/day-of-the-cones-ex2.jpg)

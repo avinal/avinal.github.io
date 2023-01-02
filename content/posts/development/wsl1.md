@@ -7,6 +7,7 @@ description: 'It is real pain when you have small SSD and Windows Subsystem for 
 (WSL) is growing exponentially in size. There is no easy way to move the
 WSL installation to another drive. Here in this blog I will discuss how
 to tackle this problem with bite size steps.'
+image: "/images/windows-wsl2.webp"
 ---
 
 # Move WSL 2 Safely to another Drive
@@ -21,13 +22,13 @@ use WinKey + X shortcut and select **Windows PowerShell(Admin)**.
 2. Check if the WSL 2 installation you are planning to move is is
 currently running/stopped.
 
-  ```powershell
-  PS C:\\Users\\Avinal> wsl -l -v
-  PS C:\\Users\\Avinal>
-    NAME      STATE           VERSION
-  * Ubuntu    Running         2
-    Kali      Stopped         2
-  ```
+```powershell
+PS C:\\Users\\Avinal> wsl -l -v
+PS C:\\Users\\Avinal>
+  NAME      STATE           VERSION
+* Ubuntu    Running         2
+  Kali      Stopped         2
+```
 
 3. If its running then you must stop the particular WSL distribution.
 (*Ubuntu* used as example)
@@ -89,3 +90,7 @@ PS C:\\Users\\Avinal> ubuntu config --default-user user_name
 
 10. Finally run `wsl` and you have successfully moved your WSL 2
     installation to another drive.
+
+## Attribution
+
+- [Image](https://www.atwix.com/magento/magento-2-with-docker-for-windows-and-wsl-2/)

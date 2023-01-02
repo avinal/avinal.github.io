@@ -34,6 +34,7 @@ type alias JsonMeta =
     , description : String
     , category : String
     , slug : String
+    , image : String
     }
 
 
@@ -124,7 +125,7 @@ view model =
                 first :: rest ->
                     Html.div [ class "max-w-6xl p-6 mx-auto space-y-6 sm:space-y-12 mb-16" ]
                         [ Html.a [ class "block max-w-sm gap-3 mx-auto sm:max-w-full group hover:no-underline focus:no-underline lg:grid lg:grid-cols-12 bg-neutral-900", href ("/posts/" ++ first.category ++ "/" ++ first.slug) ]
-                            [ Html.img [ class "object-cover w-full h-64 rounded sm:h-96 lg:col-span-7", src unsplash ] []
+                            [ Html.img [ class "object-cover w-full h-64 rounded sm:h-96 lg:col-span-7", src first.image ] []
                             , Html.div [ class "p-6 space-y-2 lg:col-span-5" ]
                                 [ Html.h3 [ class "text-2xl font-semibold sm:text-4xl group-hover:underline group-focus:underline" ]
                                     [ Html.text first.title ]
@@ -142,7 +143,7 @@ view model =
         card : JsonMeta -> Html msg
         card blog =
             Html.a [ class "max-w-sm  mx-auto group hover:no-underline focus:no-underline bg-neutral-900", href ("/posts/" ++ blog.category ++ "/" ++ blog.slug) ]
-                [ Html.img [ class "object-cover w-full h-44 rounded", src unsplash ] []
+                [ Html.img [ class "object-cover w-full h-44 rounded", src blog.image ] []
                 , Html.div [ class "p-6 space-y-2" ]
                     [ Html.h3 [ class "text-2xl font-semibold group-hover:underline group-focus:underline" ] [ Html.text blog.title ]
                     , Html.span [ class " text-gray-400" ] [ Html.text blog.date ]
@@ -191,9 +192,10 @@ view model =
 
 jsonMetaDecoder : Json.Decoder JsonMeta
 jsonMetaDecoder =
-    Json.map5 JsonMeta
+    Json.map6 JsonMeta
         (Json.field "title" Json.string)
         (Json.field "date" Json.string)
         (Json.field "description" Json.string)
         (Json.field "category" Json.string)
         (Json.field "slug" Json.string)
+        (Json.field "image" Json.string)

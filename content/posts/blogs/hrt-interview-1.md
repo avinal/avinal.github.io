@@ -3,6 +3,7 @@ title: HRT (Hudson River Trading) Systems Internship Interview Experience
 date: 2021-01-04 21:47
 tags: [HRT, hudsonrivertrading, interview, internship]
 category: blog
+image: "/images/hrt-singapore.webp"
 ---
 
 # `HRT (Hudson River Trading)` Systems Internship Interview Experience

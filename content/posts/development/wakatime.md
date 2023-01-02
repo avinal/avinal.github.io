@@ -3,7 +3,7 @@ title: How I implemented WakaTime embeddable Coding Graph GHA?
 date: 2021-02-02 21:47
 tags: [wakatime, github-action, coding]
 category: development
-image: https://raw.githubusercontent.com/avinal/Profile-Readme-WakaTime/b281d074ee75f9626b39d10e2e518c6a297208a3/waka.png
+image: "/images/waka.webp"
 description: 'If you use WakaTime to track your coding activity. You can add that to 
 your README as a bar graph or embed it in your blog/portfolio. Just add this 
 action to any of your repositories and there you have it.'
