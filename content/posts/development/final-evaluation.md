@@ -3,7 +3,8 @@ title: Google Summer of Code 2021
 date: 2021-08-19 23:07
 tags: [gsoc, FOSSology]
 category: development
-description: This is the final report of my Google Summer of Code 2021 at The FOSSology Project. 
+description: This is the final report of my Google Summer of Code 2021 at The FOSSology Project.
+image: "/images/gsoc-wall.webp"
 ---
 # Google Summer of Code 2021
 
@@ -30,7 +31,7 @@ via custom scripts.
 
 ## GitHub Actions CI/CD
 
-<img src="/images/ci.png"
+<img src="/images/ci.webp"
 class="float-md-right rounded border border-info ml-3 float-md-right rounded border border-info ml-3"
 width="350" alt="A CI Meme" />
 
@@ -496,7 +497,6 @@ easy. (Just remove the build folder :)
 INCOMPLETE, <span class="or">ORANGE</span>: NOT NEEDED/DEPRECATED)
 
 ## How does it work and how to use it?
-
 
 The new build system retains the modular and hierarchical structure of
 the previous build system. On the other hand, the new build system

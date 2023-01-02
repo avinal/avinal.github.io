@@ -4,7 +4,7 @@ date: 2012-02-27 22:47
 tags: [ants, sav] 
 category: article
 description: 'The Big Red Ants'
-image: /images/ants.jpg
+image: "/images/ants.webp"
 ---
 
 # The Big Red Ants

@@ -4,6 +4,7 @@ date: 2022-02-25 20:47
 category: development
 tags: [kubernetes, redhat, docker, golang, tekton, openshift, intern]
 description: I made it to the Red Hat as a DevTools intern. This post is about onboarding and how I prepared myself for working on the actual project.
+image: "/images/fedora-wall.webp"
 ---
 # My internship at Red Hat
 
@@ -74,7 +75,7 @@ end-to-end platform includes UIs, CLIs, APIs, and security that are
 engineered to work together across the entire application delivery
 lifecycle.
 
-![The Docker Architecture](/images/docker-architecture.png)
+![The Docker Architecture](/images/docker-architecture.webp)
 
 - [Docker and Containers -
   Katacoda](https://www.katacoda.com/courses/docker) *interactive
@@ -85,7 +86,7 @@ lifecycle.
 
 ### Kubernetes
 
-![Kubernetes tech](/images/kubernetes-architecture.png)
+![Kubernetes tech](/images/kubernetes-meme.webp)
 
 **Kubernetes** is the Greek word for a ship's captain. We get the words
 Cybernetic and Gubernatorial from it. The Kubernetes project focuses on

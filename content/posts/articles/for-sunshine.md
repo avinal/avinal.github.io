@@ -3,6 +3,7 @@ title: प्रेम रतन धन पायो
 date: 2019-09-21 15:47
 category: article
 tags: [love, article, hindi]
+image: "/images/fedora-night.webp"
 ---
 
 # प्रेम रतन धन पायो
