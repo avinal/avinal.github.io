@@ -48,9 +48,6 @@
       "script": [
         {
           "src": "https://cdn.jsdelivr.net/npm/marked/marked.min.js"
-        },
-        {
-          "src": "/js/redirect.js"
         }
       ]
     },
