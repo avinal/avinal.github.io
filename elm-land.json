@@ -38,6 +38,10 @@
         {
           "name": "theme-color",
           "content": "#ffffff"
+        },
+        {
+          "name": "description",
+          "content": ""
         }
       ],
       "link": [
@@ -85,7 +89,7 @@
         },
         {
           "data-goatcounter": "https://avinal.goatcounter.com/count",
-          "async src": "https://gc.zgo.at/count.js"
+          "async src": "//gc.zgo.at/count.js"
         }
       ]
     },
