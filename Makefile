@@ -1,7 +1,5 @@
 # build everything for production
 all: css build
-	@echo "--- copying content to dist"
-	cp -a content dist/content
 	@echo "--- production build finished"
 
 # build only css for production
