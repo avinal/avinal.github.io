@@ -9,12 +9,12 @@ import Utils.Constants exposing (..)
 categoryNtags : String -> List String -> Html msg
 categoryNtags category tags =
     Html.span [ class "flex flex-wrap py-6 space-x-2 border-t border-dashed border-teal-500" ]
-        (Html.b [ class "px-3 py-1 m-1 rounded-sm hover:underline dark:bg-pink-400 dark:text-gray-900" ]
+        (Html.b [ class "px-3 py-1 m-1 rounded-sm hover:underline bg-pink-400 text-gray-900" ]
             [ Html.text category
             ]
             :: List.map
                 (\tag ->
-                    Html.i [ class "px-3 py-1 m-1 rounded-sm hover:underline dark:bg-cyan-500 dark:text-gray-900" ]
+                    Html.i [ class "px-3 py-1 m-1 rounded-sm hover:underline bg-cyan-500 text-gray-900" ]
                         [ Html.text tag
                         ]
                 )
@@ -24,7 +24,7 @@ categoryNtags category tags =
 
 contentUrl : { category : String, post : String } -> String
 contentUrl { category, post } =
-    contentUrlPrefix ++ "posts/" ++ category ++ "/" ++ post ++ ".md"
+    "/content/posts/" ++ category ++ "/" ++ post ++ ".md"
 
 
 errorToString : Http.Error -> String

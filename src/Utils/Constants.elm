@@ -34,26 +34,6 @@ iconLinks =
     ]
 
 
-contentBase : String
-contentBase =
-    "https://avinal.space/"
-
-
-user : String
-user =
-    "avinal"
-
-
-urlPrefix : String
-urlPrefix =
-    "avinal.github.io"
-
-
-contentUrlPrefix : String
-contentUrlPrefix =
-    contentBase ++ "/content/"
-
-
 nameMatrix : Array Int
 nameMatrix =
     Array.fromList

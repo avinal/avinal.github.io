@@ -8,12 +8,10 @@ customElements.define(
     connectedCallback() {
       this.runMarked();
     }
-    attributeChangedCallback(name, oldValue, newValue) {
-      this.runMarked();
-    }
     runMarked() {
       const renderer = new marked.Renderer();
       const data = this.getAttribute("markdowndata");
+      const fragment = this.getAttribute("fragment");
       var lead = 0;
       renderer.heading = (text, level) => {
         if (level === 1) {
@@ -51,17 +49,20 @@ customElements.define(
             console.warn(`Unable to find prism highlight for '${lang}'`);
             return;
           }
-          console.info("Found", lang);
           return Prism.highlight(code, grammer, lang);
         },
       });
 
       this.innerHTML = marked.parse(data);
       console.log("Markdown rendering complete!");
+      if (fragment) {
+        console.log("Fragment found, scrolling to: #", fragment);
+        window.location = "#" + fragment;
+      }
     }
 
     static get observedAttributes() {
-      return ["markdowndata"];
+      return ["markdowndata", "fragment"];
     }
   }
 );

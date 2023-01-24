@@ -63,7 +63,6 @@ init : Route { first_ : String, rest_ : List String } -> () -> ( Model, Effect M
 init route () =
     let
         requestUrl =
-            -- "https://gist.githubusercontent.com/avinal/a66c60362491498d114b53e8801632d6/raw/cd2fd3816f0f005fe12ebfeead8d8b1fcaafa5db/markdowntest.md"
             UU.contentUrl
                 { category = route.params.first_
                 , post =
@@ -80,7 +79,7 @@ init route () =
     ( { blog = Nothing
       , requestUrl = requestUrl
       , success = False
-      , fragment = ""
+      , fragment = Maybe.withDefault "" route.hash
       , error = Nothing
       }
     , Effect.sendCmd cmd
@@ -93,7 +92,6 @@ init route () =
 
 type Msg
     = RawMarkdownReceived (Result Http.Error String)
-    | AttributeUpdate String
 
 
 update : Msg -> Model -> ( Model, Effect Msg )
@@ -109,9 +107,6 @@ update msg model =
 
         RawMarkdownReceived (Err err) ->
             ( { model | success = False, error = Just (UU.errorToString err) }, Effect.none )
-
-        AttributeUpdate data ->
-            ( model, Effect.none )
 
 
 
@@ -138,7 +133,7 @@ view model =
                     , src blog.meta.image
                     ]
                     []
-                , articleNode blog.content
+                , articleNode blog.content model.fragment
                 , Html.div [ class "text-center text-neutral-300 border-t border-dashed border-teal-500 p-2" ]
                     [ Html.text <| "Published on " ++ blog.meta.date ++ " under  "
                     , Html.a [ href "https://www.mozilla.org/en-US/MPL/2.0/" ] [ Html.text "Mozilla Public License 2.0" ]
@@ -226,10 +221,10 @@ view model =
 errorView : String -> Html msg
 errorView error =
     Html.div
-        [ class "flex items-center rounded shadow-md overflow-hidden max-w-xl relative dark:bg-neutral-900 dark:text-gray-100"
+        [ class "flex items-center rounded shadow-md overflow-hidden max-w-xl relative bg-neutral-900 text-gray-100"
         ]
         [ Html.div
-            [ class "self-stretch flex items-center px-3 flex-shrink-0 dark:bg-gray-700 dark:text-pink-500"
+            [ class "self-stretch flex items-center px-3 flex-shrink-0 bg-gray-700 text-pink-500"
             ]
             [ svg
                 [ SvgAttr.fill "none"
@@ -254,7 +249,7 @@ errorView error =
                 ]
                 [ Html.text error ]
             , Html.p
-                [ class " dark:text-gray-400"
+                [ class " text-gray-400"
                 ]
                 [ Html.a
                     [ href "../posts"
@@ -267,10 +262,10 @@ errorView error =
         ]
 
 
-articleNode : String -> Html Msg
-articleNode data =
+articleNode : String -> String -> Html Msg
+articleNode data fragment =
     Html.node "rendered-md"
-        [ Html.Attributes.attribute "markdowndata" data ]
+        [ Html.Attributes.attribute "markdowndata" data, Html.Attributes.attribute "fragment" fragment ]
         []
 
 

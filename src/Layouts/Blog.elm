@@ -65,7 +65,7 @@ subscriptions model =
 
 blogTheme : String
 blogTheme =
-    "mt-4 prose prose-invert mx-auto lg:prose-lg prose-a:decoration-cyan-500 hover:prose-a:decoration-pink-500"
+    "mt-4 prose prose-invert mx-auto lg:prose-lg prose-a:decoration-cyan-500 hover:prose-a:decoration-pink-500 prose-img:float-right"
 
 
 view : { fromMsg : Msg -> mainMsg, content : View mainMsg, model : Model } -> View mainMsg

@@ -50,7 +50,7 @@ init () =
         cmd : Cmd Msg
         cmd =
             Http.get
-                { url = "https://avinal.space/content/posts/posts.json"
+                { url = "/content/posts/posts.json"
                 , expect = Http.expectJson BloglistReceived (Json.list jsonMetaDecoder)
                 }
     in
@@ -92,10 +92,6 @@ subscriptions model =
 
 
 -- VIEW
-
-
-unsplash =
-    "https://source.unsplash.com/random/"
 
 
 view : Model -> View Msg
