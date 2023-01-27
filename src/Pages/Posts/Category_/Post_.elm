@@ -1,4 +1,4 @@
-module Pages.Posts.ALL_ exposing (Model, Msg, page)
+module Pages.Posts.Category_.Post_ exposing (Model, Msg, page)
 
 import Effect exposing (Effect)
 import Html exposing (Html)
@@ -17,7 +17,7 @@ import View exposing (View)
 import Yaml.Decode as Yaml
 
 
-page : Shared.Model -> Route { first_ : String, rest_ : List String } -> Page Model Msg
+page : Shared.Model -> Route { category : String, post : String } -> Page Model Msg
 page shared route =
     Page.new
         { init = init route
@@ -59,14 +59,13 @@ type alias Blog =
     }
 
 
-init : Route { first_ : String, rest_ : List String } -> () -> ( Model, Effect Msg )
+init : Route { category : String, post : String } -> () -> ( Model, Effect Msg )
 init route () =
     let
         requestUrl =
             UU.contentUrl
-                { category = route.params.first_
-                , post =
-                    Maybe.withDefault "" <| List.head route.params.rest_
+                { category = route.params.category
+                , post = route.params.post
                 }
 
         cmd : Cmd Msg

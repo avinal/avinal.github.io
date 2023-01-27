@@ -34,6 +34,24 @@ iconLinks =
     ]
 
 
+months : Array String
+months =
+    Array.fromList
+        [ "January"
+        , "February"
+        , "March"
+        , "April"
+        , "May"
+        , "June"
+        , "July"
+        , "August"
+        , "September"
+        , "October"
+        , "November"
+        , "December"
+        ]
+
+
 nameMatrix : Array Int
 nameMatrix =
     Array.fromList

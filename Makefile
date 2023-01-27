@@ -14,7 +14,7 @@ build:
 
 # compile and watch for dev
 elm-serve:
-	npx elm-land serve
+	npx elm-land server
 
 # build css and watch
 css-serve:

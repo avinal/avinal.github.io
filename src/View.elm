@@ -35,7 +35,7 @@ toBrowserDocument :
     }
     -> Browser.Document msg
 toBrowserDocument { view } =
-    { title = view.title
+    { title = view.title ++ " | Avinal's personal website"
     , body =
         [ Html.main_ [ class "container mx-auto bg-neutral-800" ]
             view.body
@@ -57,7 +57,7 @@ authenticated pages.
 -}
 none : View msg
 none =
-    { title = "Be My SpaceTime"
+    { title = "Avinal | Personal Website"
     , body = []
     }
 

@@ -2,7 +2,7 @@ module Pages.Posts exposing (Model, Msg, page)
 
 import Effect exposing (Effect)
 import Html exposing (Html)
-import Html.Attributes exposing (class, href, src)
+import Html.Attributes exposing (class, href, src, target)
 import Http
 import Json.Decode as Json
 import Page exposing (Page)
@@ -102,14 +102,16 @@ view model =
             case bloglist of
                 first :: rest ->
                     Html.div [ class "max-w-6xl p-6 mx-auto space-y-6 sm:space-y-12 mb-16" ]
-                        [ Html.a [ class "block max-w-sm gap-3 mx-auto sm:max-w-full group hover:no-underline focus:no-underline lg:grid lg:grid-cols-12 bg-neutral-900", href ("/posts/" ++ first.category ++ "/" ++ first.slug) ]
-                            [ Html.img [ class "object-cover w-full h-64 rounded sm:h-96 lg:col-span-7", src first.image ] []
+                        [ Html.div [ class "block max-w-sm gap-3 mx-auto sm:max-w-full group hover:no-underline focus:no-underline lg:grid lg:grid-cols-12 bg-neutral-900" ]
+                            [ Html.a [ class "lg:col-span-7", href <| "/posts/" ++ first.category ++ "/" ++ first.slug ] [ Html.img [ class "object-cover w-full h-64 rounded sm:h-96 lg:col-span-7", src first.image ] [] ]
                             , Html.div [ class "p-6 space-y-2 lg:col-span-5" ]
-                                [ Html.h3 [ class "text-2xl font-semibold sm:text-4xl group-hover:underline group-focus:underline" ]
-                                    [ Html.text first.title ]
-                                , Html.span [ class "text-gray-400" ] [ Html.text first.date ]
-                                , Html.p [] [ Html.text <| String.left 200 first.description ]
-                                , UU.categoryNtags first.category []
+                                [ Html.a [ href <| "/posts/" ++ first.category ++ "/" ++ first.slug ]
+                                    [ Html.h3 [ class "text-2xl font-semibold sm:text-4xl group-hover:underline group-focus:underline" ]
+                                        [ Html.text first.title ]
+                                    , Html.span [ class "text-gray-400" ] [ Html.text first.date ]
+                                    , Html.p [] [ Html.text <| String.left 200 first.description ]
+                                    ]
+                                , Html.a [ href <| "/posts/" ++ first.category, target "_blank" ] [ UU.categoryNtags first.category [] ]
                                 ]
                             ]
                         , Html.div [ class "grid justify-center grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" ] <| List.map card rest
@@ -120,13 +122,15 @@ view model =
 
         card : JsonMeta -> Html msg
         card blog =
-            Html.a [ class "max-w-sm  mx-auto group hover:no-underline focus:no-underline bg-neutral-900", href ("/posts/" ++ blog.category ++ "/" ++ blog.slug) ]
-                [ Html.img [ class "object-cover w-full h-44 rounded", src blog.image ] []
+            Html.div [ class "max-w-sm  mx-auto group hover:no-underline focus:no-underline bg-neutral-900", href ("/posts/" ++ blog.category ++ "/" ++ blog.slug) ]
+                [ Html.a [ href <| "/posts/" ++ blog.category ++ "/" ++ blog.slug ] [ Html.img [ class "object-cover w-full h-44 rounded", src blog.image ] [] ]
                 , Html.div [ class "p-6 space-y-2" ]
-                    [ Html.h3 [ class "text-2xl font-semibold group-hover:underline group-focus:underline" ] [ Html.text blog.title ]
-                    , Html.span [ class " text-gray-400" ] [ Html.text blog.date ]
-                    , Html.p [] [ Html.text <| String.left 200 blog.description ]
-                    , UU.categoryNtags blog.category []
+                    [ Html.a [ href <| "/posts/" ++ blog.category ++ "/" ++ blog.slug ]
+                        [ Html.h3 [ class "text-2xl font-semibold group-hover:underline group-focus:underline" ] [ Html.text blog.title ]
+                        , Html.span [ class " text-gray-400" ] [ Html.text <| UU.getFormattedDate blog.date ]
+                        , Html.p [] [ Html.text <| String.left 200 blog.description ]
+                        ]
+                    , Html.a [ href <| "/posts/" ++ blog.category, target "_blank" ] [ UU.categoryNtags blog.category [] ]
                     ]
                 ]
 
@@ -145,7 +149,8 @@ view model =
             { title = "Blog by Avinal"
             , body =
                 [ Html.section [ class "text-gray-100" ]
-                    [ maincard blogList
+                    [ Html.h1 [ class "text-5xl font-bold mb-6 mt-12 text-center text-white" ] [ Html.text <| "Welcome to my blog" ]
+                    , maincard blogList
                     , Html.div [ class "fixed bottom-0 left-0 bg-neutral-900 z-20 p-4 w-full md:flex md:items-center md:justify-between md:p-4" ]
                         [ Html.ul
                             [ class "flex flex-wrap items-center mt-3 text-xl text-neutral-500 sm:mt-0" ]
