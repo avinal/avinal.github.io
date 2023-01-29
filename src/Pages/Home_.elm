@@ -17,7 +17,7 @@ import View exposing (View)
 
 
 page : Shared.Model -> Route () -> Page Model Msg
-page model route =
+page _ _ =
     Page.new
         { init = init
         , update = update
@@ -32,7 +32,7 @@ page model route =
 
 
 layout : Model -> Layouts.Layout
-layout model =
+layout _ =
     Layouts.Home
         { home = {}
         }

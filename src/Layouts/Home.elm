@@ -1,5 +1,6 @@
 module Layouts.Home exposing (Model, Msg, Settings, layout)
 
+import Components.Footer exposing (iconLinkToCenter)
 import Effect exposing (Effect)
 import Html exposing (Html)
 import Html.Attributes exposing (class, href)
@@ -15,7 +16,7 @@ type alias Settings =
 
 
 layout : Settings -> Shared.Model -> Route () -> Layout Model Msg mainMsg
-layout settings shared route =
+layout _ _ _ =
     Layout.new
         { init = init
         , update = update
@@ -57,7 +58,7 @@ update msg model =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions _ =
     Sub.none
 
 
@@ -75,18 +76,12 @@ view { fromMsg, model, content } =
                 , class "underline decoration-cyan-500 hover:decoration-pink-500 inline-flex text-xl p-3"
                 ]
                 [ Html.text link.text ]
-
-        iconLinkToCenter : IconLink -> Html msg
-        iconLinkToCenter iconLink =
-            Html.a [ href iconLink.url, class " hover:text-pink-500 inline-flex text-2xl p-3" ]
-                [ Html.i [ class iconLink.icon ] [] ]
     in
     { title = content.title
     , body =
-        [ Html.section [ class "flex items-center justify-center flex-col h-screen text-neutral-400" ]
+        [ Html.section [ class "flex items-center justify-center flex-col h-screen text-gray-400" ]
             [ Html.header [ class "object-cover object-center p-8" ] content.body
-            , Html.div [ class "flex justify-center flex-wrap" ]
-                (List.map iconLinkToCenter Utils.Constants.iconLinks)
+            , iconLinkToCenter
             , Html.div [ class "text-center text-xl p-2" ] [ Html.text "I'm Avinal and I work at Red Hat as an Associate Software Engineer for Hybrid Cloud Engineering." ]
             , Html.footer [ class "flex justify-center flex-wrap" ]
                 (List.map footerLinkToCenter Utils.Constants.footerLinks)

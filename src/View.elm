@@ -14,7 +14,7 @@ module View exposing
 
 import Browser
 import Html exposing (Html)
-import Html.Attributes exposing (class, href)
+import Html.Attributes exposing (class)
 import Route exposing (Route)
 import Shared.Model
 

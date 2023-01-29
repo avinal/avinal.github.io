@@ -2,14 +2,13 @@ module Pages.Pages.Projects exposing (Model, Msg, page)
 
 import Effect exposing (Effect)
 import Route exposing (Route)
-import Html
 import Page exposing (Page)
 import Shared
 import View exposing (View)
 
 
 page : Shared.Model -> Route () -> Page Model Msg
-page shared route =
+page _ _ =
     Page.new
         { init = init
         , update = update
@@ -55,7 +54,7 @@ update msg model =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions _ =
     Sub.none
 
 
@@ -64,5 +63,5 @@ subscriptions model =
 
 
 view : Model -> View Msg
-view model =
+view _ =
     View.fromString "Pages.Pages.Projects"

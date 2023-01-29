@@ -1,6 +1,7 @@
 module Utils.Utils exposing (..)
 
-import Array exposing (Array)
+import Array 
+
 import Html exposing (Html)
 import Html.Attributes exposing (class, href, target)
 import Http exposing (Error(..))
@@ -8,29 +9,13 @@ import Parser exposing (..)
 import Utils.Constants exposing (..)
 
 
-type alias Date =
-    { day : Int
+type alias DateTime =
+    { year : Int
     , month : Int
-    , year : Int
+    , day : Int
+    , hour : Int
+    , minute : Int
     }
-
-
-day : Parser Int
-day =
-    succeed identity
-        |= int
-
-
-month : Parser Int
-month =
-    succeed identity
-        |= int
-
-
-year : Parser Int
-year =
-    succeed identity
-        |= int
 
 
 getFormattedDate : String -> String
@@ -39,19 +24,27 @@ getFormattedDate dateString =
         Ok date ->
             (Maybe.withDefault "Month" <| Array.get (date.month - 1) months) ++ " " ++ String.fromInt date.day ++ ", " ++ String.fromInt date.year
 
-        Err err ->
+        Err _ ->
             "Invalid date!!"
 
 
-dateParser : Parser Date
+dateParser : Parser DateTime
 dateParser =
-    succeed Date
-        |= day
-        |. symbol "-"
-        |= month
-        |. symbol "-"
-        |= year
-
+    succeed DateTime
+        |= int
+        |. token "-"
+        |. chompWhile (\c -> c == '0')
+        |= int
+        |. token "-"
+        |. chompWhile (\c -> c == '0')
+        |= int
+        |. spaces
+        |. chompWhile (\c -> c == '0')
+        |= int
+        |. token ":"
+        |. chompWhile (\c -> c == '0')
+        |= int
+        |. end
 
 
 categoryNtags : String -> List String -> Html msg

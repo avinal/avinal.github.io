@@ -1,8 +1,9 @@
 module Pages.Posts exposing (Model, Msg, page)
 
+import Components.Footer exposing (footerLinksToSide)
 import Effect exposing (Effect)
 import Html exposing (Html)
-import Html.Attributes exposing (class, href, src, target)
+import Html.Attributes exposing (class, datetime, href, src, target)
 import Http
 import Json.Decode as Json
 import Page exposing (Page)
@@ -15,7 +16,7 @@ import View exposing (View)
 
 
 page : Shared.Model -> Route () -> Page Model Msg
-page shared route =
+page _ _ =
     Page.new
         { init = init
         , update = update
@@ -86,7 +87,7 @@ update msg model =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions _ =
     Sub.none
 
 
@@ -108,7 +109,7 @@ view model =
                                 [ Html.a [ href <| "/posts/" ++ first.category ++ "/" ++ first.slug ]
                                     [ Html.h3 [ class "text-2xl font-semibold sm:text-4xl group-hover:underline group-focus:underline" ]
                                         [ Html.text first.title ]
-                                    , Html.span [ class "text-gray-400" ] [ Html.text first.date ]
+                                    , Html.time [ class "text-gray-400", datetime first.date ] [ Html.text <| UU.getFormattedDate first.date ]
                                     , Html.p [] [ Html.text <| String.left 200 first.description ]
                                     ]
                                 , Html.a [ href <| "/posts/" ++ first.category, target "_blank" ] [ UU.categoryNtags first.category [] ]
@@ -127,21 +128,11 @@ view model =
                 , Html.div [ class "p-6 space-y-2" ]
                     [ Html.a [ href <| "/posts/" ++ blog.category ++ "/" ++ blog.slug ]
                         [ Html.h3 [ class "text-2xl font-semibold group-hover:underline group-focus:underline" ] [ Html.text blog.title ]
-                        , Html.span [ class " text-gray-400" ] [ Html.text <| UU.getFormattedDate blog.date ]
+                        , Html.time [ class " text-gray-400", datetime blog.date ] [ Html.text <| UU.getFormattedDate blog.date ]
                         , Html.p [] [ Html.text <| String.left 200 blog.description ]
                         ]
                     , Html.a [ href <| "/posts/" ++ blog.category, target "_blank" ] [ UU.categoryNtags blog.category [] ]
                     ]
-                ]
-
-        footerLinkToLeft : Link -> Html msg
-        footerLinkToLeft link =
-            Html.li []
-                [ Html.a
-                    [ href link.url
-                    , class "mr-4 md:mr-6 underline decoration-cyan-500 hover:decoration-pink-500"
-                    ]
-                    [ Html.text link.text ]
                 ]
     in
     case model.blogList of
@@ -151,14 +142,7 @@ view model =
                 [ Html.section [ class "text-gray-100" ]
                     [ Html.h1 [ class "text-5xl font-bold mb-6 mt-12 text-center text-white" ] [ Html.text <| "Welcome to my blog" ]
                     , maincard blogList
-                    , Html.div [ class "fixed bottom-0 left-0 bg-neutral-900 z-20 p-4 w-full md:flex md:items-center md:justify-between md:p-4" ]
-                        [ Html.ul
-                            [ class "flex flex-wrap items-center mt-3 text-xl text-neutral-500 sm:mt-0" ]
-                            (List.map footerLinkToLeft <|
-                                { text = "Home", url = "/" }
-                                    :: Utils.Constants.footerLinks
-                            )
-                        ]
+                    , footerLinksToSide
                     ]
                 ]
             }

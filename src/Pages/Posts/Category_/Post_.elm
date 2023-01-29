@@ -1,8 +1,9 @@
 module Pages.Posts.Category_.Post_ exposing (Model, Msg, page)
 
+import Components.Footer exposing (avatarAndLinks)
 import Effect exposing (Effect)
 import Html exposing (Html)
-import Html.Attributes exposing (class, href, rel, src)
+import Html.Attributes exposing (class, datetime, href, rel, src)
 import Http
 import Layouts
 import Page exposing (Page)
@@ -11,14 +12,13 @@ import Shared
 import Svg exposing (path, svg)
 import Svg.Attributes as SvgAttr
 import Url exposing (Protocol(..))
-import Utils.Constants
 import Utils.Utils as UU
 import View exposing (View)
 import Yaml.Decode as Yaml
 
 
 page : Shared.Model -> Route { category : String, post : String } -> Page Model Msg
-page shared route =
+page _ route =
     Page.new
         { init = init route
         , update = update
@@ -33,7 +33,7 @@ page shared route =
 
 
 layout : Model -> Layouts.Layout
-layout model =
+layout _ =
     Layouts.Blog
         { blog =
             {}
@@ -113,7 +113,7 @@ update msg model =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions _ =
     Sub.none
 
 
@@ -134,32 +134,13 @@ view model =
                     []
                 , articleNode blog.content model.fragment
                 , Html.div [ class "text-center text-neutral-300 border-t border-dashed border-teal-500 p-2" ]
-                    [ Html.text <| "Published on " ++ blog.meta.date ++ " under  "
+                    [ Html.time [ datetime blog.meta.date ] [ Html.text <| "Published on " ++ UU.getFormattedDate blog.meta.date ++ " under  " ]
                     , Html.a [ href "https://www.mozilla.org/en-US/MPL/2.0/" ] [ Html.text "Mozilla Public License 2.0" ]
                     , Html.text "  if you found an issue with the page, please report it "
                     , Html.a [ href <| "https://github.com/avinal/avinal.github.io/issues/new?title=bug:+" ++ String.replace " " "+" blog.meta.title ] [ Html.text "here." ]
                     ]
                 , UU.categoryNtags blog.meta.category blog.meta.tags
-                , Html.div [ class "flex flex-col space-y-2 md:space-y-0 md:space-x-6 md:flex-row border-t border-neutral-700" ]
-                    [ Html.img
-                        [ class "self-center flex-shrink-0 w-24 h-24 border rounded-full md:justify-self-start"
-                        , src "https://github.com/avinal.png"
-                        ]
-                        []
-                    , Html.div [ class "flex flex-col self-center" ]
-                        [ Html.h4 [ class "text-xl font-semibold " ] [ Html.text "Avinal Kumar" ]
-                        , Html.p [ class "text-gray-400" ]
-                            [ Html.text "I am a Associate Software Engineer at Red Hat and I work for Hybrid Cloud Engineering. I contribute to Open Source projects and write blogs in tech and literature."
-                            ]
-                        ]
-                    ]
-                , Html.div [ class "flex justify-center space-x-4 align-center text-neutral-600 text-xl" ]
-                    (List.map
-                        (\iconlink ->
-                            Html.a [ href iconlink.url, class "hover:text-pink-500" ] [ Html.i [ class iconlink.icon ] [] ]
-                        )
-                        Utils.Constants.iconLinks
-                    )
+                , avatarAndLinks
                 ]
             }
 

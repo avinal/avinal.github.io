@@ -1,8 +1,9 @@
 module Pages.Posts.Category_ exposing (Model, Msg, page)
 
+import Components.Footer exposing (footerLinksToSide)
 import Effect exposing (Effect)
 import Html exposing (Html)
-import Html.Attributes exposing (class, href, src)
+import Html.Attributes exposing (class, datetime, href, src)
 import Http
 import Json.Decode as Json
 import Page exposing (Page)
@@ -14,7 +15,7 @@ import View exposing (View)
 
 
 page : Shared.Model -> Route { category : String } -> Page Model Msg
-page shared route =
+page _ route =
     Page.new
         { init = init route
         , update = update
@@ -87,7 +88,7 @@ update msg model =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions _ =
     Sub.none
 
 
@@ -108,19 +109,9 @@ view model =
                     ]
                 , Html.div [ class "grow-0 shrink-0 basis-auto w-full md:w-9/12 xl:w-7/12 p-3 md:mb-0 mr-auto bg-neutral-900" ]
                     [ Html.h5 [ class "text-2xl font-bold mb-2" ] [ Html.text blog.title ]
-                    , Html.span [ class "text-gray-400 text-sm" ] [ Html.text blog.date ]
+                    , Html.time [ class "text-gray-400 text-sm", datetime blog.date ] [ Html.text <| UU.getFormattedDate blog.date ]
                     , Html.p [ class "text-gray-500 mt-4 text-md" ] [ Html.text <| String.left 200 blog.description ]
                     ]
-                ]
-
-        footerLinkToLeft : Link -> Html msg
-        footerLinkToLeft link =
-            Html.li []
-                [ Html.a
-                    [ href link.url
-                    , class "mr-4 md:mr-6 underline decoration-cyan-500 hover:decoration-pink-500"
-                    ]
-                    [ Html.text link.text ]
                 ]
     in
     case model.blogList of
@@ -142,14 +133,7 @@ view model =
                             [ Html.section [ class "mb-32 text-gray-200 text-center md:text-left" ] <|
                                 Html.h1 [ class "text-5xl font-bold mb-12 mt-12 text-center text-white" ] [ Html.text "Posts in ", Html.i [ class "text-pink-600" ] [ Html.text model.category ], Html.text " category" ]
                                     :: List.map card clist
-                            , Html.div [ class "fixed bottom-0 left-0 bg-neutral-900 z-20 p-4 w-full md:flex md:items-center md:justify-between md:p-4" ]
-                                [ Html.ul
-                                    [ class "flex flex-wrap items-center mt-3 text-xl text-neutral-500 sm:mt-0" ]
-                                    (List.map footerLinkToLeft <|
-                                        { text = "Home", url = "/" }
-                                            :: Utils.Constants.footerLinks
-                                    )
-                                ]
+                            , footerLinksToSide
                             ]
                         ]
                     }

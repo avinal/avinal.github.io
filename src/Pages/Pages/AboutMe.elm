@@ -1,6 +1,5 @@
 module Pages.Pages.AboutMe exposing (page)
 
-import Html exposing (Html)
 import View exposing (View)
 
 
