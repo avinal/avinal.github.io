@@ -20,7 +20,7 @@ footerLinks =
     [ { text = "About", url = "/pages/about-me" }
     , { text = "Blog", url = "/posts" }
     , { text = "Projects", url = "/pages/projects" }
-    , { text = "GSoC", url = "https://gsoc.avinal.space" }
+    , { text = "GSoC", url = "/posts/gsoc" }
     ]
 
 
@@ -31,6 +31,7 @@ iconLinks =
     , { url = "https://instagram.com/avinal.k", icon = "fa-brands fa-instagram" }
     , { url = "https://twitter.com/Avinal_", icon = "fa-brands fa-twitter" }
     , { url = "mailto:ripple@avinal.space", icon = "fa-solid fa-envelope" }
+    , { url = "/meet", icon = "fa-solid fa-video" }
     ]
 
 

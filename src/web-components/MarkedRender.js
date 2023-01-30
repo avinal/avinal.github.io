@@ -41,6 +41,10 @@ customElements.define(
         return `<p>${text}</p>`;
       };
 
+      renderer.image = (href, title, text) => {
+        return `<img class="max-w-xs grow-0 shrink-0 basis-auto w-full" src=${href} alt="${text}">`;
+      };
+
       marked.setOptions({
         renderer: renderer,
         highlight: function (code, lang) {

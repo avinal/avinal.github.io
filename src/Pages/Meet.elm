@@ -1,12 +1,17 @@
 module Pages.Meet exposing (page)
 
 import Components.Footer exposing (footerLinksToSide)
-import Html 
+import Html
+import Html.Attributes exposing (class, id)
 import View exposing (View)
 
 
 page : View msg
 page =
     { title = "Schedule a meet with me"
-    , body = [ footerLinksToSide, Html.node "calcom" [] [] ]
+    , body =
+        [ Html.div [ class "aspect-square flex items-center justify-center flex-col h-screen m-2" ]
+            [ Html.node "cal-com" [ id "calcom-widget", class "w-full p-2 " ] [] ]
+        , footerLinksToSide
+        ]
     }
