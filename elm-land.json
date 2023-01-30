@@ -40,8 +40,52 @@
           "content": "#ffffff"
         },
         {
+          "name": "title",
+          "content": "Avinal Kumar | Personal Website"
+        },
+        {
           "name": "description",
-          "content": ""
+          "content": "Associate Software Engineer at Red Hat | Open Source Contributor"
+        },
+        {
+          "property": "og:type",
+          "content": "website"
+        },
+        {
+          "property": "og:url",
+          "content": "https://avinal.space/"
+        },
+        {
+          "property": "og:title",
+          "content": "Avinal Kumar | Personal Website"
+        },
+        {
+          "property": "og:description",
+          "content": "Associate Software Engineer at Red Hat | Open Source Contributor"
+        },
+        {
+          "property": "og:image",
+          "content": "/images/avinal-meta.png"
+        },
+        {
+          "property": "twitter:card",
+          "content": "summary_large_image"
+        },
+        {
+          "property": "twitter:url",
+          "content": "https://avinal.space/"
+        },
+        {
+          "property": "twitter:title",
+          "content": "Avinal Kumar | Personal Website"
+        },
+        {
+          "property": "twitter:description",
+          "content": "Associate Software Engineer at Red Hat | Open Source Contributor"
+        },
+        {
+          "property": "twitter:image",
+          "content": "/images/avinal-meta.png"
         }
       ],
       "link": [
