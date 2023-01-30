@@ -149,7 +149,7 @@ subscriptions model =
 
 view : Model -> View Msg
 view model =
-    { title = "Be my SpaceTime"
+    { title = "Welcome to my website"
     , body = [ Html.div [ onClick LiveLife, onMouseLeave LiveLife ] [ universeSvg model ] ]
     }
 

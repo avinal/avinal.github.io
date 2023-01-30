@@ -3,7 +3,7 @@ module Pages.Posts.Category_ exposing (Model, Msg, page)
 import Components.Footer exposing (footerLinksToSide)
 import Effect exposing (Effect)
 import Html exposing (Html)
-import Html.Attributes exposing (class, datetime, href, src)
+import Html.Attributes exposing (alt, class, datetime, href, src)
 import Http
 import Json.Decode as Json
 import Page exposing (Page)
@@ -104,7 +104,7 @@ view model =
             Html.a [ class "flex flex-wrap mb-6 ", href <| "/posts/" ++ blog.category ++ "/" ++ blog.slug ]
                 [ Html.div [ class "grow-0 shrink-0 basis-auto w-full md:w-3/12 md:mb-0 ml-auto" ]
                     [ Html.div [ class "overflow-hidden relative bg-no-repeat bg-cover ripple" ]
-                        [ Html.img [ src blog.image, class "w-full h-44 object-cover rounded" ] []
+                        [ Html.img [ src blog.image, class "w-full h-44 object-cover rounded", alt blog.title ] []
                         ]
                     ]
                 , Html.div [ class "grow-0 shrink-0 basis-auto w-full md:w-9/12 xl:w-7/12 p-3 md:mb-0 mr-auto bg-neutral-900" ]

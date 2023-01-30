@@ -3,7 +3,7 @@ module Pages.Posts exposing (Model, Msg, page)
 import Components.Footer exposing (footerLinksToSide)
 import Effect exposing (Effect)
 import Html exposing (Html)
-import Html.Attributes exposing (class, datetime, href, src, target)
+import Html.Attributes exposing (alt, class, datetime, href, src, target)
 import Http
 import Json.Decode as Json
 import Page exposing (Page)
@@ -104,7 +104,7 @@ view model =
                 first :: rest ->
                     Html.div [ class "max-w-6xl p-6 mx-auto space-y-6 sm:space-y-12 mb-16" ]
                         [ Html.div [ class "block max-w-sm gap-3 mx-auto sm:max-w-full group hover:no-underline focus:no-underline lg:grid lg:grid-cols-12 bg-neutral-900" ]
-                            [ Html.a [ class "lg:col-span-7", href <| "/posts/" ++ first.category ++ "/" ++ first.slug ] [ Html.img [ class "object-cover w-full h-64 rounded sm:h-96 lg:col-span-7", src first.image ] [] ]
+                            [ Html.a [ class "lg:col-span-7", href <| "/posts/" ++ first.category ++ "/" ++ first.slug ] [ Html.img [ class "object-cover w-full h-64 rounded sm:h-96 lg:col-span-7", src first.image, alt first.title ] [] ]
                             , Html.div [ class "p-6 space-y-2 lg:col-span-5" ]
                                 [ Html.a [ href <| "/posts/" ++ first.category ++ "/" ++ first.slug ]
                                     [ Html.h3 [ class "text-2xl font-semibold sm:text-4xl group-hover:underline group-focus:underline" ]
@@ -124,7 +124,7 @@ view model =
         card : JsonMeta -> Html msg
         card blog =
             Html.div [ class "max-w-sm  mx-auto group hover:no-underline focus:no-underline bg-neutral-900", href ("/posts/" ++ blog.category ++ "/" ++ blog.slug) ]
-                [ Html.a [ href <| "/posts/" ++ blog.category ++ "/" ++ blog.slug ] [ Html.img [ class "object-cover w-full h-44 rounded", src blog.image ] [] ]
+                [ Html.a [ href <| "/posts/" ++ blog.category ++ "/" ++ blog.slug ] [ Html.img [ class "object-cover w-full h-44 rounded", src blog.image, alt blog.title ] [] ]
                 , Html.div [ class "p-6 space-y-2" ]
                     [ Html.a [ href <| "/posts/" ++ blog.category ++ "/" ++ blog.slug ]
                         [ Html.h3 [ class "text-2xl font-semibold group-hover:underline group-focus:underline" ] [ Html.text blog.title ]

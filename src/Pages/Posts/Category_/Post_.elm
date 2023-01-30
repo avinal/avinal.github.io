@@ -3,7 +3,7 @@ module Pages.Posts.Category_.Post_ exposing (Model, Msg, page)
 import Components.Footer exposing (avatarAndLinks)
 import Effect exposing (Effect)
 import Html exposing (Html)
-import Html.Attributes exposing (class, datetime, href, rel, src)
+import Html.Attributes exposing (alt, class, datetime, href, rel, src)
 import Http
 import Layouts
 import Page exposing (Page)
@@ -130,6 +130,7 @@ view model =
                 [ Html.img
                     [ class "object-cover w-full h-60 sm:h-96 rounded"
                     , src blog.meta.image
+                    , alt blog.meta.title
                     ]
                     []
                 , articleNode blog.content model.fragment
