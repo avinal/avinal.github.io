@@ -42,7 +42,21 @@ customElements.define(
       };
 
       renderer.image = (href, title, text) => {
-        return `<img class="max-w-xs grow-0 shrink-0 basis-auto w-full" src=${href} alt="${text}">`;
+        let pos = text.search(":");
+        let direction = text.substr(pos + 1);
+        text = text.substr(0, pos);
+        let put = "max-w-xs ";
+        switch (direction) {
+          case "right":
+            put += "float-right ";
+            break;
+          case "left":
+            put += "float-left ";
+            break;
+          default:
+            put = "float-none ";
+        }
+        return `<img class="${put} grow-0 shrink-0 basis-auto w-full px-3" src=${href} alt="${text}">`;
       };
 
       marked.setOptions({

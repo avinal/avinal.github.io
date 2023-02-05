@@ -31,16 +31,13 @@ via custom scripts.
 
 ## GitHub Actions CI/CD
 
-<img src="/images/ci.webp"
-class="float-md-right rounded border border-info ml-3 float-md-right rounded border border-info ml-3"
-width="350" alt="A CI Meme" />
-
 Since the FOSSology project moved on Github, it has used only the free
 Travis CI service for OSS projects. At the time of writing Travis CI has
 reduced its free tier CI services. GitHub Actions provides faster
 builds. Since GitHub Actions is a fully managed service by GitHub, we
 don't need to know how to scale and operate the infrastructure to run
 it.
+![A CI Meme:left](/images/ci.webp)
 
 It is straightforward to use with GitHub because when we fork a
 repository, the actions automatically get forked. This allows you to
@@ -721,7 +718,7 @@ Actions is almost complete and working as expected. But it is not free
 of drawbacks and issues. This section outlines the known issues at the
 time of writing.
 
-![A Bug Meme](https://imgs.xkcd.com/comics/conference_question.png)
+![A Bug Meme:right](https://imgs.xkcd.com/comics/conference_question.png)
 
 - Coverage builds may fail with linking errors.
 - Packaging prefix is the same as the install prefix. This requires the

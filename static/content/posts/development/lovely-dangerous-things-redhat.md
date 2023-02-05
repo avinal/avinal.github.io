@@ -38,14 +38,13 @@ to the final diagram. Yeah, we learned. I will be explaining our
 final(obviously) architectural diagram and try to make some sense out of
 band-aids and duct tapes.
 
-<img src="/images/mks-architecture.webp"
-class="img-fluid my-3 img-fluid my-3" alt="The MKS Arhitecture" />
+![The MKS Architecture](/images/mks-architecture.webp)
 
 Let me start with explaining **What are MKS Resources?**. I hope you
 know at least tidbits about Kubernetes and by the definition: *A
 resource is an endpoint in the Kubernetes API that stores a collection
 of API objects of a certain kind; for example, the built-in
-:code:\`pods\` resource contains a collection of Pod objects.* But
+`pods` resource contains a collection of Pod objects.* But
 developers soon realized that these in-built resources were not enough
 for the ever-growing applications of Kubernetes. Here [custom
 resource](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
@@ -57,9 +56,7 @@ Definition](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/
 So MKS Resources are such custom resources that correspond to the
 TektonCD custom resources.
 
-<img src="/images/venus-flytrap.gif"
-class="float-md-right ml-3 float-md-right ml-3" width="250"
-alt="A venus flytrap engulphing an insect." />
+![A venus flytrap engulphing an insect.:right](/images/venus-flytrap.gif)
 
 Let us now focus on the box containing `Controller` and `API server`.
 The controller can be said as a stimulus-response mechanism. Take the

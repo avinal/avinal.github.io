@@ -86,7 +86,7 @@ lifecycle.
 
 ### Kubernetes
 
-![Kubernetes tech](/images/kubernetes-meme.webp)
+![Kubernetes tech:left](/images/kubernetes-meme.webp)
 
 **Kubernetes** is the Greek word for a ship's captain. We get the words
 Cybernetic and Gubernatorial from it. The Kubernetes project focuses on
@@ -116,4 +116,4 @@ created and then transfer the request to Tekton API to create the
 corresponding resource on the OpenShift/Kubernetes cluster.*
 
 So are you interested in how it went? Please follow up with my [next
-blog](https://avinal.space/posts/development/lovely-dangerous-things-redhat.html).
+blog](https://avinal.space/posts/development/lovely-dangerous-things-redhat).
