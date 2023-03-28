@@ -57,7 +57,7 @@ authenticated pages.
 -}
 none : View msg
 none =
-    { title = "Avinal | Personal Website"
+    { title = "Avinal Kumar | Personal Website"
     , body = []
     }
 

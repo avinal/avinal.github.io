@@ -28,7 +28,7 @@ footerLinksToSide =
     Html.div [ class "fixed bottom-0 left-0 bg-neutral-900 z-20 p-4 w-full md:flex md:items-center md:justify-between md:p-4" ]
         [ Html.ul [ class "flex flex-wrap items-center mt-3 text-xl sm:mt-0 text-gray-400" ]
             (List.map singleLink <|
-                { text = "Home", url = "/" }
+                { text = "Home", url = "https://avinal.space" }
                     :: footerLinks
             )
         ]

@@ -18,7 +18,7 @@
         "head": {},
         "body": {}
       },
-      "title": "Avinal | Personal Website",
+      "title": "Avinal Kumar | Personal Website",
       "meta": [
         {
           "charset": "UTF-8"
@@ -45,7 +45,7 @@
         },
         {
           "name": "description",
-          "content": "Associate Software Engineer at Red Hat | Open Source Contributor"
+          "content": "I am a Software Engineer Associate at Red Hat, specialising in hybrid cloud engineering. I have been involved with Google's Summer of Code and Google Season of Docs programmes as a mentor and contributor to Open Source for many years. For fun, I like to play around with cutting-edge areas of computer science; at the moment, I'm learning about Elm. GNU/Linux and free/open-source software are two of my favourite things."
         },
         {
           "property": "og:type",
@@ -61,11 +61,11 @@
         },
         {
           "property": "og:description",
-          "content": "Associate Software Engineer at Red Hat | Open Source Contributor"
+          "content": "I am a Software Engineer Associate at Red Hat, specialising in hybrid cloud engineering. I have been involved with Google's Summer of Code and Google Season of Docs programmes as a mentor and contributor to Open Source for many years. For fun, I like to play around with cutting-edge areas of computer science; at the moment, I'm learning about Elm. GNU/Linux and free/open-source software are two of my favourite things"
         },
         {
           "property": "og:image",
-          "content": "/images/avinal-meta.png"
+          "content": "https://avinal.space/images/avinal-meta.png"
         },
         {
           "property": "twitter:card",
@@ -81,16 +81,16 @@
         },
         {
           "property": "twitter:description",
-          "content": "Associate Software Engineer at Red Hat | Open Source Contributor"
+          "content": "I am a Software Engineer Associate at Red Hat, specialising in hybrid cloud engineering. I have been involved with Google's Summer of Code and Google Season of Docs programmes as a mentor and contributor to Open Source for many years. For fun, I like to play around with cutting-edge areas of computer science; at the moment, I'm learning about Elm. GNU/Linux and free/open-source software are two of my favourite things"
         },
         {
           "property": "twitter:image",
-          "content": "/images/avinal-meta.png"
+          "content": "https://avinal.space/images/avinal-meta.png"
         }
       ],
       "link": [
         {
-          "rel": "stylesheet",
+          "defer rel": "stylesheet",
           "href": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css",
           "integrity": "sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==",
           "crossorigin": "anonymous",
@@ -126,14 +126,14 @@
           "href": "/safari-pinned-tab.svg",
           "color": "#5bbad5"
         }
+        ,{
+          "rel": "canonical",
+          "href": "https://avinal.space"
+        }
       ],
       "script": [
         {
           "defer src": "https://cdn.jsdelivr.net/npm/marked/marked.min.js"
-        },
-        {
-          "data-goatcounter": "https://avinal.goatcounter.com/count",
-          "async src": "//gc.zgo.at/count.js"
         }
       ]
     },

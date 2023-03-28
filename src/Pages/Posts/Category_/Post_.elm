@@ -233,7 +233,7 @@ errorView error =
                 [ class " text-gray-400"
                 ]
                 [ Html.a
-                    [ href "../posts"
+                    [ href "https://avinal.space/posts"
                     , rel "referrer noopener"
                     , class "underline"
                     ]
