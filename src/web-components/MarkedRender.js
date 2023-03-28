@@ -8,10 +8,26 @@ customElements.define(
     connectedCallback() {
       this.runMarked();
     }
+
+    updateMeta(title, description) {
+      document.querySelector('meta[name="title"]').setAttribute("content", title + " | Avinal Kumar | Personal Website");
+      document.querySelector('meta[name="description"]').setAttribute("content", description);
+      document.querySelector('meta[property="og:title"]').setAttribute("content", title + " | Avinal Kumar | Personal Website");
+      document.querySelector('meta[property="og:description"]').setAttribute("content", description);
+      document.querySelector('meta[property="og:url"]').setAttribute("content", window.location);
+      document.querySelector('meta[property="twitter:title"]').setAttribute("content", title + " | Avinal Kumar | Personal Website");
+      document.querySelector('meta[property="twitter:description"]').setAttribute("content", description);
+      document.querySelector('meta[property="twitter:url"]').setAttribute("content", window.location);
+    }
+
     runMarked() {
       const renderer = new marked.Renderer();
       const data = this.getAttribute("markdowndata");
       const fragment = this.getAttribute("fragment");
+      const title = this.getAttribute("title");
+      const description = this.getAttribute("description");
+      this.updateMeta(title, description);
+
       var lead = 0;
       renderer.heading = (text, level) => {
         if (level === 1) {
@@ -74,13 +90,13 @@ customElements.define(
       this.innerHTML = marked.parse(data);
       console.log("Markdown rendering complete!");
       if (fragment) {
-        console.log("Fragment found, scrolling to: #", fragment);
+        console.log(`Fragment found, scrolling to: ${window.location}#${fragment}`);
         window.location = "#" + fragment;
       }
     }
 
     static get observedAttributes() {
-      return ["markdowndata", "fragment"];
+      return ["markdowndata", "fragment", "title", "description"];
     }
   }
 );

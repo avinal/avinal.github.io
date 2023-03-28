@@ -133,7 +133,7 @@ view model =
                     , alt blog.meta.title
                     ]
                     []
-                , articleNode blog.content model.fragment
+                , articleNode blog.content model.fragment blog.meta.title blog.meta.description
                 , Html.div [ class "text-center text-neutral-300 border-t border-dashed border-teal-500 p-2" ]
                     [ Html.time [ datetime blog.meta.date ] [ Html.text <| "Published on " ++ UU.getFormattedDate blog.meta.date ++ " under  " ]
                     , Html.a [ href "https://www.mozilla.org/en-US/MPL/2.0/" ] [ Html.text "Mozilla Public License 2.0" ]
@@ -243,10 +243,14 @@ errorView error =
         ]
 
 
-articleNode : String -> String -> Html Msg
-articleNode data fragment =
+articleNode : String -> String -> String -> String -> Html Msg
+articleNode data fragment title description =
     Html.node "rendered-md"
-        [ Html.Attributes.attribute "markdowndata" data, Html.Attributes.attribute "fragment" fragment ]
+        [ Html.Attributes.attribute "markdowndata" data
+        , Html.Attributes.attribute "fragment" fragment
+        , Html.Attributes.attribute "title" title
+        , Html.Attributes.attribute "description" description
+        ]
         []
 
 
@@ -257,7 +261,7 @@ articleNode data fragment =
 type alias YamlMeta =
     { title : String
     , date : String
-    , description : Maybe String
+    , description : String
     , tags : List String
     , category : String
     , image : String
@@ -293,7 +297,7 @@ metaDecoder =
     Yaml.map7 YamlMeta
         (Yaml.field "title" Yaml.string)
         (Yaml.field "date" Yaml.string)
-        (Yaml.maybe (Yaml.field "description" Yaml.string))
+        (Yaml.field "description" Yaml.string)
         (Yaml.field "tags" (Yaml.list Yaml.string))
         (Yaml.field "category" Yaml.string)
         (Yaml.field "image" Yaml.string)
