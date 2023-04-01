@@ -7,14 +7,11 @@ import Utils.Constants exposing (IconLink, Link, footerLinks)
 
 singleLink : Link -> Html msg
 singleLink link =
-    Html.li []
-        [ Html.a
+         Html.a
             [ href link.url
-            , class "mr-4 md:mr-6 underline decoration-cyan-500 hover:decoration-pink-500"
+            , class "underline decoration-cyan-500 hover:decoration-pink-500 text-xl"
             ]
             [ Html.text link.text ]
-        ]
-
 
 iconedLink : IconLink -> Html msg
 iconedLink iconLink =
@@ -25,8 +22,8 @@ iconedLink iconLink =
 
 footerLinksToSide : Html msg
 footerLinksToSide =
-    Html.div [ class "fixed bottom-0 left-0 bg-neutral-900 z-20 p-4 w-full md:flex md:items-center md:justify-between md:p-4" ]
-        [ Html.ul [ class "flex flex-wrap items-center mt-3 text-xl sm:mt-0 text-gray-400" ]
+    Html.div [ class "fixed bottom-0 left-0 bg-neutral-900 p-4 w-full border-t border-cyan-500" ]
+        [ Html.div [ class "mx-auto flex justify-center space-x-6 text-gray-400" ]
             (List.map singleLink <|
                 { text = "Home", url = "https://avinal.space" }
                     :: footerLinks

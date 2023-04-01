@@ -1,7 +1,6 @@
 module Utils.Utils exposing (..)
 
-import Array 
-
+import Array
 import Html exposing (Html)
 import Html.Attributes exposing (class, href, target)
 import Http exposing (Error(..))
@@ -22,7 +21,16 @@ getFormattedDate : String -> String
 getFormattedDate dateString =
     case Parser.run dateParser dateString of
         Ok date ->
-            (Maybe.withDefault "Month" <| Array.get (date.month - 1) months) ++ " " ++ String.fromInt date.day ++ ", " ++ String.fromInt date.year
+            (Maybe.withDefault "Month" <| Array.get (date.month - 1) months)
+                ++ " "
+                ++ String.fromInt date.day
+                ++ ", "
+                ++ String.fromInt date.year
+                ++ ", "
+                ++ String.fromInt date.hour
+                ++ ":"
+                ++ String.fromInt date.minute
+                ++ " IST"
 
         Err _ ->
             "Invalid date!!"

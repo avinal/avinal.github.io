@@ -66,15 +66,15 @@ subscriptions _ =
 
 blogTheme : String
 blogTheme =
-    "mt-4 prose prose-invert mx-auto lg:prose-lg prose-a:decoration-cyan-500 hover:prose-a:decoration-pink-500"
+    "prose prose-invert mx-auto lg:prose-lg prose-a:decoration-cyan-500 hover:prose-a:decoration-pink-500"
 
 
 view : { fromMsg : Msg -> mainMsg, content : View mainMsg, model : Model } -> View mainMsg
 view { fromMsg, model, content } =
     { title = content.title
     , body =
-        [ Html.div [ class "min-h-screen py-4 flex flex-col justify-center relative overflow-hidden " ]
-            [ Html.div [ class "relative w-full py-4 bg-neutral  md:max-w-3xl md:mx-auto lg:max-w-4xl lg:pb-28" ]
+        [ Html.div [ class "min-h-screen flex flex-col justify-center relative overflow-hidden " ]
+            [ Html.div [ class "relative w-full bg-neutral  md:max-w-3xl md:mx-auto lg:max-w-4xl lg:pb-28" ]
                 [ Html.article [ class blogTheme ]
                     content.body
                 ]

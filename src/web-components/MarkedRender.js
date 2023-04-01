@@ -30,12 +30,6 @@ customElements.define(
 
       var lead = 0;
       renderer.heading = (text, level) => {
-        if (level === 1) {
-          return `<header class="text-center w-full">
-            <h1>
-                ${text}</h1>
-            </header>`;
-        }
         const escapedText = text
           .trim()
           .toLowerCase()

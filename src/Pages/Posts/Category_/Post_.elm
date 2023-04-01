@@ -3,14 +3,12 @@ module Pages.Posts.Category_.Post_ exposing (Model, Msg, page)
 import Components.Footer exposing (avatarAndLinks)
 import Effect exposing (Effect)
 import Html exposing (Html)
-import Html.Attributes exposing (alt, class, datetime, href, rel, src)
+import Html.Attributes exposing (alt, class, datetime, href, src, title)
 import Http
 import Layouts
 import Page exposing (Page)
 import Route exposing (Route)
 import Shared
-import Svg exposing (path, svg)
-import Svg.Attributes as SvgAttr
 import Url exposing (Protocol(..))
 import Utils.Utils as UU
 import View exposing (View)
@@ -127,15 +125,27 @@ view model =
         Just blog ->
             { title = "Blog | " ++ blog.meta.title
             , body =
-                [ Html.img
-                    [ class "object-cover w-full h-60 sm:h-96 rounded"
-                    , src blog.meta.image
-                    , alt blog.meta.title
+                [ Html.div [ class "bg-neutral-900 md:-mx-8 lg:-mx-16 px-8 py-1" ]
+                    [ Html.header [ class "relative" ]
+                        [ Html.img
+                            [ class "object-cover w-full h-60 sm:h-96 brightness-50 "
+                            , src blog.meta.image
+                            , alt blog.meta.title
+                            ]
+                            []
+                        , Html.h1 [ class "absolute top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-full" ] [ Html.text blog.meta.title ]
+                        ]
+                    , Html.span [ class "text-base font-regular" ]
+                        [ Html.text "By "
+                        , Html.a [ href "https://avinal.space/pages/about-me", class "font-bold no-underline hover:text-pink-500" ] [ Html.text "Avinal Kumar" ]
+                        , Html.text " on "
+                        , Html.time [ datetime blog.meta.date ] [ Html.text <| UU.getFormattedDate blog.meta.date ]
+                        ]
+                    , Html.span [ class "text-base font-light float-right" ] [ Html.a [ href "", class "hover:text-pink-500" ] [ Html.abbr [ class "fa-solid fa-link no-underline", title "Share this article" ] [] ] ]
+                    , articleNode blog.content model.fragment blog.meta.title blog.meta.description
                     ]
-                    []
-                , articleNode blog.content model.fragment blog.meta.title blog.meta.description
-                , Html.div [ class "text-center text-neutral-300 border-t border-dashed border-teal-500 p-2" ]
-                    [ Html.time [ datetime blog.meta.date ] [ Html.text <| "Published on " ++ UU.getFormattedDate blog.meta.date ++ " under  " ]
+                , Html.div [ class "text-center text-neutral-300 border-dashed border-teal-500 p-2" ]
+                    [ Html.text "Published under "
                     , Html.a [ href "https://www.mozilla.org/en-US/MPL/2.0/" ] [ Html.text "Mozilla Public License 2.0" ]
                     , Html.text "  if you found an issue with the page, please report it "
                     , Html.a [ href <| "https://github.com/avinal/avinal.github.io/issues/new?title=bug:+" ++ String.replace " " "+" blog.meta.title ] [ Html.text "here." ]
@@ -146,7 +156,7 @@ view model =
             }
 
         Nothing ->
-            { title = "Be My SpaceTime | Something went wrong"
+            { title = "Avinal Kumar | Something went wrong"
             , body =
                 [ case model.error of
                     Just err ->
@@ -154,47 +164,7 @@ view model =
 
                     Nothing ->
                         Html.div [ class "flex items-center justify-center flex-col object-cover object-center " ]
-                            [ svg
-                                [ SvgAttr.width "85"
-                                , SvgAttr.height "80"
-                                , SvgAttr.shapeRendering "crispEdges"
-                                ]
-                                [ Svg.style
-                                    [ SvgAttr.type_ "text/css"
-                                    ]
-                                    [ Html.text ".color { -webkit-animation: col 1s linear infinite; -moz-animation: col 1s linear infinite; -o-animation: col 1s linear infinite; animation: col 1s linear infinite; } @keyframes col { 0% { fill: #EE67A4; } 12.5% { fill: violet; } 25% { fill: indigo; } 37.5% { fill: blue; } 50% { fill: #35BEB8 } 62.5% { fill: green; } 75% { fill: yellow; } 87.5% { fill: orange; } 100% { fill: red; } } .rcolor { -webkit-animation: rcol 1s linear infinite; -moz-animation: rcol 1s linear infinite; -o-animation: rcol 1s linear infinite; animation: rcol 1s linear infinite; } @keyframes rcol { 0% { fill: #35BEB8; } 12.5% { fill: blue; } 25% { fill: indigo; } 37.5% { fill: violet; } 50% { fill: #EE67A4; } 62.5% { fill: red; } 75% { fill: orange; } 87.5% { fill: yellow; } 100% { fill: green; } }" ]
-                                , Svg.symbol
-                                    [ SvgAttr.id "logo"
-                                    , SvgAttr.viewBox "0 -60 65 60"
-                                    ]
-                                    [ path
-                                        [ SvgAttr.class "st0 color"
-                                        , SvgAttr.d "M60-60H0V0h60z"
-                                        ]
-                                        []
-                                    , path
-                                        [ SvgAttr.class "st1"
-                                        , SvgAttr.d "M60-41h-5v10h5z"
-                                        ]
-                                        []
-                                    , path
-                                        [ SvgAttr.class "st2 rcolor"
-                                        , SvgAttr.d "M65-41h-5v10h5z"
-                                        ]
-                                        []
-                                    ]
-                                , Svg.use
-                                    [ SvgAttr.xlinkHref "#logo"
-                                    , SvgAttr.width "65"
-                                    , SvgAttr.height "60"
-                                    , SvgAttr.id "XMLID_14_"
-                                    , SvgAttr.y "-60"
-                                    , SvgAttr.transform "scale(1 -1)"
-                                    , SvgAttr.overflow "visible"
-                                    ]
-                                    []
-                                ]
-                            ]
+                            []
                 ]
             }
 
@@ -202,44 +172,10 @@ view model =
 errorView : String -> Html msg
 errorView error =
     Html.div
-        [ class "flex items-center rounded shadow-md overflow-hidden max-w-xl relative bg-neutral-900 text-gray-100"
-        ]
-        [ Html.div
-            [ class "self-stretch flex items-center px-3 flex-shrink-0 bg-gray-700 text-pink-500"
-            ]
-            [ svg
-                [ SvgAttr.fill "none"
-                , SvgAttr.viewBox "0 0 24 24"
-                , SvgAttr.stroke "currentColor"
-                , SvgAttr.class "h-8 w-8"
-                ]
-                [ path
-                    [ SvgAttr.strokeLinecap "round"
-                    , SvgAttr.strokeLinejoin "round"
-                    , SvgAttr.strokeWidth "2"
-                    , SvgAttr.d "M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    ]
-                    []
-                ]
-            ]
-        , Html.div
-            [ class "p-4 flex-1"
-            ]
-            [ Html.h3
-                [ class "text-xl font-bold"
-                ]
-                [ Html.text error ]
-            , Html.p
-                [ class " text-gray-400"
-                ]
-                [ Html.a
-                    [ href "https://avinal.space/posts"
-                    , rel "referrer noopener"
-                    , class "underline"
-                    ]
-                    [ Html.text "return to list of Blogs?" ]
-                ]
-            ]
+        [ class "border border-red-400 text-red-700 px-4 py-3 rounded relative" ]
+        [ Html.strong [ class "text-red-400" ] [ Html.text "Something bad has happened!" ]
+        , Html.br [] []
+        , Html.text ("Error: " ++ error)
         ]
 
 
