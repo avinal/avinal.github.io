@@ -9,8 +9,6 @@ your README as a bar graph or embed it in your blog/portfolio. Just add this
 action to any of your repositories and there you have it.'
 ---
 
-# How I implemented WakaTime embeddable Coding Graph GHA?
-
 If you use WakaTime to track your coding activity. You can add that to
 your README as a bar graph or embed it in your blog/portfolio. Just add this
 action to any of your repositories and there you have it.

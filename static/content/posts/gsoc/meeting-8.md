@@ -9,8 +9,6 @@ them."
 image: "/images/tech-wallpaper-9.webp"
 ---
 
-# Coding Week 7 Meeting
-
 This week I implemented CMake packaging configuration for FOSSology. There were two meetings in this week and this report covers both of them.
 
 ## Week 7 Progress

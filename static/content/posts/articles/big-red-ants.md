@@ -7,8 +7,6 @@ description: 'The Big Red Ants'
 image: "/images/ants.webp"
 ---
 
-# The Big Red Ants
-
 In a bird's eye view if we see around us, ants are the common and
 tiniest living entitiy seen by naked eye. One of them are the big red
 ants, in my view they are unique from others in two ways, first they

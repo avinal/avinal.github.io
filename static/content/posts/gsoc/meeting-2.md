@@ -9,8 +9,6 @@ writing version files and attaching commits and hashes to the build."
 image: "/images/tech-wallpaper-3.webp"
 ---
 
-# Coding Week 1 Meeting
-
 In this third meeting, I demoed the working build system, currently building executables and libraries, a lot of queries were resolved about writing version files and attaching commits and hashes to the build.
 
 ## Week 1 Progress

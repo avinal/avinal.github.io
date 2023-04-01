@@ -8,8 +8,6 @@ existing build system and what things we have to drop or modify."
 image: "/images/tech-wallpaper-4.webp"
 ---
 
-# Coding Week 2 Meeting
-
 In this fourth meeting, a lot of questions were discussed related to the existing build system and what things we have to drop or modify.
 
 ## Week 2 Progress

@@ -8,8 +8,6 @@ commit hash were discussed, this was a short meeting."
 image: "/images/tech-wallpaper-5.webp"
 ---
 
-# Coding Week 3 Meeting
-
 In this fifth meeting, question related to versioning and obtaining commit hash were discussed, this was a short meeting.
 
 ## Week 3 Progress

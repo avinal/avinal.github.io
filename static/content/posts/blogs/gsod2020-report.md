@@ -11,8 +11,6 @@ section organization.'
 image: "/images/day-of-cone.webp"
 ---
 
-# Create the VLC User Documentation for one Mobile Port(Android)
-
 VideoLAN is a non-profit organization that develops software for playing
 video and other media formats. VLC media player (commonly known as just
 VLC) is a free and Open Source cross-platform multimedia player and

@@ -6,10 +6,8 @@ category: blogs
 image: "/images/hrt-singapore.webp"
 ---
 
-# `HRT (Hudson River Trading)` Systems Internship Interview Experience
-
 I applied for **Systems Internship - Summer 2021** back in December 2020
-at [Hudson River Trading](https://www.hudsonrivertrading.com) , New
+at [Hudson River Trading](https://www.hudsonrivertrading.com), New
 York. The internship description was: -
 
 > We are looking for highly motivated students who are eager to learn

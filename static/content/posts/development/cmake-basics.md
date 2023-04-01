@@ -11,8 +11,6 @@ other resources inside the project."
 image: "/images/cmake-office.webp"
 ---
 
-# Hello CMake
-
 CMake stands for Cross-platform Make. Normally, a build tool like Make
 will parse a configuration file (Makefile) that contains all the
 commands required to build an artifact based on the source files and

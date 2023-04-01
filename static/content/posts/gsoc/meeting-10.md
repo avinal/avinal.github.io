@@ -8,8 +8,6 @@ spent understanding the previous testing architecture."
 image: "/images/tech-wallpaper-11.webp"
 ---
 
-# Coding Week 9 Meeting
-
 This week I worked on CMake testing configuration. Most of the time was spent understanding the previous testing architecture.
 
 ## Week 9 Progress

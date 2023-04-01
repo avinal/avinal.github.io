@@ -6,7 +6,8 @@ category: gsoc
 description: This is the final report of my Google Summer of Code 2021 at The FOSSology Project.
 image: "/images/gsoc-wall.webp"
 ---
-# GSoC'21 Final Evaluation Report
+
+This is the final report of my Google Summer of Code 2021 at The FOSSology Project.
 
 <style>
 .rd {color:red;font-weight:bold}

@@ -8,8 +8,6 @@ the tests. As of now all but 5 tests are working fine."
 image: "/images/tech-wallpaper-12.webp"
 ---
 
-# Coding Week 10 Meeting
-
 This week I implemented CMake testing configuration and fixed most of the tests. As of now all but 5 tests are working fine.
 
 ## Week 9 Progress

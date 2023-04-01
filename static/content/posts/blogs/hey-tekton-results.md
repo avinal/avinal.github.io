@@ -7,8 +7,6 @@ image: "/images/tekton-results-wall.webp"
 description: Tekton Results aims to help users logically group CI/CD workload history and separate out long term result storage away from the Pipeline controller.
 ---
 
-# Tekton Results to the Rescue
-
 What do you do with your Tekton Pipelines once it finishes? Depending on if it
 failed or passed, you may keep it to inspect the logs. For most of the users/organizations
 the simplest step is to keep the completed TaskRuns/PipelineRuns object on the

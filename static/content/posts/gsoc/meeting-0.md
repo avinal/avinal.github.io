@@ -10,8 +10,6 @@ Make and the new build system based on CMake."
 image: "/images/tech-wallpaper-1.webp"
 ---
 
-# Community Bonding Meeting 0
-
 This meeting is the first of the recurring weekly GSoC project meetings. In this meeting the current status of progress according to the proposal was discussed and some topics related to current build system based on Make and the new build system based on CMake.
 
 ## Discussions

@@ -9,8 +9,6 @@ also retains the component wise installation features."
 image: "/images/tech-wallpaper-10.webp"
 ---
 
-# Coding Week 8 Meeting
-
 This week I implemented CMake packaging configuration for FOSSology. The new configuration fixes issue with previous packaging configurations. It also retains the component wise installation features.
 
 ## Week 8 Progress

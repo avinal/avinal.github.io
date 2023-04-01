@@ -6,8 +6,6 @@ tags: [fedora, partioning]
 image: ""
 ---
 
-# Installing Fedora with automatic and custom partioning
-
 Fedora is one of the most popular linux distribution for daily uses as well as
 development purpose. I have been a linux user since 2019 and switched through
 multiple distros since then. For a long time I was stuck with Ubuntu and now

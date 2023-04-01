@@ -8,8 +8,6 @@ Ninja can be used as an alternative for Makefiles."
 image: "/images/tech-wallpaper-2.webp"
 ---
 
-# Community Bonding Meeting 1
-
 In this second meeting points over default Makefiles were discussed. Ninja can be used as an alternative for Makefiles.
 
 ## Discussions

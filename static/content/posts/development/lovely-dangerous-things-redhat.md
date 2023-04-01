@@ -8,8 +8,6 @@ tags: [tekton, go, kubernetes, openshift, redhat, intern, golang, openshift-pipe
 description: 'This blog is a descreptive account of the development of Minimal Tekton Server. This is highly technical in nature, so please make sure that you have sufficient knowledge about Golang, Docker, Kubernetes and TektonCD. You can refer to my [previous blog]("https://avinal.space/posts/development/i-am-loving-it-redhat.html") to know about these topics.'
 ---
 
-# Developing Minimal Tekton Server
-
 This blog is a descreptive account of the development of Minimal Tekton Server.
 This is highly technical in nature, so please make sure that you have sufficient
 knowledge about Golang, Docker, Kubernetes and TektonCD. You can refer to my

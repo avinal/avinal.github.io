@@ -7,8 +7,6 @@ description: "This week was dedicated to perfecting CMake Installation Configura
 image: "/images/tech-wallpaper-8.webp"
 ---
 
-# Coding Week 5 Meeting
-
 This week was dedicated to perfecting CMake Installation Configuration. The installation was tested and bugs were discussed.
 
 ## Week 5 Progress

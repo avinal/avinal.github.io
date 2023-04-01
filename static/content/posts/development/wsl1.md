@@ -10,8 +10,6 @@ to tackle this problem with bite size steps.'
 image: "/images/windows-wsl2.webp"
 ---
 
-# Move WSL 2 Safely to another Drive
-
 It is real pain when you have small SSD and Windows Subsystem for Linux
 (WSL) is growing exponentially in size. There is no easy way to move the
 WSL installation to another drive. Here in this blog I will discuss how

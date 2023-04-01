@@ -7,8 +7,6 @@ description: "In this seventh meeting question related to installing the FOSSolo
 image: "/images/tech-wallpaper-6.webp"
 ---
 
-# Coding Week 4 Meeting-1
-
 In this seventh meeting question related to installing the FOSSology were discussed.
 
 ## Week 4 Progress

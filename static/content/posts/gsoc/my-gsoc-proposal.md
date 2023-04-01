@@ -7,9 +7,9 @@ description: It has been 2 years since I was a Google Summer of Code Student. It
 image: "/images/tools-build-comparision.webp"
 ---
 
-## Current Build System and Workflow
-
 It has been 2 years since I was a Google Summer of Code Student. It was an outstanding opportunity and I really enjoyed working on the project. Not only that, but it added numerous skills to my resume and polished many others. Today I want to make my proposal public, that helped me get selected.
+
+## Current Build System and Workflow
 
 ### Build System
 
@@ -306,15 +306,15 @@ contribution standards. I am well versed in Git and GitHub.
 * [feat(CI): Migrate Static Checks and Analysis to GitHub Actions from Travis CI](https://github.com/fossology/fossology/pull/1919) [MERGED]
 * [fix(make): Fix warnings in make for Ubuntu 20.04.2 LTS](https://github.com/fossology/fossology/pull/1923) [OPEN]
 * [Upgrade this project from PHP 7 to PHP 8](https://github.com/fossology/fossology/issues/1920) [ISSUE]
-* [Improving build system and CI/CD flow][https://github.com/fossology/fossology/discussions/1931](DISCUSSION)
+* [Improving build system and CI/CD flow](https://github.com/fossology/fossology/discussions/1931) [DISCUSSION]
 
 ### Other Contributions
 
 * [VideoLAN/VLC for Android User Documentation](https://code.videolan.org/docs/vlc-android-user) [PROJECT]
 * [boostorg/gil](https://github.com/boostorg/gil/issues?q=author%3Aavinal) [2 PR, 1 ISSUE]
 * [embox/embox](https://github.com/embox/embox/issues?q=author%3Aavinal) [1 PR]
-* [JetBrains/swot][https://github.com/JetBrains/swot/pulls?q=author%3Aavinal](1 PR)
-* [jupyter-xeus/xeus-sqlite][https://github.com/jupyter-xeus/xeus-sqlite/issues?q=author%3Aavinal](1 PR, 1 ISSUE)
+* [JetBrains/swot](https://github.com/JetBrains/swot/pulls?q=author%3Aavinal) [1 PR]
+* [jupyter-xeus/xeus-sqlite](https://github.com/jupyter-xeus/xeus-sqlite/issues?q=author%3Aavinal) [1 PR, 1 ISSUE]
 * [github/explore](https://github.com/github/explore/pulls?q=avinal) [2 PR]
 
 ## My Development Environment

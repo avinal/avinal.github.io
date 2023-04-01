@@ -1,12 +1,11 @@
 ---
-title: I am loving it! RedHat
+title: My internship at Red Hat
 date: 2022-02-25 20:47
 category: development
 tags: [kubernetes, redhat, docker, golang, tekton, openshift, intern]
 description: I made it to the Red Hat as a DevTools intern. This post is about onboarding and how I prepared myself for working on the actual project.
 image: "/images/fedora-wall.webp"
 ---
-# My internship at Red Hat
 
 I have been contributing to open source for the last 3 years and Red Hat
 was one of the companies that I was very fond of. I must say all my

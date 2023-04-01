@@ -7,8 +7,6 @@ description: "In this eighth meeting questions related to post install generatio
 image: "/images/tech-wallpaper-7.webp"
 ---
 
-# Coding Week 4 Meeting-2
-
 In this eighth meeting questions related to post install generation were asked. This was a short meeting.  
 
 ## Week 4 Progress

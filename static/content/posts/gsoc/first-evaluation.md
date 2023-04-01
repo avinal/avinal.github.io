@@ -10,8 +10,6 @@ initial testing."
 image: "/images/tech-wallpaper.webp"
 ---
 
-# GSoC'21 First Evaluation Report
-
 In the first phase of GSoC 2021 @ The FOSSology Project, I have
 completed the desired milestone. As of now, FOSSology can be installed
 completely via CMake and most of the components are working fine in
