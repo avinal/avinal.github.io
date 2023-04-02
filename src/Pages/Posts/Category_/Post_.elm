@@ -186,6 +186,7 @@ articleNode data fragment title description =
         , Html.Attributes.attribute "fragment" fragment
         , Html.Attributes.attribute "title" title
         , Html.Attributes.attribute "description" description
+        , class "line-numbers"
         ]
         []
 

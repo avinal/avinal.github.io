@@ -49,7 +49,7 @@ customElements.define(
         },
         hideEventTypeDetails: false,
       });
-      console.log("These errors are not produced by the Elm app :)")
+      console.log("These errors are not produced by the Elm app :)");
     }
   }
 );

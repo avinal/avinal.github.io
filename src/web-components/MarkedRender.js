@@ -10,14 +10,64 @@ customElements.define(
     }
 
     updateMeta(title, description) {
-      document.querySelector('meta[name="title"]').setAttribute("content", title + " | Avinal Kumar | Personal Website");
-      document.querySelector('meta[name="description"]').setAttribute("content", description);
-      document.querySelector('meta[property="og:title"]').setAttribute("content", title + " | Avinal Kumar | Personal Website");
-      document.querySelector('meta[property="og:description"]').setAttribute("content", description);
-      document.querySelector('meta[property="og:url"]').setAttribute("content", window.location);
-      document.querySelector('meta[property="twitter:title"]').setAttribute("content", title + " | Avinal Kumar | Personal Website");
-      document.querySelector('meta[property="twitter:description"]').setAttribute("content", description);
-      document.querySelector('meta[property="twitter:url"]').setAttribute("content", window.location);
+      document
+        .querySelector('meta[name="title"]')
+        .setAttribute("content", title + " | Avinal Kumar | Personal Website");
+      document
+        .querySelector('meta[name="description"]')
+        .setAttribute("content", description);
+      document
+        .querySelector('meta[property="og:title"]')
+        .setAttribute("content", title + " | Avinal Kumar | Personal Website");
+      document
+        .querySelector('meta[property="og:description"]')
+        .setAttribute("content", description);
+      document
+        .querySelector('meta[property="og:url"]')
+        .setAttribute("content", window.location);
+      document
+        .querySelector('meta[property="twitter:title"]')
+        .setAttribute("content", title + " | Avinal Kumar | Personal Website");
+      document
+        .querySelector('meta[property="twitter:description"]')
+        .setAttribute("content", description);
+      document
+        .querySelector('meta[property="twitter:url"]')
+        .setAttribute("content", window.location);
+    }
+
+    addLineNumber() {
+      var env = {
+        container: document,
+        selector:
+          'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code',
+      };
+
+      env.elements = Array.prototype.slice.apply(
+        env.container.querySelectorAll(env.selector)
+      );
+
+      for (var i = 0, element; (element = env.elements[i++]); ) {
+        highlightElement(element);
+      }
+      function highlightElement(element) {
+        var language = Prism.util.getLanguage(element);
+
+        var grammar = Prism.languages[language];
+
+        var parent = element.parentElement;
+        if (parent && parent.nodeName.toLowerCase() === "pre") {
+          Prism.util.setLanguage(parent, language);
+        }
+        var code = element.textContent;
+        var env = {
+          element: element,
+          language: language,
+          grammar: grammar,
+          code: code,
+        };
+        Prism.hooks.run("complete", env);
+      }
     }
 
     runMarked() {
@@ -83,8 +133,12 @@ customElements.define(
 
       this.innerHTML = marked.parse(data);
       console.log("Markdown rendering complete!");
+      this.addLineNumber();
+
       if (fragment) {
-        console.log(`Fragment found, scrolling to: ${window.location}#${fragment}`);
+        console.log(
+          `Fragment found, scrolling to: ${window.location}#${fragment}`
+        );
         window.location = "#" + fragment;
       }
     }
