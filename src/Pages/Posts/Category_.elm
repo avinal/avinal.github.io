@@ -109,7 +109,7 @@ view model =
                     ]
                 , Html.div [ class "grow-0 shrink-0 basis-auto w-full md:w-9/12 xl:w-7/12 p-3 md:mb-0 mr-auto bg-neutral-900" ]
                     [ Html.h5 [ class "text-2xl font-bold mb-2" ] [ Html.text blog.title ]
-                    , Html.time [ class "text-gray-400 text-sm", datetime blog.date ] [ Html.text <| UU.getFormattedDate blog.date ]
+                    , Html.time [ class "text-gray-400 text-sm", datetime blog.date ] [ Html.text <| UU.getFormattedDate blog.date True ]
                     , Html.p [ class "text-gray-500 mt-4 text-md" ] [ Html.text <| String.left 200 blog.description ]
                     ]
                 ]

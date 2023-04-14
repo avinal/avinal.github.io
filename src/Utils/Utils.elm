@@ -17,8 +17,8 @@ type alias DateTime =
     }
 
 
-getFormattedDate : String -> String
-getFormattedDate dateString =
+getFormattedDate : String -> Bool -> String
+getFormattedDate dateString time =
     case Parser.run dateParser dateString of
         Ok date ->
             (Maybe.withDefault "Month" <| Array.get (date.month - 1) months)
@@ -26,14 +26,23 @@ getFormattedDate dateString =
                 ++ String.fromInt date.day
                 ++ ", "
                 ++ String.fromInt date.year
-                ++ ", "
-                ++ String.fromInt date.hour
-                ++ ":"
-                ++ String.fromInt date.minute
-                ++ " IST"
+                ++ (if time then
+                        ", "
+                            ++ String.fromInt date.hour
+                            ++ ":"
+                            ++ String.fromInt date.minute
+                            ++ " IST"
+
+                    else
+                        ""
+                   )
 
         Err _ ->
-            "Invalid date!!"
+            if time then
+                "Invalid date!!"
+
+            else
+                "Present"
 
 
 dateParser : Parser DateTime
@@ -99,3 +108,13 @@ errorToString error =
 
         BadBody errorMessage ->
             errorMessage
+
+
+errorView : String -> Html msg
+errorView error =
+    Html.div
+        [ class "border border-red-400 text-red-700 px-4 py-3 rounded relative" ]
+        [ Html.strong [ class "text-red-400" ] [ Html.text "Something bad has happened!" ]
+        , Html.br [] []
+        , Html.text ("Error: " ++ error)
+        ]

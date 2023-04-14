@@ -139,7 +139,7 @@ view model =
                         [ Html.text "By "
                         , Html.a [ href "https://avinal.space/pages/about-me", class "font-bold no-underline hover:text-pink-500" ] [ Html.text "Avinal Kumar" ]
                         , Html.text " on "
-                        , Html.time [ datetime blog.meta.date ] [ Html.text <| UU.getFormattedDate blog.meta.date ]
+                        , Html.time [ datetime blog.meta.date ] [ Html.text <| UU.getFormattedDate blog.meta.date True ]
                         ]
                     , Html.span [ class "text-base font-light float-right" ] [ Html.a [ href "", class "hover:text-pink-500" ] [ Html.abbr [ class "fa-solid fa-link no-underline", title "Share this article" ] [] ] ]
                     , articleNode blog.content model.fragment blog.meta.title blog.meta.description
@@ -160,23 +160,13 @@ view model =
             , body =
                 [ case model.error of
                     Just err ->
-                        errorView err
+                        UU.errorView err
 
                     Nothing ->
                         Html.div [ class "flex items-center justify-center flex-col object-cover object-center " ]
                             []
                 ]
             }
-
-
-errorView : String -> Html msg
-errorView error =
-    Html.div
-        [ class "border border-red-400 text-red-700 px-4 py-3 rounded relative" ]
-        [ Html.strong [ class "text-red-400" ] [ Html.text "Something bad has happened!" ]
-        , Html.br [] []
-        , Html.text ("Error: " ++ error)
-        ]
 
 
 articleNode : String -> String -> String -> String -> Html Msg
