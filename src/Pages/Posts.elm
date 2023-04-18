@@ -137,7 +137,7 @@ view model =
     in
     case model.blogList of
         Just blogList ->
-            { title = "Blog by Avinal"
+            { title = "Blog"
             , body =
                 [ Html.section [ class "text-gray-100" ]
                     [ Html.h1 [ class "text-5xl font-bold mb-6 mt-12 text-center text-white" ] [ Html.text <| "Welcome to my blog" ]

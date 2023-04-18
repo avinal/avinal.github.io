@@ -3,7 +3,7 @@ module Layouts.Blog exposing (Model, Msg, Settings, layout)
 import Components.Footer exposing (footerLinksToSide)
 import Effect exposing (Effect)
 import Html
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, id)
 import Layout exposing (Layout)
 import Route exposing (Route)
 import Shared
@@ -77,6 +77,7 @@ view { fromMsg, model, content } =
             [ Html.div [ class "relative w-full bg-neutral  md:max-w-3xl md:mx-auto lg:max-w-4xl lg:pb-28" ]
                 [ Html.article [ class blogTheme ]
                     content.body
+                , Html.div [ id "remark42", class "md:px-4 mb-16" ] []
                 ]
             ]
         , footerLinksToSide

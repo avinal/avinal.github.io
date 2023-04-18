@@ -3,7 +3,7 @@ module Pages.Posts.Category_.Post_ exposing (Model, Msg, page)
 import Components.Footer exposing (avatarAndLinks)
 import Effect exposing (Effect)
 import Html exposing (Html)
-import Html.Attributes exposing (alt, class, datetime, href, src, title)
+import Html.Attributes exposing (alt, class, datetime, href, id, src, title)
 import Http
 import Layouts
 import Page exposing (Page)
@@ -123,7 +123,7 @@ view : Model -> View Msg
 view model =
     case model.blog of
         Just blog ->
-            { title = "Blog | " ++ blog.meta.title
+            { title = blog.meta.title ++ " | Blog"
             , body =
                 [ Html.div [ class "bg-neutral-900 md:-mx-8 lg:-mx-16 px-8 py-1" ]
                     [ Html.header [ class "relative" ]
@@ -144,14 +144,7 @@ view model =
                     , Html.span [ class "text-base font-light float-right" ] [ Html.a [ href "", class "hover:text-pink-500" ] [ Html.abbr [ class "fa-solid fa-link no-underline", title "Share this article" ] [] ] ]
                     , articleNode blog.content model.fragment blog.meta.title blog.meta.description
                     ]
-                , Html.div [ class "text-center text-neutral-300 border-dashed border-teal-500 p-2" ]
-                    [ Html.text "Published under "
-                    , Html.a [ href "https://www.mozilla.org/en-US/MPL/2.0/" ] [ Html.text "Mozilla Public License 2.0" ]
-                    , Html.text "  if you found an issue with the page, please report it "
-                    , Html.a [ href <| "https://github.com/avinal/avinal.github.io/issues/new?title=bug:+" ++ String.replace " " "+" blog.meta.title ] [ Html.text "here." ]
-                    ]
                 , UU.categoryNtags blog.meta.category blog.meta.tags
-                , avatarAndLinks
                 ]
             }
 
