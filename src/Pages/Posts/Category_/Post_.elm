@@ -30,12 +30,10 @@ page _ route =
 -- LAYOUT
 
 
-layout : Model -> Layouts.Layout
+layout : Model -> Layouts.Layout Msg
 layout _ =
     Layouts.Blog
-        { blog =
-            {}
-        }
+        {}
 
 
 

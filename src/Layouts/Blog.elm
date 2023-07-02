@@ -1,4 +1,4 @@
-module Layouts.Blog exposing (Model, Msg, Settings, layout)
+module Layouts.Blog exposing (Model, Msg, Props, layout)
 
 import Components.Footer exposing (footerLinksToSide)
 import Effect exposing (Effect)
@@ -11,14 +11,14 @@ import Utils.Constants exposing (..)
 import View exposing (View)
 
 
-type alias Settings =
+type alias Props =
     {}
 
 
-layout : Settings -> Shared.Model -> Route () -> Layout Model Msg mainMsg
-layout settings _ _ =
+layout : Props -> Shared.Model -> Route () -> Layout () Model Msg contentMsg
+layout props shared route =
     Layout.new
-        { init = init settings
+        { init = init
         , update = update
         , view = view
         , subscriptions = subscriptions
@@ -33,8 +33,8 @@ type alias Model =
     {}
 
 
-init : Settings -> () -> ( Model, Effect Msg )
-init _ _ =
+init : () -> ( Model, Effect Msg )
+init _ =
     ( {}
     , Effect.none
     )
@@ -45,32 +45,33 @@ init _ _ =
 
 
 type Msg
-    = NoOp
+    = ReplaceMe
 
 
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case msg of
-        NoOp ->
-            ( model, Effect.none )
+        ReplaceMe ->
+            ( model
+            , Effect.none
+            )
 
 
 subscriptions : Model -> Sub Msg
-subscriptions _ =
+subscriptions model =
     Sub.none
 
 
 
 -- VIEW
 
-
 blogTheme : String
 blogTheme =
     "prose prose-invert mx-auto lg:prose-lg prose-a:decoration-cyan-500 hover:prose-a:decoration-pink-500"
 
 
-view : { fromMsg : Msg -> mainMsg, content : View mainMsg, model : Model } -> View mainMsg
-view { fromMsg, model, content } =
+view : { toContentMsg : Msg -> contentMsg, content : View contentMsg, model : Model } -> View contentMsg
+view { toContentMsg, model, content } =
     { title = content.title
     , body =
         [ Html.div [ class "min-h-screen flex flex-col justify-center relative overflow-hidden" ]

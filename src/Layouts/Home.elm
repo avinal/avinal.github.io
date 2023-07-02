@@ -1,4 +1,4 @@
-module Layouts.Home exposing (Model, Msg, Settings, layout)
+module Layouts.Home exposing (Model, Msg, Props, layout)
 
 import Components.Footer exposing (iconLinkToCenter)
 import Effect exposing (Effect)
@@ -11,12 +11,12 @@ import Utils.Constants exposing (..)
 import View exposing (View)
 
 
-type alias Settings =
+type alias Props =
     {}
 
 
-layout : Settings -> Shared.Model -> Route () -> Layout Model Msg mainMsg
-layout _ _ _ =
+layout : Props -> Shared.Model -> Route () -> Layout () Model Msg contentMsg
+layout props shared route =
     Layout.new
         { init = init
         , update = update
@@ -58,7 +58,7 @@ update msg model =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions _ =
+subscriptions model =
     Sub.none
 
 
@@ -66,8 +66,8 @@ subscriptions _ =
 -- VIEW
 
 
-view : { fromMsg : Msg -> mainMsg, content : View mainMsg, model : Model } -> View mainMsg
-view { fromMsg, model, content } =
+view : { toContentMsg : Msg -> contentMsg, content : View contentMsg, model : Model } -> View contentMsg
+view { toContentMsg, model, content } =
     let
         footerLinkToCenter : Link -> Html msg
         footerLinkToCenter link =
