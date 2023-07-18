@@ -1,0 +1,50 @@
+baseURL: "https://avinal.space/"
+languageCode: en-us
+title: Avinal's blog
+theme: hugo-texify2
+sitename: "Avinal's blog"
+enableRobotsTXT: true
+
+module:
+  mounts:
+    - source: "../static/content"
+      target: content
+      excludeFile: posts.json
+    - source: "../static/images/"
+      target: "static/images"
+
+markup:
+  highlight:
+    style: github
+
+author:
+  name: Avinal Kumar
+  email: ripple@avinal.space
+
+params:
+  github: "https://github.com/avinal"
+  keywords: ["avinal", "website", "redhat", "tekton", "gsoc", "elm"]
+  twitter: "@Avinal_"
+  enableDuckDuckGoSearchBox: false
+  toc: true
+  self:
+    name: Avinal Kumar
+    link: https://avinal.space/pages/about-me
+  navs:
+    - name: Home
+      link: https://avinal.space
+    - name: About
+      link: https://avinal.space/pages/about-me
+    - name: Blog
+      link: https://avinal.space/posts
+    - name: Projects
+      link: https://avinal.space/pages/projects
+    - name: GitHub
+      link: https://github.com/avinal
+    - name: LinkedIn
+      link: https://linkedin.com/in/avinal
+    - name: Twitter
+      link: https://twitter.com/Avinal_
+  footnote: ""
+
+disableKinds: ["taxonomy", "taxonomyTerm", "home", "section"]
