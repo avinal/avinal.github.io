@@ -1,13 +1,14 @@
 ---
-title: GSoC'21 First Evaluation Report
-date: 2021-07-14 12:29
-tags: [gsoc, FOSSology]
 category: gsoc
-description: "In the first phase of GSoC 2021 @ The FOSSology Project, I have
-completed the desired milestone. As of now, FOSSology can be installed
-completely via CMake and most of the components are working fine in
-initial testing."
-image: "/images/tech-wallpaper.webp"
+date: 2021-07-14T12:29:00
+description: In the first phase of GSoC 2021 @ The FOSSology Project, I have completed
+  the desired milestone. As of now, FOSSology can be installed completely via CMake
+  and most of the components are working fine in initial testing.
+image: /images/tech-wallpaper.webp
+tags:
+- gsoc
+- FOSSology
+title: GSoC'21 First Evaluation Report
 ---
 
 In the first phase of GSoC 2021 @ The FOSSology Project, I have

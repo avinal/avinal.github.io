@@ -1,12 +1,14 @@
 ---
-title: Coding Week 1 Meeting
-date: 2021-06-11 23:30
-tags: [gsoc, FOSSology]
 category: gsoc
-description: "In this third meeting, I demoed the working build system, currently
-building executables and libraries, a lot of queries were resolved about
-writing version files and attaching commits and hashes to the build."
-image: "/images/tech-wallpaper-3.webp"
+date: 2021-06-11T23:30:40
+description: In this third meeting, I demoed the working build system, currently building
+  executables and libraries, a lot of queries were resolved about writing version
+  files and attaching commits and hashes to the build.
+image: /images/tech-wallpaper-3.webp
+tags:
+- gsoc
+- FOSSology
+title: Coding Week 1 Meeting
 ---
 
 In this third meeting, I demoed the working build system, currently building executables and libraries, a lot of queries were resolved about writing version files and attaching commits and hashes to the build.

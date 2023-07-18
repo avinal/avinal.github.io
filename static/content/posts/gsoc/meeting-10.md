@@ -1,11 +1,13 @@
 ---
-title: Coding Week 9 Meeting
-date: 2021-08-06 22:47
-tags: [gsoc, FOSSology]
 category: gsoc
-description: "This week I worked on CMake testing configuration. Most of the time was
-spent understanding the previous testing architecture."
-image: "/images/tech-wallpaper-11.webp"
+date: 2021-08-06T22:47:00
+description: This week I worked on CMake testing configuration. Most of the time was
+  spent understanding the previous testing architecture.
+image: /images/tech-wallpaper-11.webp
+tags:
+- gsoc
+- FOSSology
+title: Coding Week 9 Meeting
 ---
 
 This week I worked on CMake testing configuration. Most of the time was spent understanding the previous testing architecture.

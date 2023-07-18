@@ -1,14 +1,16 @@
 ---
-title: Create the VLC User Documentation for one Mobile Port(Android)
-date: 2020-12-01 23:47
-modified: 2020-12-31 23:19
 category: development
-tags: [vlc, gsod, gsod2020]
-description: 'The project was to Create the VLC User Documentation for Android 
-Mobile Port which was previously hosted on VLC wiki pages. The major portion 
-of this was to start everything from scratch including chapter separation, 
-section organization.'
-image: "/images/day-of-cone.webp"
+date: 2020-12-01T23:47:00
+description: The project was to Create the VLC User Documentation for Android Mobile
+  Port which was previously hosted on VLC wiki pages. The major portion of this was
+  to start everything from scratch including chapter separation, section organization.
+image: /images/day-of-cone.webp
+modified: 2020-12-31 23:19
+tags:
+- vlc
+- gsod
+- gsod2020
+title: Create the VLC User Documentation for one Mobile Port(Android)
 ---
 
 VideoLAN is a non-profit organization that develops software for playing

@@ -1,12 +1,14 @@
 ---
-title: Coding Week 8 Meeting
-date: 2021-07-30 22:47
-tags: [gsoc, FOSSology]
 category: gsoc
-description: "This week I implemented CMake packaging configuration for FOSSology. The
-new configuration fixes issue with previous packaging configurations. It
-also retains the component wise installation features."
-image: "/images/tech-wallpaper-10.webp"
+date: 2021-07-30T22:47:00
+description: This week I implemented CMake packaging configuration for FOSSology.
+  The new configuration fixes issue with previous packaging configurations. It also
+  retains the component wise installation features.
+image: /images/tech-wallpaper-10.webp
+tags:
+- gsoc
+- FOSSology
+title: Coding Week 8 Meeting
 ---
 
 This week I implemented CMake packaging configuration for FOSSology. The new configuration fixes issue with previous packaging configurations. It also retains the component wise installation features.

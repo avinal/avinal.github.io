@@ -1,10 +1,18 @@
 ---
-title: My internship at Red Hat
-date: 2022-02-25 20:47
 category: development
-tags: [kubernetes, redhat, docker, golang, tekton, openshift, intern]
-description: I made it to the Red Hat as a DevTools intern. This post is about onboarding and how I prepared myself for working on the actual project.
-image: "/images/fedora-wall.webp"
+date: 2022-02-25T20:47:00
+description: I made it to the Red Hat as a DevTools intern. This post is about onboarding
+  and how I prepared myself for working on the actual project.
+image: /images/fedora-wall.webp
+tags:
+- kubernetes
+- redhat
+- docker
+- golang
+- tekton
+- openshift
+- intern
+title: My internship at Red Hat
 ---
 
 I have been contributing to open source for the last 3 years and Red Hat
@@ -34,7 +42,7 @@ and many more.
 ## Learning on the Go
 
 There was a lot of learning and still a lot to learn. In a meeting with
-my manager Pradeepto Bhattacharya, I was told that I will be working on
+my manager [^1] Pradeepto Bhattacharya, I was told that I will be working on
 TektonCD or OpenShift Pipelines, and both of them require a sound
 knowledge of Golang, CI/CD, Containers, Docker, and Kubernetes. I was
 familiar with CI/CD, containers, and Docker but never used Golang and
@@ -116,3 +124,6 @@ corresponding resource on the OpenShift/Kubernetes cluster.*
 
 So are you interested in how it went? Please follow up with my [next
 blog](https://avinal.space/posts/development/lovely-dangerous-things-redhat).
+
+[^1]: [MDN Web
+Docs](https://developer.mozilla.org/en-US/docs/Glossary/Developer_Tools)

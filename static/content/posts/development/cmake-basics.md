@@ -1,14 +1,17 @@
 ---
-title: Hello CMake
-date: 2021-05-24 23:56
-slug: cmake-basics
 category: development
-tags: [cmake, gsoc, fossology, gsoc21]
-description: "CMake stands for Cross-platform Make. Normally, a build tool like Make
-will parse a configuration file (Makefile) that contains all the
-commands required to build an artifact based on the source files and
-other resources inside the project."
-image: "/images/cmake-office.webp"
+date: 2021-05-24T23:56:00
+description: CMake stands for Cross-platform Make. Normally, a build tool like Make
+  will parse a configuration file (Makefile) that contains all the commands required
+  to build an artifact based on the source files and other resources inside the project.
+image: /images/cmake-office.webp
+slug: cmake-basics
+tags:
+- cmake
+- gsoc
+- fossology
+- gsoc21
+title: Hello CMake
 ---
 
 CMake stands for Cross-platform Make. Normally, a build tool like Make

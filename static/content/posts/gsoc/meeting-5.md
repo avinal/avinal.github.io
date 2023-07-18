@@ -1,10 +1,13 @@
 ---
-title: Coding Week 4 Meeting-1
-date: 2021-06-29 23:22
-tags: [gsoc, FOSSology]
 category: gsoc
-description: "In this seventh meeting question related to installing the FOSSology were discussed."
-image: "/images/tech-wallpaper-6.webp"
+date: 2021-06-29T23:22:00
+description: In this seventh meeting question related to installing the FOSSology
+  were discussed.
+image: /images/tech-wallpaper-6.webp
+tags:
+- gsoc
+- FOSSology
+title: Coding Week 4 Meeting-1
 ---
 
 In this seventh meeting question related to installing the FOSSology were discussed.

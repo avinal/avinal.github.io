@@ -1,10 +1,13 @@
 ---
-title: Coding Week 4 Meeting-2
-date: 2021-07-02 22:22
-tags: [gsoc, FOSSology]
 category: gsoc
-description: "In this eighth meeting questions related to post install generation were asked. This was a short meeting."
-image: "/images/tech-wallpaper-7.webp"
+date: 2021-07-02T22:22:00
+description: In this eighth meeting questions related to post install generation were
+  asked. This was a short meeting.
+image: /images/tech-wallpaper-7.webp
+tags:
+- gsoc
+- FOSSology
+title: Coding Week 4 Meeting-2
 ---
 
 In this eighth meeting questions related to post install generation were asked. This was a short meeting.  

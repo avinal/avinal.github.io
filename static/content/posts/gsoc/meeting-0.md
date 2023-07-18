@@ -1,13 +1,15 @@
 ---
-title: Community Bonding Meeting 0
-date: 2021-05-28 21:00
-tags: [gsoc, fossology]
 category: gsoc
-description: "This meeting is the first of the recurring weekly GSoC project meetings.
-In this meeting the current status of progress according to the proposal
-was discussed and some topics related to current build system based on
-Make and the new build system based on CMake."
-image: "/images/tech-wallpaper-1.webp"
+date: 2021-05-28T21:00:00
+description: This meeting is the first of the recurring weekly GSoC project meetings.
+  In this meeting the current status of progress according to the proposal was discussed
+  and some topics related to current build system based on Make and the new build
+  system based on CMake.
+image: /images/tech-wallpaper-1.webp
+tags:
+- gsoc
+- fossology
+title: Community Bonding Meeting 0
 ---
 
 This meeting is the first of the recurring weekly GSoC project meetings. In this meeting the current status of progress according to the proposal was discussed and some topics related to current build system based on Make and the new build system based on CMake.

@@ -1,10 +1,16 @@
 ---
-title: "New Build System and improving CI/CD workflow"
-date: 2023-03-30 21:14
-tags: [gsoc, fossology, proposal]
 category: gsoc
-description: It has been 2 years since I was a Google Summer of Code Student. It was an outstanding opportunity and I really enjoyed working on the project. Not only that, but it added numerous skills to my resume and polished many others. Today I want to make my proposal public, that helped me get selected.
-image: "/images/panda-engineer.webp"
+date: 2023-03-30T21:14:00
+description: It has been 2 years since I was a Google Summer of Code Student. It was
+  an outstanding opportunity and I really enjoyed working on the project. Not only
+  that, but it added numerous skills to my resume and polished many others. Today
+  I want to make my proposal public, that helped me get selected.
+image: /images/panda-engineer.webp
+tags:
+- gsoc
+- fossology
+- proposal
+title: New Build System and improving CI/CD workflow
 ---
 
 It has been 2 years since I was a Google Summer of Code Student. It was an outstanding opportunity and I really enjoyed working on the project. Not only that, but it added numerous skills to my resume and polished many others. Today I want to make my proposal public, that helped me get selected.

@@ -1,10 +1,12 @@
 ---
-title: The Big Red Ants
-date: 2012-02-27 22:47
-tags: [ants, sav] 
 category: article
-description: 'The Big Red Ants'
-image: "/images/ants.webp"
+date: 2012-02-27T22:47:00
+description: The Big Red Ants
+image: /images/ants.webp
+tags:
+- ants
+- sav
+title: The Big Red Ants
 ---
 
 In a bird's eye view if we see around us, ants are the common and

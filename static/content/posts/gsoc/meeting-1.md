@@ -1,11 +1,13 @@
 ---
-title: Community Bonding Meeting 1
-date: 2021-06-04 22:30
-tags: [gsoc, fossology]
 category: gsoc
-description: "In this second meeting points over default Makefiles were discussed.
-Ninja can be used as an alternative for Makefiles."
-image: "/images/tech-wallpaper-2.webp"
+date: 2021-06-04T22:30:00
+description: In this second meeting points over default Makefiles were discussed.
+  Ninja can be used as an alternative for Makefiles.
+image: /images/tech-wallpaper-2.webp
+tags:
+- gsoc
+- fossology
+title: Community Bonding Meeting 1
 ---
 
 In this second meeting points over default Makefiles were discussed. Ninja can be used as an alternative for Makefiles.

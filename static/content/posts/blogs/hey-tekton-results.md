@@ -1,10 +1,16 @@
 ---
-title: Tekton Results to the Rescue
-date: 2023-03-16 20:47
-tags: [tekton, kubernetes, redhat, openshift, results]
 category: blogs
-image: "/images/tekton-results-wall.webp"
-description: Tekton Results aims to help users logically group CI/CD workload history and separate out long term result storage away from the Pipeline controller.
+date: 2023-03-16T20:47:00
+description: Tekton Results aims to help users logically group CI/CD workload history
+  and separate out long term result storage away from the Pipeline controller.
+image: /images/tekton-results-wall.webp
+tags:
+- tekton
+- kubernetes
+- redhat
+- openshift
+- results
+title: Tekton Results to the Rescue
 ---
 
 What do you do with your Tekton Pipelines once it finishes? Depending on if it

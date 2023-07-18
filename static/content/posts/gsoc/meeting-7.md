@@ -1,10 +1,13 @@
 ---
-title: Coding Week 5 Meeting
-date: 2021-07-09 22:22
-tags: [gsoc, FOSSology]
 category: gsoc
-description: "This week was dedicated to perfecting CMake Installation Configuration. The installation was tested and bugs were discussed."
-image: "/images/tech-wallpaper-8.webp"
+date: 2021-07-09T22:22:00
+description: This week was dedicated to perfecting CMake Installation Configuration.
+  The installation was tested and bugs were discussed.
+image: /images/tech-wallpaper-8.webp
+tags:
+- gsoc
+- FOSSology
+title: Coding Week 5 Meeting
 ---
 
 This week was dedicated to perfecting CMake Installation Configuration. The installation was tested and bugs were discussed.

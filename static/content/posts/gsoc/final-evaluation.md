@@ -1,10 +1,13 @@
 ---
-title: GSoC'21 Final Evaluation Report
-date: 2021-08-19 23:07
-tags: [gsoc, FOSSology]
 category: gsoc
-description: This is the final report of my Google Summer of Code 2021 at The FOSSology Project.
-image: "/images/gsoc-wall.webp"
+date: 2021-08-19T23:07:00
+description: This is the final report of my Google Summer of Code 2021 at The FOSSology
+  Project.
+image: /images/gsoc-wall.webp
+tags:
+- gsoc
+- FOSSology
+title: GSoC'21 Final Evaluation Report
 ---
 
 This is the final report of my Google Summer of Code 2021 at The FOSSology Project.

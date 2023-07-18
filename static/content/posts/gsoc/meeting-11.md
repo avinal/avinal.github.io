@@ -1,11 +1,13 @@
 ---
-title: Coding Week 10 Meeting
-date: 2021-08-14 22:47
-tags: [gsoc, FOSSology]
 category: gsoc
-description: "This week I implemented CMake testing configuration and fixed most of
-the tests. As of now all but 5 tests are working fine."
-image: "/images/tech-wallpaper-12.webp"
+date: 2021-08-14T22:47:00
+description: This week I implemented CMake testing configuration and fixed most of
+  the tests. As of now all but 5 tests are working fine.
+image: /images/tech-wallpaper-12.webp
+tags:
+- gsoc
+- FOSSology
+title: Coding Week 10 Meeting
 ---
 
 This week I implemented CMake testing configuration and fixed most of the tests. As of now all but 5 tests are working fine.

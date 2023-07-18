@@ -1,12 +1,13 @@
 ---
-title: Coding Week 7 Meeting
-date: 2021-07-23 22:22
-tags: [gsoc, FOSSology]
 category: gsoc
-description: "This week I implemented CMake packaging configuration for FOSSology.
-There were two meetings in this week and this report covers both of
-them."
-image: "/images/tech-wallpaper-9.webp"
+date: 2021-07-23T22:22:00
+description: This week I implemented CMake packaging configuration for FOSSology.
+  There were two meetings in this week and this report covers both of them.
+image: /images/tech-wallpaper-9.webp
+tags:
+- gsoc
+- FOSSology
+title: Coding Week 7 Meeting
 ---
 
 This week I implemented CMake packaging configuration for FOSSology. There were two meetings in this week and this report covers both of them.

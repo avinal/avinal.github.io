@@ -1,11 +1,13 @@
 ---
-title: Coding Week 3 Meeting
-date: 2021-06-22 23:22
-tags: [gsoc, FOSSology]
 category: gsoc
-description: "In this fifth meeting, question related to versioning and obtaining
-commit hash were discussed, this was a short meeting."
-image: "/images/tech-wallpaper-5.webp"
+date: 2021-06-22T23:22:00
+description: In this fifth meeting, question related to versioning and obtaining commit
+  hash were discussed, this was a short meeting.
+image: /images/tech-wallpaper-5.webp
+tags:
+- gsoc
+- FOSSology
+title: Coding Week 3 Meeting
 ---
 
 In this fifth meeting, question related to versioning and obtaining commit hash were discussed, this was a short meeting.

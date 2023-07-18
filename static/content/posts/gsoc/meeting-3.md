@@ -1,11 +1,13 @@
 ---
-title: Coding Week 2 Meeting
-date: 2021-06-18 23:30
-tags: [gsoc, FOSSology]
 category: gsoc
-description: "In this fourth meeting, a lot of questions were discussed related to the
-existing build system and what things we have to drop or modify."
-image: "/images/tech-wallpaper-4.webp"
+date: 2021-06-18T23:30:00
+description: In this fourth meeting, a lot of questions were discussed related to
+  the existing build system and what things we have to drop or modify.
+image: /images/tech-wallpaper-4.webp
+tags:
+- gsoc
+- FOSSology
+title: Coding Week 2 Meeting
 ---
 
 In this fourth meeting, a lot of questions were discussed related to the existing build system and what things we have to drop or modify.
