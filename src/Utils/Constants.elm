@@ -28,10 +28,10 @@ type alias Job msg =
 
 footerLinks : List Link
 footerLinks =
-    [ { text = "About", url = "https://avinal.space/pages/about-me" }
-    , { text = "Blog", url = "https://avinal.space/posts" }
-    , { text = "Projects", url = "https://avinal.space/pages/projects" }
-    , { text = "GSoC", url = "https://avinal.space/posts/gsoc" }
+    [ { text = "About", url = "/pages/about-me" }
+    , { text = "Blog", url = "/posts" }
+    , { text = "Projects", url = "/pages/projects" }
+    , { text = "GSoC", url = "/posts/gsoc" }
     ]
 
 
@@ -39,10 +39,9 @@ iconLinks : List IconLink
 iconLinks =
     [ { url = "https://github.com/avinal", icon = "fa-brands fa-github" }
     , { url = "https://www.linkedin.com/in/avinal", icon = "fa-brands fa-linkedin" }
-    , { url = "https://instagram.com/avinal.k", icon = "fa-brands fa-instagram" }
     , { url = "https://twitter.com/Avinal_", icon = "fa-brands fa-twitter" }
     , { url = "mailto:ripple@avinal.space", icon = "fa-solid fa-envelope" }
-    , { url = "https://avinal.space/meet", icon = "fa-solid fa-video" }
+    , { url = "/meet", icon = "fa-solid fa-video" }
     ]
 
 
