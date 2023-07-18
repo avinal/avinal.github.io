@@ -42,7 +42,7 @@ getFormattedDate dateString time =
                 "Invalid date!!"
 
             else
-                "Present"
+                "Today"
 
 
 dateParser : Parser DateTime
@@ -55,18 +55,19 @@ dateParser =
         |. token "-"
         |. chompWhile (\c -> c == '0')
         |= int
-        |. spaces
+        |. token "T"
         |. chompWhile (\c -> c == '0')
         |= int
         |. token ":"
         |. chompWhile (\c -> c == '0')
         |= int
+        |. chompUntilEndOr "\n"
         |. end
 
 
 categoryNtags : String -> List String -> Html msg
 categoryNtags category tags =
-    Html.span [ class "flex flex-wrap py-6 space-x-2 border-t border-dashed border-teal-500" ]
+    Html.span [ class "flex flex-wrap py-6 space-x-2" ]
         (Html.a [ class "px-3 py-1 m-1 rounded-sm hover:underline bg-pink-400 text-gray-900 font-bold", href <| "/posts/" ++ category, target "_blank" ]
             [ Html.text category
             ]

@@ -1,14 +1,14 @@
 module Pages.Posts.Category_.Post_ exposing (Model, Msg, page)
 
-import Components.Footer exposing (avatarAndLinks)
 import Effect exposing (Effect)
 import Html exposing (Html)
-import Html.Attributes exposing (alt, class, datetime, href, id, src, title)
+import Html.Attributes exposing (alt, class, datetime, href, src, title)
 import Http
 import Layouts
 import Page exposing (Page)
 import Route exposing (Route)
 import Shared
+import String exposing (words)
 import Url exposing (Protocol(..))
 import Utils.Utils as UU
 import View exposing (View)
@@ -52,6 +52,7 @@ type alias Model =
 type alias Blog =
     { meta : YamlMeta
     , content : String
+    , words : Int
     }
 
 
@@ -131,15 +132,31 @@ view model =
                             , alt blog.meta.title
                             ]
                             []
-                        , Html.h1 [ class "absolute top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-full" ] [ Html.text blog.meta.title ]
+                        , Html.h1 [ class "absolute top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-full" ]
+                            [ Html.text blog.meta.title ]
                         ]
-                    , Html.span [ class "text-base font-regular" ]
-                        [ Html.text "By "
-                        , Html.a [ href "https://avinal.space/pages/about-me", class "font-bold no-underline hover:text-pink-500" ] [ Html.text "Avinal Kumar" ]
-                        , Html.text " on "
-                        , Html.time [ datetime blog.meta.date ] [ Html.text <| UU.getFormattedDate blog.meta.date True ]
+                    , Html.span [ class "text-base font-light font-sans oldstyle-nums" ]
+                        [ Html.a [ href "/pages/about-me", class "font-bold no-underline hover:text-pink-500" ]
+                            [ Html.text "Avinal Kumar" ]
+                        , Html.text " | "
+                        , Html.time [ datetime blog.meta.date ] [ Html.text <| UU.getFormattedDate blog.meta.date False ]
+                        , Html.text <|
+                            " | "
+                                ++ String.fromInt blog.words
+                                ++ " words | ~"
+                                ++ String.fromInt (blog.words // 200)
+                                ++ " mins read"
                         ]
-                    , Html.span [ class "text-base font-light float-right" ] [ Html.a [ href "", class "hover:text-pink-500" ] [ Html.abbr [ class "fa-solid fa-link no-underline", title "Share this article" ] [] ] ]
+                    , Html.span [ class "text-base font-light float-right" ]
+                        [ Html.a
+                            [ String.dropLeft 8 model.requestUrl
+                                |> String.dropRight 3
+                                |> String.append "https://null.avinal.space"
+                                |> href
+                            , class "hover:text-pink-500"
+                            ]
+                            [ Html.abbr [ class "fa-solid fa-terminal no-underline", title "See a basic version of this page." ] [] ]
+                        ]
                     , articleNode blog.content model.fragment blog.meta.title blog.meta.description
                     ]
                 , UU.categoryNtags blog.meta.category blog.meta.tags
@@ -204,7 +221,7 @@ splitMetaContent data =
     in
     case Yaml.fromString metaDecoder metadata of
         Ok meta ->
-            Ok { meta = meta, content = content }
+            Ok { meta = meta, content = content, words = List.length <| words content }
 
         Err err ->
             Err ("YAML front matter parsing failed: " ++ Yaml.errorToString err)
