@@ -52,7 +52,9 @@ customElements.define(
       }
       function highlightElement(element) {
         var language = Prism.util.getLanguage(element);
-
+        if (language == "bash") {
+          return;
+        }
         var grammar = Prism.languages[language];
 
         var parent = element.parentElement;
