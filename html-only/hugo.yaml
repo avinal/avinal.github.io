@@ -1,7 +1,6 @@
 baseURL: "https://avinal.space/"
 languageCode: en-us
 title: Avinal's blog
-theme: hugo-texify2
 sitename: "Avinal's blog"
 enableRobotsTXT: true
 
@@ -12,6 +11,10 @@ module:
       excludeFile: posts.json
     - source: "../static/images/"
       target: "static/images"
+    - source: "./static/css"
+      target: "static/css"
+    - source: "./static/font"
+      target: "static/font"
 
 markup:
   highlight:
@@ -27,6 +30,11 @@ params:
   twitter: "@Avinal_"
   enableDuckDuckGoSearchBox: false
   toc: true
+  dateFormat: "January 2, 2006"
+  rootFontSize: "120%"
+  showWordCount: true
+  showReadingTime: true
+  emphasisWithDots: true
   self:
     name: Avinal Kumar
     link: https://avinal.space/pages/about-me

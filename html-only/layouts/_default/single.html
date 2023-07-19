@@ -1,0 +1,28 @@
+{{ define "head" }}
+<link rel="stylesheet" href='{{ "css/single.css" | relURL }}'>
+{{ end }}
+
+{{ define "main" }}
+<main id="main" class="post">
+
+    {{ if cond (ne .Params.toc nil) .Params.toc .Site.Params.toc }}
+    {{ if ne .TableOfContents "<nav id=\"TableOfContents\"></nav>" }}
+    <details>
+        <summary>
+            <b>Table of Contents</b>
+        </summary>
+        <div class="toc {{ if .Site.Params.numberedSubtitles }}numbered-subtitles{{ end }}">{{ .TableOfContents }}</div>
+    </details>
+    {{ end }}
+    {{ end }}
+    <article class="content {{ if .Site.Params.numberedSubtitles }}numbered-subtitles{{ end }}">
+        {{ if .Site.Params.emphasisWithDots }}
+        {{ .Content | replaceRE "<strong>(\\p{Han}+?)</strong>" "<strong class=chinese>$1</strong>" | safeHTML }}
+        {{ else }}
+        {{ .Content }}
+
+        {{ end }}
+    </article>
+
+</main>
+{{ end }}

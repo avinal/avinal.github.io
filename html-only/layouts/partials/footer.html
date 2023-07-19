@@ -1,0 +1,13 @@
+<footer id="footer">
+
+    <nav>
+        {{ range .Site.Params.navs }}
+        <span class="nav-bar-item">
+            <a class="link" href="{{ .link | safeURL }}">{{ .name }}</a>
+        </span>
+        {{ end }}
+    </nav>
+    <div class="footnote">
+        <span>{{ .Site.Params.footnote | safeHTML }}</span>
+    </div>
+</footer>

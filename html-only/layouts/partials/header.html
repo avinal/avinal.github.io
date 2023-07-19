@@ -1,0 +1,47 @@
+{{ $parsedUrl := urls.Parse .Site.BaseURL }}
+{{ $domain := $parsedUrl.Host }}
+{{ $domainWithoutWWW := replace $domain "www." "" }}
+<header id="header">
+    <div>
+        <p>
+            This page is terminal friendly, try browsing with <a href="https://lynx.invisible-island.net/"
+                class="link">lynx</a>.
+            Or <a href="https://avinal.space{{ .Page.RelPermalink }}" class="link">click here</a> for modern version of this page with rich ui, comments and dark
+            mode.
+        </p>
+    </div>
+
+    {{ if .Params.image }}
+    <nav>
+        <span class="nav-bar-item">
+            <img src="{{ .Params.image | absURL }}" alt="{{ .Title }}">
+        </span>
+    </nav>
+    {{ end }}
+
+    <h1>
+        {{ .Title }}
+    </h1>
+    <h2>
+        <div>
+            <span><a href="{{ .Site.Params.self.link }}" class="link">{{ .Site.Params.self.name }}</a></span>
+            <time>| {{ .PublishDate.Format .Site.Params.dateFormat }}</time>
+            <span>| <a href="https://avinal.space/posts/{{ .Params.category }}" class="link">{{ .Params.category }}</a>
+            </span>
+            {{ if .Site.Params.showWordCount }}
+            <span>| {{ .WordCount }} words</span>
+            {{ end }}
+
+            {{ if gt .ReadingTime 1 }}
+            {{ .Scratch.Set "timeUnit" "mins" }}
+            {{ else }}
+            {{ .Scratch.Set "timeUnit" "min" }}
+            {{ end }}
+            {{ if .Site.Params.showReadingTime }}
+            <span>| ~{{.ReadingTime}} {{ .Scratch.Get "timeUnit" }}</span>
+            {{ end }}
+        </div>
+    </h2>
+
+
+</header>
