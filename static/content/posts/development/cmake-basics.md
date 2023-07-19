@@ -28,7 +28,7 @@ and various features.
 
 ## What is CMake?
 
-![You CMake me happy](/images/cmake-happy.webp)
+![You CMake me happy:left](/images/cmake-happy.webp)
 
 CMake stands for Cross-platform Make. Normally, a build tool like Make
 will parse a configuration file (Makefile) that contains all the
@@ -51,7 +51,7 @@ again: just remove the build directory and you are done.
 
 ## CMake Syntax
 
-![Compiling](https://imgs.xkcd.com/comics/compiling.png)
+![Compiling:right](https://imgs.xkcd.com/comics/compiling.png)
 
 CMake unlike Make is a configuration language itself. CMake supplies a
 rich library of inherent functions as well as common programming

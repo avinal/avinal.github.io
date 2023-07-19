@@ -23,3 +23,4 @@ css-serve:
 # clean
 clean:
 	rm -rf dist
+	rm -rf html-only/public
