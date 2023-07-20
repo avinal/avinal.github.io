@@ -1,19 +1,15 @@
-{{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+{{ printf "<?xml version= \"1.0\" encoding= \"utf-8\" standalone= \"yes\"?>" | safeHTML }}
 <urlset
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-  {{ range .Data.Pages }}
-    {{- if .Permalink -}}
-  <url>
-    <loc>https://null.avinal.space{{ .RelPermalink }}</loc>{{ if not .Lastmod.IsZero }}
-    <lastmod>{{ safeHTML ( .Lastmod.Format "2006-01-02T15:04:05-07:00" ) }}</lastmod>{{ end }}{{ with .Sitemap.ChangeFreq }}
-    <changefreq>{{ . }}</changefreq>{{ end }}{{ if ge .Sitemap.Priority 0.0 }}
-    <priority>{{ .Sitemap.Priority }}</priority>{{ end }}
-    <image:image>
-        <image:loc>https://null.avinal.space{{ .Params.image }}</image:loc>
-    </image:image>        
+  xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"> {{ range .Data.Pages }} {{- if
+  .Permalink -}} <url>
+    <loc>https://null.avinal.space{{ .RelPermalink }}</loc>{{ if not .Lastmod.IsZero }} <lastmod>{{
+  safeHTML ( .Lastmod.Format "2006-01-02T15:04:05-07:00" ) }}</lastmod>{{ end }}{{ with
+  .Sitemap.ChangeFreq }} <changefreq>{{ . }}</changefreq>{{ end }}{{ if ge .Sitemap.Priority 0.0 }} <priority>{{
+  .Sitemap.Priority }}</priority>{{ end }} <image:image>
+      <image:loc>https://null.avinal.space{{ .Params.image }}</image:loc>
+    </image:image>
   </url>
-    {{- end -}}
-  {{ end }}
-</urlset>
+  {{- end -}} {{ end }} </urlset>
