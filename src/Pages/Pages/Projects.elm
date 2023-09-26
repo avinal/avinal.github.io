@@ -32,7 +32,7 @@ type alias Model =
 init : () -> ( Model, Effect Msg )
 init () =
     ( {}
-    , Effect.pushRoute { path = Route.Path.NotFound_, query = Dict.empty, hash = Nothing }
+    , Effect.replaceRoute { path = Route.Path.NotFound_, query = Dict.empty, hash = Nothing }
     )
 
 
