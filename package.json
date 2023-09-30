@@ -5,6 +5,9 @@
     "tailwindcss": "^3.2.4"
   },
   "dependencies": {
-    "npm": "^9.3.1"
+    "marked": "^9.0.3",
+    "marked-highlight": "^2.0.6",
+    "npm": "^9.3.1",
+    "prismjs": "^1.29.0"
   }
 }

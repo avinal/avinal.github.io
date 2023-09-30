@@ -131,11 +131,7 @@
           "href": "https://avinal.space"
         }
       ],
-      "script": [
-        {
-          "defer src": "https://cdn.jsdelivr.net/npm/marked/marked.min.js"
-        }
-      ]
+      "script": []
     },
     "router": {
       "useHashRouting": false

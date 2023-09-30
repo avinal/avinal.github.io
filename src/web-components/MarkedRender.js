@@ -1,74 +1,40 @@
-import "./prism.js";
+import { marked } from "marked";
+import { markedHighlight } from "marked-highlight";
+import Prism from "prismjs";
+
+import "./Prism";
+
 customElements.define(
   "rendered-md",
   class extends HTMLElement {
     constructor() {
       super();
+      this.lead = 0; // Moved lead here
     }
+
     connectedCallback() {
       this.runMarked();
     }
 
     updateMeta(title, description) {
-      document
-        .querySelector('meta[name="title"]')
-        .setAttribute("content", title + " | Avinal Kumar | Personal Website");
-      document
-        .querySelector('meta[name="description"]')
-        .setAttribute("content", description);
-      document
-        .querySelector('meta[property="og:title"]')
-        .setAttribute("content", title + " | Avinal Kumar | Personal Website");
-      document
-        .querySelector('meta[property="og:description"]')
-        .setAttribute("content", description);
-      document
-        .querySelector('meta[property="og:url"]')
-        .setAttribute("content", window.location);
-      document
-        .querySelector('meta[property="twitter:title"]')
-        .setAttribute("content", title + " | Avinal Kumar | Personal Website");
-      document
-        .querySelector('meta[property="twitter:description"]')
-        .setAttribute("content", description);
-      document
-        .querySelector('meta[property="twitter:url"]')
-        .setAttribute("content", window.location);
-    }
-
-    addLineNumber() {
-      var env = {
-        container: document,
-        selector:
-          'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code',
+      const metaInfo = {
+        'meta[name="title"]': `${title} | Avinal Kumar | Personal Website`,
+        'meta[name="description"]': description,
+        'meta[property="og:title"]': `${title} | Avinal Kumar | Personal Website`,
+        'meta[property="og:description"]': description,
+        'meta[property="og:url"]': window.location,
+        'meta[property="twitter:title"]': `${title} | Avinal Kumar | Personal Website`,
+        'meta[property="twitter:description"]': description,
+        'meta[property="twitter:url"]': window.location,
       };
 
-      env.elements = Array.prototype.slice.apply(
-        env.container.querySelectorAll(env.selector)
-      );
-
-      for (var i = 0, element; (element = env.elements[i++]); ) {
-        highlightElement(element);
-      }
-      function highlightElement(element) {
-        var language = Prism.util.getLanguage(element);
-        if (language == "bash") {
-          return;
+      for (const [selector, content] of Object.entries(metaInfo)) {
+        const element = document.querySelector(selector);
+        if (element) {
+          element.setAttribute("content", content);
+        } else {
+          console.warn(`Element ${selector} not found`);
         }
-        var grammar = Prism.languages[language];
-
-        var parent = element.parentElement;
-        if (parent && parent.nodeName.toLowerCase() === "pre") {
-          Prism.util.setLanguage(parent, language);
-        }
-        var code = element.textContent;
-        var env = {
-          element: element,
-          language: language,
-          grammar: grammar,
-          code: code,
-        };
-        Prism.hooks.run("complete", env);
       }
     }
 
@@ -97,14 +63,16 @@ customElements.define(
     }
 
     runMarked() {
-      const renderer = new marked.Renderer();
-      const data = this.getAttribute("markdowndata");
-      const fragment = this.getAttribute("fragment");
-      const title = this.getAttribute("title");
-      const description = this.getAttribute("description");
-      this.updateMeta(title, description);
+      const {
+        markdowndata: data,
+        fragment,
+        title,
+        description,
+      } = this.attributes;
+      this.updateMeta(title.value, description.value);
 
-      var lead = 0;
+      const renderer = new marked.Renderer();
+
       renderer.heading = (text, level) => {
         const escapedText = text
           .trim()
@@ -120,11 +88,10 @@ customElements.define(
       };
 
       renderer.paragraph = (text) => {
-        lead++;
-        if (lead === 1) {
-          return `<p class="lead">${text}</p>`;
-        }
-        return `<p>${text}</p>`;
+        this.lead++;
+        return this.lead === 1
+          ? `<p class="lead">${text}</p>`
+          : `<p>${text}</p>`;
       };
 
       renderer.image = (href, title, text) => {
@@ -147,26 +114,26 @@ customElements.define(
 
       marked.setOptions({
         renderer: renderer,
-        highlight: function (code, lang) {
-          const grammer = Prism.languages[lang];
-          if (!grammer) {
-            console.warn(`Unable to find prism highlight for '${lang}'`);
-            return;
-          }
-          return Prism.highlight(code, grammer, lang);
-        },
       });
 
-      this.innerHTML = marked.parse(data);
-      console.log("Markdown rendering complete!");
-      this.addLineNumber();
+      marked.use(
+        markedHighlight({
+          highlight(code, lang) {
+            const grammer = Prism.languages[lang];
+            if (!grammer) {
+              console.warn(`Unable to find prism highlight for '${lang}'`);
+              return;
+            }
+            return Prism.highlight(code, grammer, lang);
+          },
+        })
+      );
+
+      this.innerHTML = marked(data.value);
       this.addComments();
 
-      if (fragment) {
-        console.log(
-          `Fragment found, scrolling to: ${window.location}#${fragment}`
-        );
-        window.location = "#" + fragment;
+      if (fragment && fragment.value) {
+        window.location = `#${fragment.value}`;
       }
     }
 

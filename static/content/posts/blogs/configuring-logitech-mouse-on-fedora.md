@@ -87,7 +87,7 @@ sudo logid -d
 
 You can get output like this:
 
-```log
+```bash
 [INFO] Device found: MX Master 3S on /dev/hidraw4:255
 [DEBUG] /dev/hidraw4:255 remappable buttons:
 [DEBUG] CID  | reprog? | fn key? | mouse key? | gesture support?
