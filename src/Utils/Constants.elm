@@ -2,7 +2,6 @@ module Utils.Constants exposing (..)
 
 import Array exposing (Array)
 import Html exposing (Html)
-import Html.Attributes exposing (class)
 
 
 type alias Link =
@@ -42,71 +41,6 @@ iconLinks =
     , { url = "https://twitter.com/Avinal_", icon = "fa-brands fa-twitter" }
     , { url = "mailto:ripple@avinal.space", icon = "fa-solid fa-envelope" }
     , { url = "/meet", icon = "fa-solid fa-video" }
-    ]
-
-
-jobList : List (Job msg)
-jobList =
-    [ { title = "Associate Software Engineer"
-      , company = "Red Hat"
-      , from = "2022-07-01T10:10:00"
-      , to = "Present"
-      , body = Html.div [] [ Html.p [ class "mb-4 text-base font-normal text-gray-400" ] [ Html.text "Working on Tekton Results and Pipeline Service." ] ]
-      }
-    , { title = "Google Summer of Code Mentor"
-      , company = "FOSSology"
-      , from = "2022-05-01T10:10:00"
-      , to = "Parent"
-      , body = Html.p [ class "mb-4 text-base font-normal text-gray-400" ] [ Html.text "Mentoring Google Summer of Code contributors for The FOSSology Project." ]
-      }
-    , { title = "Software Engineering Intern"
-      , company = "Red Hat"
-      , from = "2022-01-05T10:10:00"
-      , to = "2022-06-30T10:10:00"
-      , body = Html.p [ class "mb-4 text-base font-normal text-gray-400" ] [ Html.text "Worked on Pipeline Service and Minimal Tekton Server." ]
-      }
-    , { title = "Technical Writer"
-      , company = "API7.ai"
-      , from = "2022-02-01T10:10:00"
-      , to = "2022-07-31T10:10:00"
-      , body = Html.p [ class "mb-4 text-base font-normal text-gray-400" ] [ Html.text "Created Katacoda tutorials for Apache APISIX, a cloud-native API gateway." ]
-      }
-    , { title = "Open Source Contributor"
-      , company = "FOSSology"
-      , from = "2021-05-15T10:10:00"
-      , to = "2021-09-23T10:10:00"
-      , body = Html.p [ class "mb-4 text-base font-normal text-gray-400" ] [ Html.text "Upgraded old build system to CMake and improved tests and CI/CD for FOSSology." ]
-      }
-    , { title = "Java Developer Intern"
-      , company = "XResearch"
-      , from = "2021-03-01T10:10:00"
-      , to = "2021-05-15T10:10:00"
-      , body = Html.p [ class "mb-4 text-base font-normal text-gray-400" ] [ Html.text "" ]
-      }
-    , { title = "Technical Writer"
-      , company = "VideoLAN"
-      , from = "2020-09-15T10:10:00"
-      , to = "2020-11-30T10:10:00"
-      , body = Html.p [ class "mb-4 text-base font-normal text-gray-400" ] [ Html.text "Created Mobile App user documentation for VLC Media Player." ]
-      }
-    , { title = "Hindi Editor"
-      , company = "SRIJAN, NIT Hamirpur"
-      , from = "2018-11-01T10:10:00"
-      , to = "2022-09-30T10:10:00"
-      , body = Html.p [ class "mb-4 text-base font-normal text-gray-400" ] []
-      }
-    , { title = "Member"
-      , company = "Computer Science Engineers' Society, NIT Hamirpur"
-      , from = "2019-01-07T10:10:00"
-      , to = "2022-06-30T10:10:00"
-      , body = Html.p [ class "mb-4 text-base font-normal text-gray-400" ] []
-      }
-    , { title = "Computer Science and Engineering"
-      , company = "National Institute of Technology Hamirpur"
-      , from = "2018-06-20T10:10:00"
-      , to = "2022-05-31T10:10:00"
-      , body = Html.p [ class "mb-4 text-base font-normal text-gray-400" ] []
-      }
     ]
 
 

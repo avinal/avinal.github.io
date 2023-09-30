@@ -59,6 +59,7 @@ type alias Model =
     , generating : Bool
     }
 
+
 cellSize : Int
 cellSize =
     10

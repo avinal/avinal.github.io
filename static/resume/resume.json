@@ -1,0 +1,103 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "basics": {
+    "name": "Avinal Kumar",
+    "label": "Open Sourcerer | Software Engineer",
+    "email": "ripple@avinal.space",
+    "url": "https://avinal.space",
+    "image": "/images/avinal-title.webp",
+    "location": {
+      "city": "Bengaluru",
+      "countryCode": "IN"
+    },
+    "summary": "I am a Software Engineer Associate at Red Hat, specialising in hybrid cloud engineering. I have been involved with Google's Summer of Code and Google Season of Docs programmes as a mentor and contributor to Open Source for many years. For fun, I like to play around with cutting-edge areas of computer science; at the moment, I'm learning about Elm. GNU/Linux and free/open-source software are two of my favourite things"
+  },
+  "work": [
+    {
+      "name": "Red Hat",
+      "location": "Bengaluru, IN",
+      "position": "Software Engineer",
+      "startDate": "2023-10-01",
+      "endDate": "Today",
+      "summary": "Working on Pipeline Service, Tekton Results Maintainer",
+      "description": ""
+    },
+    {
+      "name": "Red Hat",
+      "location": "Bengaluru, IN",
+      "position": "Associate Software Engineer",
+      "startDate": "2022-07-01",
+      "endDate": "2023-09-30",
+      "summary": "Pipeline Service | Tekton Results"
+    },
+    {
+      "name": "Red Hat",
+      "location": "Bengaluru, IN",
+      "position": "Software Engineering Intern",
+      "startDate": "2022-01-05",
+      "endDate": "2022-06-30",
+      "summary": "Tekton Pipelines, Minimal Tekton Server"
+    },
+    {
+      "name": "API7.ai",
+      "location": "",
+      "position": "Technical Writer",
+      "startDate": "2022-02-01",
+      "endDate": "2022-07-31",
+      "summary": "APISIX documentation, Katacoda Scenarios"
+    },
+    {
+      "name": "The FOSSology Project",
+      "location": "",
+      "startDate": "2021-05-15",
+      "endDate": "2021-09-23",
+      "position": "Open Source Contributor",
+      "summary": "Google Summer of Code"
+    },
+    {
+      "name": "XResearch",
+      "position": "Java Developer Intern",
+      "startDate": "2021-03-01",
+      "endDate": "2021-05-15",
+      "summary": ""
+    },
+    {
+      "name": "VideoLAN",
+      "position": "Technical Writer",
+      "startDate": "2020-09-15",
+      "endDate": "2020-11-30",
+      "summary": "Google Season of Docs, VLC for Android User Documentation"
+    }
+  ],
+  "education": [
+    {
+      "institution": "National Institute of Technology Hamirpur",
+      "area": "Computer Science and Engineering",
+      "startDate": "2018-06-20",
+      "endDate": "2022-05-31",
+      "studyType": "Bachelor of Technology"
+    },
+    {
+      "institution": "Sri Chaitanya Junior Kalasala",
+      "area": "Mathematics, Physics, Chemistry",
+      "studyType": "Intermediate",
+      "startDate": "2015-05-20",
+      "endDate": "2017-05-30"
+    },
+    {
+      "institution": "Simultala Awasiya Vidyalaya",
+      "area": "Secondary School",
+      "studyType": "Metriculation",
+      "startDate": "2010-08-09",
+      "endDate": "2015-03-30"
+    }
+  ],
+  "skills": [
+    {
+      "name": "C++"
+    },
+    {
+      "name": "Go"
+    }
+  ]
+}

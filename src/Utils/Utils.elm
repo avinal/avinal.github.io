@@ -47,7 +47,17 @@ getFormattedDate dateString time =
 
 dateParser : Parser DateTime
 dateParser =
-    succeed DateTime
+    oneOf
+        [ succeed Tuple.pair
+            |= datePart
+            |= optional timePart
+        ]
+        |> map toDateTime
+
+
+datePart : Parser ( Int, Int, Int )
+datePart =
+    succeed (\y m d -> ( y, m, d ))
         |= int
         |. token "-"
         |. chompWhile (\c -> c == '0')
@@ -55,6 +65,11 @@ dateParser =
         |. token "-"
         |. chompWhile (\c -> c == '0')
         |= int
+
+
+timePart : Parser ( Int, Int )
+timePart =
+    succeed (\h m -> ( h, m ))
         |. token "T"
         |. chompWhile (\c -> c == '0')
         |= int
@@ -63,6 +78,24 @@ dateParser =
         |= int
         |. chompUntilEndOr "\n"
         |. end
+
+
+toDateTime : ( ( Int, Int, Int ), Maybe ( Int, Int ) ) -> DateTime
+toDateTime ( ( y, m, d ), maybeTime ) =
+    case maybeTime of
+        Just ( h, min ) ->
+            DateTime y m d h min
+
+        Nothing ->
+            DateTime y m d 0 0
+
+
+optional : Parser a -> Parser (Maybe a)
+optional parser =
+    oneOf
+        [ succeed Just |= parser
+        , succeed Nothing
+        ]
 
 
 categoryNtags : String -> List String -> Html msg
