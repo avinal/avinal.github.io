@@ -1,0 +1,8 @@
+<div class="fixed bottom-0 left-0 bg-neutral-900 p-3 w-full border-t border-cyan-500">
+    <div class="mx-auto flex justify-center space-x-6 text-gray-400">
+        {{ range .Site.Params.navs }}
+        <a class="underline decoration-cyan-500 hover:decoration-pink-500 text-xl" href="{{ .link | safeURL }}">{{ .name
+            }}</a>
+        {{ end }}
+    </div>
+</div>

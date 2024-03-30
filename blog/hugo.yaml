@@ -1,0 +1,45 @@
+baseURL: 'https://avinal.space/'
+languageCode: en-us
+title: Fedoraemon
+menus:
+  main:
+    - name: Home
+      pageRef: /
+      weight: 10
+    - name: Posts
+      pageRef: /posts
+      weight: 20
+    - name: Tags
+      pageRef: /tags
+      weight: 30
+module:
+  hugoVersion:
+    extended: false
+    min: 0.116.0
+
+params:
+  showWordCount: true
+  showReadingTime: true
+  toc: true
+  numberedSubtitles: true
+  navs:
+    - name: Home
+      link: https://avinal.space
+    - name: About
+      link: https://avinal.space/pages/about-me
+    - name: Blog
+      link: https://avinal.space/posts
+    - name: Projects
+      link: https://avinal.space/pages/projects
+    - name: GitHub
+      link: https://github.com/avinal
+
+disableKinds: ["home", "taxonomy"]
+
+taxonomies:
+  category: category
+  tag: tags
+
+permalinks:
+  tags: "/posts/tags/:slug"
+  category: "/posts/category/:slug"

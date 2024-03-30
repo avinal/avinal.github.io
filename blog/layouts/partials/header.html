@@ -1,0 +1,25 @@
+<header class="relative">
+<img class="object-cover w-full h-60 sm:h-96 brightness-50" src="{{ .Params.Image | absURL }}" alt="{{ .Title }}">
+<h1 class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-full text-white">{{ .Title }}</h1>
+
+<span class="absolute bottom-1/4 left-1/2 -translate-x-1/2 text-base font-sans oldstyle-nums text-center w-full">
+  <a class="font-bold no-underline hover:text-pink-500" href="/">Avinal Kumar</a>
+  |
+  {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
+  {{ $dateHuman := .Date | time.Format ":date_long" }}
+  <time datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
+  {{ if .Site.Params.showWordCount }}
+  <span>| {{ .WordCount }} words</span>
+  {{ end }}
+
+  {{ if gt .ReadingTime 1 }}
+  {{ .Scratch.Set "timeUnit" "mins" }}
+  {{ else }}
+  {{ .Scratch.Set "timeUnit" "min" }}
+  {{ end }}
+
+  {{ if .Site.Params.showReadingTime }}
+  <span>| ~{{.ReadingTime}} {{ .Scratch.Get "timeUnit" }}</span>
+  {{ end }}
+</span>
+</header>

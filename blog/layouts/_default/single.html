@@ -1,0 +1,32 @@
+{{ define "main" }}
+<div class="min-h-screen flex flex-col justify-center relative overflow-hidden">
+  <div class="relative w-full bg-neutral md:max-w-3xl md:mx-auto lg:max-w-4xl lg:pb-28">
+
+    <div class="prose prose-invert mx-auto lg:prose-lg prose-a:decoration-cyan-500 hover:prose-a:decoration-pink-500">
+      <div class="bg-neutral-900 md:-mx-8 lg:-mx-16 px-8 py-1">
+
+        {{ partial "header.html" . }}
+
+        <article>
+          {{ if cond (ne .Params.toc nil) .Params.toc .Site.Params.toc }}
+          {{ if ne .TableOfContents "<nav id=\"TableOfContents\"></nav>" }}
+          <details class="open:bg-neutral-800 open:border open:rounded open:border-cyan-700  ">
+            <summary>
+              <b>In this post, we'll take a look at:</b>
+            </summary>
+            <div class="toc {{ if .Site.Params.numberedSubtitles }}numbered-subtitles{{ end }} ">{{ .TableOfContents }}
+            </div>
+          </details>
+          {{ end }}
+          {{ end }}
+
+          {{ .Content }}
+        </article>
+
+        {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
+      </div>
+    </div>
+    {{ partial "comments.html" . (dict "taxonomy" "tags" "page" .) }}
+  </div>
+</div>
+{{ end }}
