@@ -11,6 +11,7 @@ css:
 build:
 	@echo "--- compiling elm land project"
 	npx elm-land build
+	hugo --source blog --destination ../dist --minify
 
 # compile and watch for dev
 elm-serve:
@@ -23,4 +24,4 @@ css-serve:
 # clean
 clean:
 	rm -rf dist
-	rm -rf html-only/public
+	rm -rf blog/public

@@ -7,5 +7,5 @@
 *.pem
 /static/main.css
 /temp
-/html-only/public
-/html-only/node_modules
+/blog/public
+/blog/node_modules
