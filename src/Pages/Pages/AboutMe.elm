@@ -110,7 +110,7 @@ view model =
                             Html.li [ class "mb-10 ml-6" ]
                                 [ Html.span [ class "absolute flex items-center justify-center w-6 h-6 bg-pink-600 ring-pink-900 rounded-full -left-3 ring-8" ]
                                     [ Html.text <| String.left 1 edu.institution ]
-                                , Html.h3 [ class "flex items-center mb-1 text-2xl font-semibold" ] [ Html.text <| edu.studyType ++ " at " ++ edu.institution ]
+                                , Html.h3 [ class "flex items-center mb-1 text-xl font-semibold" ] [ Html.text <| edu.studyType ++ " at " ++ edu.institution ]
                                 , Html.time [ class "block mb-2 text font-normal leading-none text-gray-500", datetime edu.startDate ]
                                     [ Html.text <| getFormattedDate edu.startDate False ++ " - " ++ getFormattedDate edu.endDate False ]
                                 , Html.p [ class "mb-4 text-base font-normal text-gray-400" ] [ Html.text edu.area ]

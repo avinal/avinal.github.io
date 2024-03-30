@@ -10,13 +10,13 @@
       "city": "Bengaluru",
       "countryCode": "IN"
     },
-    "summary": "I am a Software Engineer Associate at Red Hat, specialising in hybrid cloud engineering. I have been involved with Google's Summer of Code and Google Season of Docs programmes as a mentor and contributor to Open Source for many years. For fun, I like to play around with cutting-edge areas of computer science; at the moment, I'm learning about Elm. GNU/Linux and free/open-source software are two of my favourite things"
+    "summary": "I am a Software Engineer at Red Hat, specialising in hybrid cloud engineering. I have been involved with Google's Summer of Code and Google Season of Docs programmes as a mentor and contributor to Open Source for many years. For fun, I like to play around with cutting-edge areas of computer science; at the moment, I'm learning about Elm. GNU/Linux and free/open-source software are two of my favourite things"
   },
   "work": [
     {
       "name": "Red Hat",
       "location": "Bengaluru, IN",
-      "position": "Software Engineer",
+      "position": "Software Engineer II",
       "startDate": "2023-10-01",
       "endDate": "Today",
       "summary": "Working on Pipeline Service, Tekton Results Maintainer",
@@ -28,7 +28,7 @@
       "position": "Associate Software Engineer",
       "startDate": "2022-07-01",
       "endDate": "2023-09-30",
-      "summary": "Pipeline Service | Tekton Results"
+      "summary": "Pipeline Service, Tekton Results"
     },
     {
       "name": "Red Hat",
@@ -98,6 +98,9 @@
     },
     {
       "name": "Go"
+    },
+    {
+      "name": "Elm"
     }
   ]
 }

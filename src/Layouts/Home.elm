@@ -3,12 +3,13 @@ module Layouts.Home exposing (Model, Msg, Props, layout)
 import Components.Footer exposing (iconLinkToCenter)
 import Effect exposing (Effect)
 import Html exposing (Html)
-import Html.Attributes exposing (class, href)
+import Html.Attributes exposing (class, href, target, rel)
 import Layout exposing (Layout)
 import Route exposing (Route)
 import Shared
 import Utils.Constants exposing (..)
 import View exposing (View)
+import Html.Attributes exposing (target)
 
 
 type alias Props =
@@ -74,6 +75,8 @@ view { toContentMsg, model, content } =
             Html.a
                 [ href link.url
                 , class "underline decoration-cyan-500 hover:decoration-pink-500 inline-flex text-xl p-3"
+                , target "_blank"
+                , rel "noopener noreferrer"
                 ]
                 [ Html.text link.text ]
     in
@@ -82,7 +85,7 @@ view { toContentMsg, model, content } =
         [ Html.section [ class "flex items-center justify-center flex-col h-screen text-gray-400" ]
             [ Html.header [ class "object-cover object-center p-8" ] content.body
             , iconLinkToCenter
-            , Html.div [ class "text-center text-xl p-2" ] [ Html.text "I'm Avinal and I work at Red Hat as an Associate Software Engineer for Hybrid Cloud Engineering." ]
+            , Html.div [ class "text-center text-xl p-2" ] [ Html.text "Avinal Kumar, Software Engineer II at Red Hat, Open Sourcerer" ]
             , Html.footer [ class "flex justify-center flex-wrap" ]
                 (List.map footerLinkToCenter Utils.Constants.footerLinks)
             ]
