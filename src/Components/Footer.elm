@@ -1,8 +1,9 @@
 module Components.Footer exposing (..)
 
 import Html exposing (Html)
-import Html.Attributes exposing (class, href, src)
+import Html.Attributes exposing (class, href, src, target)
 import Utils.Constants exposing (IconLink, Link, footerLinks)
+import Html.Attributes exposing (rel)
 
 
 singleLink : Link -> Html msg
@@ -10,6 +11,8 @@ singleLink link =
          Html.a
             [ href link.url
             , class "underline decoration-cyan-500 hover:decoration-pink-500 text-xl"
+            , target "_blank"
+            , rel "noopener noreferrer"
             ]
             [ Html.text link.text ]
 
