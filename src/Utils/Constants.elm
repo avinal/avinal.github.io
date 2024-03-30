@@ -28,9 +28,9 @@ type alias Job msg =
 footerLinks : List Link
 footerLinks =
     [ { text = "About", url = "/pages/about-me" }
-    , { text = "Blog", url = "/posts" }
+    , { text = "Blog", url = "https://avinal.space/posts" }
     , { text = "Projects", url = "/pages/projects" }
-    , { text = "GSoC", url = "/posts/gsoc" }
+    , { text = "GSoC", url = "https://avinal.space/posts/category/gsoc" }
     ]
 
 
