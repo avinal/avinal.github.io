@@ -34,12 +34,10 @@
           {{ end }}
           <p> {{ .Summary | truncate 250 }}</p>
         </a>
-        <a href="" target="_blank">
           <span class="flex flex-wrap py-6 space-x-2">
             <a class="px-3 py-1 m-1 rounded-sm hover:underline bg-pink-400 text-gray-900 font-bold" href="/posts/category/{{ .Params.Category }}">
               {{ .Params.Category }}</a>
           </span>
-        </a>
       </div>
     </div>
     {{ end }}
@@ -67,12 +65,10 @@
             <p> {{ .Summary | truncate 150 }}</p>
 
           </a>
-          <a href="" target="_blank">
             <span class="flex flex-wrap py-6 space-x-2">
               <a class="px-3 py-1 m-1 rounded-sm hover:underline bg-pink-400 text-gray-900 font-bold" href="/posts/category/{{ .Params.Category }}">
                 {{ .Params.Category }}</a>
             </span>
-          </a>
         </div>
       </div>
       {{ end }}
