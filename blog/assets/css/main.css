@@ -1839,3 +1839,7 @@ video {
     padding-bottom: 7rem;
   }
 }
+
+.highlight pre {
+  padding: 1em;
+}

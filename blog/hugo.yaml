@@ -43,3 +43,18 @@ taxonomies:
 permalinks:
   tags: "/posts/tags/:slug"
   category: "/posts/category/:slug"
+
+markup:
+  highlight:
+    anchorLineNos: false
+    # codeFences: true
+    guessSyntax: false
+    lineNoStart: 1
+    # lineNos: true 
+    # lineNumbersInTable: true
+    noClasses: true
+    noHl: false
+    style: base16-snazzy
+  goldmark:
+    renderer:
+      unsafe: true

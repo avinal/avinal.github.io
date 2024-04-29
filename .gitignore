@@ -9,3 +9,5 @@
 /temp
 /blog/public
 /blog/node_modules
+.idea
+.vscode
