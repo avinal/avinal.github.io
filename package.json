@@ -1,10 +1,10 @@
 {
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.8",
-    "elm-land": "^0.19.5",
+    "elm-land": "^0.20.1",
     "tailwindcss": "^3.2.4"
   },
   "dependencies": {
-    "npm": "^9.3.1"
+    "npm": "^10.6.0"
   }
 }
