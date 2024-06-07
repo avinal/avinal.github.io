@@ -1,9 +1,9 @@
 ---
 category: blogs
-date: 2024-06-07T23:47:00
-description: "In January, I started switching to terminal-based tools and just
+date: 2024-06-07T02:47:00
+description: In January, I started switching to terminal-based tools and just
   recently, I was able to use my terminal for most of my development work.
-  This blog highlights what tools I am using and for what purposes."
+  This blog highlights what tools I am using and for what purposes.
 image: /images/dog-using-terminal.jpg
 tags:
 - terminal
@@ -21,9 +21,10 @@ tags:
 - gh
 - zsh
 - oh-my-zsh
-title: "Echoes from the Shell: The Tools That Talk Back" 
+- cli
+- stow
+title: "Echoes from the Shell: The Tools That Talk Back"
 ---
-
 
 I started programming on a Windows machine about 6 years ago. I had just joined
 college and had little clue about what tools to use and where to start. Slowly
