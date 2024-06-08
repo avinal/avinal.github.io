@@ -51,6 +51,10 @@ alike (until you intend to use Arch and burn the world).
 
 ## My current setup
 
+![Glimpse into the terminal](/images/terminal-workspace.png)
+
+*Note: Open the image in a new tab for better viewing.*
+
 Currently, I am using Fedora 40 with Sway Window Manager and tons of terminal
 based tools. Just to be clear, I am not a keyboard nerd, but it does get my
 work done faster and non-intrusively. I use a mouse for a fair share of my work
