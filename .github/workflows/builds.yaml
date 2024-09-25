@@ -29,7 +29,7 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: '0.124.1'
+          hugo-version: '0.134.3'
           extended: true
       - name: Install elm-land and node packages
         run: npm install

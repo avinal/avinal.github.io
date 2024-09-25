@@ -13,4 +13,4 @@
     # status = 200
     
 [build.environment]
-  HUGO_VERSION = "0.124.1"
+  HUGO_VERSION = "0.134.3"
