@@ -178,7 +178,7 @@ but I will point out the biggest changes in my smartphone experience.
   hardware. With recent AI outbreak, Google and other organizations are putting too much of it even
   in places that makes little sense. GrapheneOS is clean from all that bloat, not even the
   Assistant. If I really need it, I can install specific applications.
-- Battery life improvement is the biggest visible change I observed. I am not getting around 25%
+- Battery life improvement is the biggest visible change I observed. I am now getting around 25%
   more screen time than before with similar uses.
 - I can now decide what permission each app has as well as stop their access to network completely
   without relying on a third party apps. You also get fine control for your location data as well as
