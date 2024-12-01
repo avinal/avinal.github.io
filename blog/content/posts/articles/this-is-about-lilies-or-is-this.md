@@ -15,16 +15,15 @@ title: How to grow Lilies?
 
 Lilies, they say, are symbols of peace. But peace is not given; it is cultivated. Lilies demand
 effort, patience, and faith - a willingness to confront the barren soil and nurture it back to life.
-What follows is a guide to growing Lilies but also a meditation on growth itself, a journey into my
-soul's quiet reckoning with despair.
+What follows is a guide to growing Lilies and a journey into a soul's quiet reckoning with despair.
 
-## What Once was and Will be Again
+## What Once Was and Will be Again
 
 The garden was barren, its silence oppressive. The earth, dry and unyielding, clung stubbornly to
 its lifelessness as though it had forgotten how to nurture, how to hope. It stood as a monument to
 neglect, an expanse of quiet despair that seemed to whisper, Nothing will ever grow here again.
 
-And yet, something stirred—a faint whisper beneath the desolation, an inkling that even the most
+And yet, something stirred - a faint whisper beneath the desolation, an inkling that even the most
 forsaken soil might still hold secrets of renewal. It was not certainty but a quiet rebellion
 against despair, a defiant act of belief. The decision to grow lilies was made not with confidence
 but with trembling hands, as if planting these flowers might coax life back into the hollow spaces
@@ -73,7 +72,7 @@ when no one is watching.*
 
 ## This Too Shall Bloom
 
-One day, the soil breaks open—not with a flourish, but with the quietest of gestures. A tiny green
+One day, the soil breaks open - not with a flourish, but with the quietest of gestures. A tiny green
 sprout emerges, barely noticeable, a sliver of life against the vastness of the earth.
 
 To the untrained eye, it is nothing. To you, it is everything. This fragile sprout is proof that
