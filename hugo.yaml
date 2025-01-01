@@ -1,0 +1,23 @@
+baseURL: 'https://avinal.space/'
+languageCode: 'en-us'
+title: "Avinal's Website"
+theme: 'box-box'
+
+menus:
+  main:
+    - name: Home
+      pageRef: /
+      weight: 10
+    - name: Posts
+      pageRef: /posts
+      weight: 20
+
+disableKinds: ["taxonomy"]
+
+taxonomies:
+  category: category
+
+permalinks:
+  category: "/posts/category/:slug"
+
+ignoreLogs: 'warning-goldmark-raw-html'

@@ -1,16 +1,6 @@
 [build]
-    command = "make all"
-    publish = "dist"
+    command = "hugo"
+    publish = "public"
 
-[[redirects]]
-    from = "/*"
-    to = "/index.html"
-    status = 200
-
-# [[redirects]]
-    # from = "/posts/*"
-    # to = ""
-    # status = 200
-    
 [build.environment]
-  HUGO_VERSION = "0.134.3"
+  HUGO_VERSION = "0.140.1"

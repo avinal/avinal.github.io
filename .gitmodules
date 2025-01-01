@@ -1,0 +1,3 @@
+[submodule "themes/box-box"]
+	path = themes/box-box
+	url = https://github.com/avinal/box-box.git
