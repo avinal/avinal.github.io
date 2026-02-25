@@ -4,8 +4,7 @@ date: 2022-02-27T20:47:00
 description: This blog is a descreptive account of the development of Minimal Tekton
   Server. This is highly technical in nature, so please make sure that you have sufficient
   knowledge about Golang, Docker, Kubernetes and TektonCD. You can refer to my [previous
-  blog]("https://avinal.space/posts/development/i-am-loving-it-redhat.html") to know
-  about these topics.
+  blog](/posts/development/i-am-loving-it-redhat/) to know about these topics.
 image: /images/development.webp
 modified: 2022-03-07T22:47:00
 tags:
@@ -23,7 +22,7 @@ title: Developing Minimal Tekton Server
 This blog is a descreptive account of the development of Minimal Tekton Server.
 This is highly technical in nature, so please make sure that you have sufficient
 knowledge about Golang, Docker, Kubernetes and TektonCD. You can refer to my
-[previous blog]("https://avinal.space/posts/development/i-am-loving-it-redhat.html")
+[previous blog](/posts/development/i-am-loving-it-redhat/)
 to know about these topics.
 
 As mentioned in my last blog, we were given to implement an application

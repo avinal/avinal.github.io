@@ -1,37 +1,28 @@
-# Sample workflow for building and deploying a Hugo site to GitHub Pages
 name: Check build
 
 on:
-  # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
   pull_request:
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Default to bash
-defaults:
-  run:
-    shell: bash
-
 jobs:
-  # Build job
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 22
           cache: "npm"
-          cache-dependency-path: ./package-lock.json
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
-        with:
-          hugo-version: '0.134.3'
-          extended: true
-      - name: Install elm-land and node packages
-        run: npm install
-      - name: build
-        run: make
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check types
+        run: npm run check
+
+      - name: Build site
+        run: npm run build

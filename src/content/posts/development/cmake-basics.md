@@ -5,7 +5,6 @@ description: CMake stands for Cross-platform Make. Normally, a build tool like M
   will parse a configuration file (Makefile) that contains all the commands required
   to build an artifact based on the source files and other resources inside the project.
 image: /images/cmake-office.webp
-slug: cmake-basics
 tags:
 - cmake
 - gsoc

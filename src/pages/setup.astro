@@ -1,0 +1,308 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const hardware = [
+  {
+    category: "Servers",
+    items: [
+      { name: "Raspberry Pi 5 8GB", url: "https://www.raspberrypi.com/products/raspberry-pi-5/", detail: "Primary server — runs most self-hosted services" },
+      { name: "Raspberry Pi 4B 8GB", url: "https://www.raspberrypi.org/products/raspberry-pi-4-model-b/", detail: "Secondary server — backup and lighter workloads" },
+    ],
+  },
+  {
+    category: "Storage",
+    items: [
+      { name: "Samsung SSD 970 EVO Plus 500GB", url: "https://www.samsung.com/us/computing/memory-storage/solid-state-drives/ssd-970-evo-plus-nvme-m-2-500gb-mz-v7s500b-am/", detail: "NVMe on the Pi 5 via Pimoroni NVMe Base" },
+      { name: "WD Blue SA510 SATA SSD M.2 500GB", url: "https://www.westerndigital.com/en-in/products/internal-drives/wd-blue-sa510-sata-m-2-ssd", detail: "Connected via USB enclosure to the Pi 4B" },
+    ],
+  },
+  {
+    category: "Accessories",
+    items: [
+      { name: "Raspberry Pi 27W USB-C PSU", url: "https://www.raspberrypi.com/products/27w-power-supply/", detail: "For the Pi 5" },
+      { name: "Raspberry Pi 15W USB-C PSU", url: "https://www.raspberrypi.com/products/type-c-power-supply/", detail: "For the Pi 4B" },
+      { name: "Pimoroni NVMe Base", url: "https://shop.pimoroni.com/products/nvme-base", detail: "NVMe SSD HAT for Pi 5" },
+      { name: "PiBOX NVMe SSD Enclosure", url: "https://pibox.in/", detail: "USB 3.2 10Gbps enclosure" },
+    ],
+  },
+];
+
+const selfHosted = [
+  { name: "Immich", url: "https://immich.app/", desc: "Photo and video backup — Google Photos replacement", category: "Media" },
+  { name: "Paisa", url: "https://paisa.fyi/", desc: "Personal finance and budget manager using plain text accounting", category: "Finance" },
+  { name: "Vikunja", url: "https://vikunja.io/", desc: "Todo lists and kanban boards with CalDAV support", category: "Productivity" },
+  { name: "Atuin", url: "https://atuin.sh/", desc: "Encrypted shell history sync across all machines", category: "Dev Tools" },
+  { name: "Gitea", url: "https://about.gitea.com/", desc: "Self-hosted Git service — personal project mirror", category: "Dev Tools" },
+  { name: "Paperless-ngx", url: "https://docs.paperless-ngx.com/", desc: "Document management with built-in OCR", category: "Documents" },
+  { name: "Shiori", url: "https://github.com/go-shiori/shiori", desc: "Simple bookmark manager — Pocket alternative", category: "Bookmarks" },
+  { name: "Memos", url: "https://usememos.com/", desc: "Lightweight note-taking — quick thoughts and snippets", category: "Notes" },
+];
+
+const networking = [
+  { name: "Tailscale", url: "https://tailscale.com/", desc: "Mesh VPN connecting all devices securely" },
+  { name: "RunTipi", url: "https://runtipi.io/", desc: "Docker Compose app manager for server administration" },
+];
+
+const softwareStack = [
+  { category: "Editor", items: ["Neovim", "VS Code / Cursor"] },
+  { category: "Terminal", items: ["Kitty", "Zsh", "Starship prompt", "Tmux"] },
+  { category: "OS", items: ["Fedora (daily driver)", "Raspberry Pi OS (servers)"] },
+  { category: "Browser", items: ["Firefox"] },
+];
+---
+
+<BaseLayout title="Setup" description="Hardware, software, and self-hosted services powering Avinal's workflow">
+  <div class="setup-page">
+    <header class="setup-header">
+      <h1>Setup</h1>
+      <p class="setup-desc">
+        The hardware, software, and self-hosted services that power my workflow.
+        Heavily inspired by the homelab and self-hosting community.
+      </p>
+    </header>
+
+    <section class="setup-section">
+      <h2>Hardware</h2>
+      {hardware.map((group) => (
+        <div class="hw-group">
+          <h3 class="hw-category">{group.category}</h3>
+          <div class="hw-items">
+            {group.items.map((item) => (
+              <div class="hw-card">
+                <h4><a href={item.url}>{item.name}</a></h4>
+                <p>{item.detail}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <section class="setup-section">
+      <h2>Self-Hosted Services</h2>
+      <p class="section-intro">
+        All services run on the Raspberry Pis, connected via Tailscale VPN.
+        Most are deployed using Docker Compose via RunTipi.
+      </p>
+      <div class="service-grid">
+        {selfHosted.map((svc) => (
+          <div class="service-card">
+            <span class="service-category">{svc.category}</span>
+            <h3><a href={svc.url}>{svc.name}</a></h3>
+            <p>{svc.desc}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="setup-section">
+      <h2>Networking</h2>
+      <div class="service-grid service-grid-half">
+        {networking.map((svc) => (
+          <div class="service-card">
+            <h3><a href={svc.url}>{svc.name}</a></h3>
+            <p>{svc.desc}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="setup-section">
+      <h2>Software Stack</h2>
+      <div class="sw-grid">
+        {softwareStack.map((group) => (
+          <div class="sw-group">
+            <h3 class="sw-category">{group.category}</h3>
+            <ul class="sw-list">
+              {group.items.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <div class="setup-footer">
+      <p class="text-muted text-sm">
+        For a deeper dive into my Raspberry Pi setup, check out
+        <a href="/posts/raspi/everything-on-my-pi/">Everything on my Pi</a>.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .setup-page {
+    max-width: var(--max-w-page);
+    margin-inline: auto;
+  }
+
+  .setup-header {
+    margin-bottom: var(--space-10);
+  }
+
+  .setup-header h1 {
+    margin-bottom: var(--space-3);
+  }
+
+  .setup-desc {
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
+    line-height: var(--leading-relaxed);
+    max-width: var(--max-w-prose);
+  }
+
+  .setup-section {
+    margin-bottom: var(--space-12);
+  }
+
+  .setup-section > h2 {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-2);
+    border-bottom: 2px solid var(--accent);
+    display: inline-block;
+  }
+
+  .section-intro {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-6);
+    line-height: var(--leading-relaxed);
+  }
+
+  /* Hardware */
+  .hw-group {
+    margin-bottom: var(--space-6);
+  }
+
+  .hw-category {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: var(--space-3);
+  }
+
+  .hw-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-4);
+  }
+
+  .hw-card {
+    padding: var(--space-4);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background-color: var(--bg-surface);
+  }
+
+  .hw-card h4 {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    margin-bottom: var(--space-1);
+  }
+
+  .hw-card h4 a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .hw-card h4 a:hover {
+    text-decoration: underline;
+  }
+
+  .hw-card p {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+  }
+
+  /* Services */
+  .service-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--space-4);
+  }
+
+  .service-grid-half {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    max-width: 640px;
+  }
+
+  .service-card {
+    padding: var(--space-5);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background-color: var(--bg-surface);
+    transition: border-color var(--duration-fast) var(--ease-out),
+      box-shadow var(--duration-fast) var(--ease-out);
+  }
+
+  .service-card:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow);
+  }
+
+  .service-category {
+    display: inline-block;
+    font-size: var(--text-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-bottom: var(--space-2);
+  }
+
+  .service-card h3 {
+    font-size: var(--text-base);
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+  }
+
+  .service-card h3 a {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .service-card h3 a:hover {
+    color: var(--accent);
+  }
+
+  .service-card p {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: var(--leading-relaxed);
+  }
+
+  /* Software stack */
+  .sw-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--space-6);
+  }
+
+  .sw-category {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: var(--space-3);
+  }
+
+  .sw-list {
+    list-style: disc;
+    padding-left: 1.2em;
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .setup-footer {
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+</style>

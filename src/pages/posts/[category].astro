@@ -1,0 +1,254 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection("posts", ({ data }) => !data.draft);
+  const categories = [
+    ...new Set(allPosts.map((p) => p.data.category).filter(Boolean)),
+  ];
+  return categories.map((cat) => ({
+    params: { category: cat },
+    props: {
+      category: cat,
+      posts: allPosts
+        .filter((p) => p.data.category === cat)
+        .sort((a, b) => b.data.date.getTime() - a.data.date.getTime()),
+    },
+  }));
+}
+
+const { category, posts } = Astro.props;
+
+const allPosts = await getCollection("posts", ({ data }) => !data.draft);
+const categories = [
+  ...new Set(allPosts.map((p) => p.data.category).filter(Boolean)),
+].sort();
+
+const fmtDate = (d: Date) =>
+  d.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+
+const readTime = (body?: string) => {
+  const words = body?.split(/\s+/).length ?? 0;
+  return `~${Math.max(1, Math.round(words / 220))} mins`;
+};
+
+const excerpt = (body?: string, len = 140) => {
+  if (!body) return "";
+  const plain = body
+    .replace(/^---[\s\S]*?---/, "")
+    .replace(/[#*_`>\[\]()!|~\-]/g, "")
+    .replace(/\n+/g, " ")
+    .trim();
+  return plain.length > len ? plain.slice(0, len).trimEnd() + " …" : plain;
+};
+---
+
+<BaseLayout title={`${category} — Posts`} description={`Posts in the ${category} category`}>
+  <div class="posts-page">
+    <nav class="category-filters" aria-label="Filter by category">
+      <a href="/posts/" class="filter-link">All</a>
+      {categories.map((cat) => (
+        <a
+          href={`/posts/${cat}/`}
+          class:list={["filter-link", { active: cat === category }]}
+        >
+          {cat}
+        </a>
+      ))}
+    </nav>
+
+    <div class="category-header">
+      <h1 class="category-heading">{category}</h1>
+      <p class="text-secondary">
+        {posts.length} post{posts.length !== 1 ? "s" : ""}
+      </p>
+    </div>
+
+    <ul class="post-list">
+      {posts.map((post) => (
+        <li class="post-entry">
+          <a href={`/posts/${post.id}/`} class="post-row">
+            <div class="post-thumb">
+              {post.data.image ? (
+                <img src={post.data.image} alt="" class="thumb-img" loading="lazy" />
+              ) : (
+                <span class="thumb-placeholder">{post.data.title.charAt(0)}</span>
+              )}
+            </div>
+            <div class="post-info">
+              <div class="post-meta">
+                <time datetime={post.data.date.toISOString()}>{fmtDate(post.data.date)}</time>
+                <span>{readTime(post.body)}</span>
+              </div>
+              <h2 class="post-title">{post.data.title}</h2>
+              {post.data.description ? (
+                <p class="post-desc">{post.data.description}</p>
+              ) : (
+                <p class="post-desc">{excerpt(post.body)}</p>
+              )}
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</BaseLayout>
+
+<style>
+  .posts-page {
+    max-width: var(--max-w-page);
+    margin-inline: auto;
+  }
+
+  .category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding-bottom: var(--space-4);
+    margin-bottom: var(--space-4);
+    position: sticky;
+    top: var(--nav-height);
+    z-index: 50;
+    background-color: var(--bg);
+  }
+
+  .filter-link {
+    display: inline-block;
+    padding: var(--space-1) var(--space-4);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    color: var(--text-muted);
+    text-decoration: none;
+    text-transform: capitalize;
+    transition: all var(--duration-fast) var(--ease-out);
+  }
+
+  .filter-link:hover {
+    border-color: var(--border-strong);
+    color: var(--text);
+  }
+
+  .filter-link.active {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  .category-header {
+    margin-bottom: var(--space-6);
+  }
+
+  .category-heading {
+    text-transform: capitalize;
+    margin-bottom: var(--space-1);
+  }
+
+  .post-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-entry {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .post-entry:first-child {
+    border-top: 1px solid var(--border);
+  }
+
+  .post-row {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: var(--space-5);
+    padding: var(--space-5) var(--space-2);
+    text-decoration: none;
+    color: inherit;
+    border-radius: var(--radius-sm);
+    transition: background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .post-row:hover {
+    background-color: var(--bg-surface-hover);
+  }
+
+  .post-thumb {
+    aspect-ratio: 3 / 2;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background-color: var(--bg-surface-hover);
+  }
+
+  .thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    transition: filter var(--duration-normal) var(--ease-out);
+  }
+
+  .post-row:hover .thumb-img {
+    filter: grayscale(0%);
+  }
+
+  .thumb-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--text-muted);
+    opacity: 0.3;
+  }
+
+  .post-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+  }
+
+  .post-title {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+  }
+
+  .post-desc {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: var(--leading-relaxed);
+  }
+
+  @media (max-width: 600px) {
+    .post-row {
+      grid-template-columns: 100px 1fr;
+      gap: var(--space-3);
+    }
+
+    .post-title {
+      font-size: var(--text-base);
+    }
+  }
+</style>

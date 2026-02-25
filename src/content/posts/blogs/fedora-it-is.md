@@ -1,7 +1,7 @@
 ---
 title: Installing Fedora with automatic and custom partioning
 date: 2023-01-19T23:02:00
-category: blog
+category: blogs
 tags: [fedora, partioning]
 image: ""
 draft: true

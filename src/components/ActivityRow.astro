@@ -1,0 +1,232 @@
+---
+/**
+ * Combined activity card: graph (left) + stats (right) in one row.
+ * Mirrors jay.fish's "Commit Carnage" + "Kill Count" layout.
+ */
+import type { ActivityData } from "@/lib/activity";
+import type { GitHubUser } from "@/lib/github";
+
+interface Props {
+  activity: ActivityData;
+  user: GitHubUser | null;
+}
+
+const { activity, user } = Astro.props;
+const hasWaka = activity.wakatime.available;
+---
+
+<div class="activity-card card">
+  <div class="activity-header">
+    <h3 class="widget-title">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Activity
+    </h3>
+    <span class="text-muted text-xs">past year</span>
+  </div>
+
+  {activity.weeks.length > 0 ? (
+    <div class="graph-scroll">
+      <div class="graph-grid" role="img" aria-label="Activity graph">
+        {activity.weeks.map((week) => (
+          <div class="graph-col">
+            {week.map((day) => {
+              const ghLevel = day.githubLevel;
+              const wakaLvl = hasWaka && day.wakaSeconds > 0
+                ? Math.min(Math.max(1, Math.ceil(day.wakaSeconds / 1800)), 4)
+                : 0;
+
+              const d = new Date(day.date);
+              const fmtDate = `${String(d.getDate()).padStart(2, "0")} ${d.toLocaleString("en-US", { month: "short" })} ${d.getFullYear()}`;
+              const tipParts = [fmtDate, `${day.githubCount} contribution${day.githubCount !== 1 ? "s" : ""}`];
+              if (hasWaka && day.wakaSeconds > 0) tipParts.push(day.wakaText);
+              const tip = tipParts.join(" · ");
+
+              const hasGh = ghLevel > 0;
+              const hasWk = wakaLvl > 0;
+              const isSplit = hasGh && hasWk;
+
+              if (isSplit) {
+                return (
+                  <div class="graph-cell split-cell" title={tip}>
+                    <div class="cell-gh" style={`background-color: var(--graph-${ghLevel})`}></div>
+                    <div class="cell-waka" style={`background-color: var(--waka-${wakaLvl})`}></div>
+                  </div>
+                );
+              }
+              const color = hasWk ? `var(--waka-${wakaLvl})` : `var(--graph-${ghLevel})`;
+              return <div class="graph-cell" style={`background-color: ${color}`} title={tip}></div>;
+            })}
+          </div>
+        ))}
+      </div>
+    </div>
+    <div class="graph-legend">
+      <span class="legend-group">
+        <span class="text-xs text-muted">GitHub</span>
+        <div class="legend-cell" style="background-color: var(--graph-1)"></div>
+        <div class="legend-cell" style="background-color: var(--graph-2)"></div>
+        <div class="legend-cell" style="background-color: var(--graph-3)"></div>
+        <div class="legend-cell" style="background-color: var(--graph-4)"></div>
+      </span>
+      {hasWaka && (
+        <span class="legend-group">
+          <div class="legend-cell" style="background-color: var(--waka-1)"></div>
+          <div class="legend-cell" style="background-color: var(--waka-2)"></div>
+          <div class="legend-cell" style="background-color: var(--waka-3)"></div>
+          <div class="legend-cell" style="background-color: var(--waka-4)"></div>
+          <span class="text-xs text-muted">WakaTime</span>
+        </span>
+      )}
+    </div>
+  ) : (
+    <p class="text-muted text-sm">Activity data unavailable.</p>
+  )}
+
+  <!-- Stats below the graph -->
+  <div class="activity-stats">
+    <dl class="stats-row">
+      <div class="stat-item gh">
+        <dt>Contributions</dt>
+        <dd>{activity.github.total.toLocaleString()}</dd>
+      </div>
+      <div class="stat-item gh">
+        <dt>Public Repos</dt>
+        <dd>{user?.public_repos ?? "—"}</dd>
+      </div>
+      <div class="stat-item gh">
+        <dt>Followers</dt>
+        <dd>{user?.followers ?? "—"}</dd>
+      </div>
+      {hasWaka && (
+        <Fragment>
+          <div class="stat-item waka">
+            <dt>Coded (year)</dt>
+            <dd>{activity.wakatime.totalText}</dd>
+          </div>
+          <div class="stat-item waka">
+            <dt>Daily Avg</dt>
+            <dd>{activity.wakatime.dailyAvgText}</dd>
+          </div>
+          <div class="stat-item waka">
+            <dt>Best Day</dt>
+            <dd>{activity.wakatime.bestDayText}</dd>
+          </div>
+        </Fragment>
+      )}
+    </dl>
+  </div>
+</div>
+
+<style>
+  .activity-card {
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .activity-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .graph-scroll {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+  }
+
+  @media (max-width: 900px) {
+    .graph-scroll {
+      justify-content: flex-end;
+    }
+  }
+
+  .graph-grid {
+    display: flex;
+    gap: 3px;
+    flex-shrink: 0;
+  }
+
+  .graph-col {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .graph-cell {
+    width: 11px;
+    height: 11px;
+    border-radius: 2px;
+    cursor: default;
+  }
+
+  .split-cell {
+    display: flex;
+    overflow: hidden;
+    background: none;
+  }
+
+  .cell-gh  { width: 50%; height: 11px; border-radius: 2px 0 0 2px; }
+  .cell-waka { width: 50%; height: 11px; border-radius: 0 2px 2px 0; }
+
+  .graph-legend {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .legend-group {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .legend-cell {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+  }
+
+  /* Stats — horizontal row below the graph */
+  .activity-stats {
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+  }
+
+  .stats-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-4) var(--space-6);
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .stat-item dt {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+  }
+
+  .stat-item dd {
+    font-size: var(--text-sm);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+  }
+
+  .stat-item.gh dd {
+    color: var(--graph-3);
+  }
+
+  .stat-item.waka dd {
+    color: var(--waka-3);
+  }
+</style>

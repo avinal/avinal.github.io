@@ -1,0 +1,242 @@
+---
+/**
+ * Combined hero card: profile + about/skills + social links.
+ * Mirrors jay.fish's left hero section — everything about the person in one card.
+ */
+
+interface Skill {
+  icon: string;
+  title: string;
+  desc: string;
+  svgPath: string;
+}
+
+interface SocialLink {
+  label: string;
+  href: string;
+  icon: string;
+}
+
+interface Props {
+  name: string;
+  role: string;
+  bio: string;
+  avatarUrl?: string;
+}
+
+const { name, role, bio, avatarUrl } = Astro.props;
+
+const about: Skill[] = [
+  { icon: "cloud", title: "Hybrid Cloud", desc: "Building infrastructure at Red Hat", svgPath: '<path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>' },
+  { icon: "monitor", title: "Linux Enthusiast", desc: "Fedora daily driver, Arch tinkerer", svgPath: '<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>' },
+  { icon: "code", title: "Open Source", desc: "GSoC/GSoD mentor and contributor", svgPath: '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>' },
+  { icon: "server", title: "Homelab", desc: "Self-hosting on Raspberry Pi", svgPath: '<rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>' },
+];
+
+const tools: Skill[] = [
+  { icon: "terminal", title: "Languages", desc: "Go, Python, Elm, C/C++", svgPath: '<polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/>' },
+  { icon: "pen-tool", title: "Editors", desc: "Neovim, VS Code", svgPath: '<path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/>' },
+  { icon: "database", title: "Infra", desc: "Kubernetes, OpenShift, Tekton", svgPath: '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>' },
+  { icon: "flask", title: "Learning", desc: "Elm, functional programming", svgPath: '<path d="M9 3h6v7l5 8a2 2 0 0 1-1.7 3H5.7a2 2 0 0 1-1.7-3l5-8V3z"/><line x1="8" y1="3" x2="16" y2="3"/>' },
+];
+
+const links: SocialLink[] = [
+  { label: "GitHub", href: "https://github.com/avinal", icon: "github" },
+  { label: "LinkedIn", href: "https://linkedin.com/in/avinal", icon: "linkedin" },
+  { label: "Twitter", href: "https://twitter.com/Avinal_", icon: "twitter" },
+  { label: "WakaTime", href: "https://wakatime.com/@avinal", icon: "wakatime" },
+  { label: "RSS", href: "/rss.xml", icon: "rss" },
+];
+---
+
+<div class="hero-card card">
+  <!-- Identity -->
+  <div class="hero-identity">
+    {avatarUrl ? (
+      <img src={avatarUrl} alt={name} class="hero-avatar" width="64" height="64" />
+    ) : (
+      <div class="hero-avatar hero-avatar-fallback" aria-hidden="true">{name.charAt(0)}</div>
+    )}
+    <div>
+      <h1 class="hero-name">{name}</h1>
+      <p class="hero-role">{role}</p>
+    </div>
+  </div>
+
+  <p class="hero-bio">{bio}</p>
+
+  <!-- Skills columns -->
+  <div class="hero-skills">
+    <div class="skills-col">
+      <h3 class="col-heading">About</h3>
+      <ul class="skill-list">
+        {about.map(({ svgPath, title, desc }) => (
+          <li class="skill-item">
+            <svg class="skill-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><Fragment set:html={svgPath} /></svg>
+            <div>
+              <strong>{title}</strong>
+              <span class="skill-desc">{desc}</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="skills-col">
+      <h3 class="col-heading">Tools & Stack</h3>
+      <ul class="skill-list">
+        {tools.map(({ svgPath, title, desc }) => (
+          <li class="skill-item">
+            <svg class="skill-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><Fragment set:html={svgPath} /></svg>
+            <div>
+              <strong>{title}</strong>
+              <span class="skill-desc">{desc}</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Social links -->
+  <div class="hero-links">
+    {links.map(({ label, href, icon }) => (
+      <a href={href} class="link-btn" target={href.startsWith("http") ? "_blank" : undefined} rel={href.startsWith("http") ? "noopener noreferrer" : undefined} aria-label={label}>
+        <svg class="link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          {icon === "github" && <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>}
+          {icon === "linkedin" && <Fragment><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></Fragment>}
+          {icon === "twitter" && <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>}
+          {icon === "wakatime" && <Fragment><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="none"/><path d="M7.5 14.5l2-4 2 3 2-5 2.5 6" stroke-linejoin="round"/></Fragment>}
+          {icon === "rss" && <Fragment><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></Fragment>}
+        </svg>
+        {label}
+      </a>
+    ))}
+  </div>
+</div>
+
+<style>
+  .hero-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .hero-identity {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .hero-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-full);
+    object-fit: cover;
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .hero-avatar-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--accent);
+    color: white;
+    font-size: var(--text-2xl);
+    font-weight: 700;
+  }
+
+  .hero-name {
+    font-size: var(--text-xl);
+    margin-bottom: 2px;
+  }
+
+  .hero-role {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+  }
+
+  .hero-bio {
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+
+  .hero-skills {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+  }
+
+  @media (max-width: 600px) {
+    .hero-skills { grid-template-columns: 1fr; }
+  }
+
+  .col-heading {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: var(--space-3);
+  }
+
+  .skill-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .skill-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+  }
+
+  .skill-icon {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: var(--text-muted);
+  }
+
+  .skill-item strong {
+    font-weight: 600;
+    color: var(--text);
+    margin-right: var(--space-1);
+  }
+
+  .skill-desc {
+    color: var(--text-muted);
+  }
+
+  .hero-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--border);
+  }
+
+  .link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all var(--duration-fast) var(--ease-out);
+  }
+
+  .link-btn:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+    background-color: var(--bg-surface-hover);
+  }
+
+  .link-icon { flex-shrink: 0; }
+</style>

@@ -1,0 +1,172 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  posts: CollectionEntry<"posts">[];
+}
+
+const { posts } = Astro.props;
+
+const fmtDate = (d: Date) =>
+  d.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+---
+
+<div class="posts-card card">
+  <div class="posts-header">
+    <h3 class="widget-title">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Recent Posts
+    </h3>
+    <a href="/posts" class="posts-view-all">View all &rarr;</a>
+  </div>
+
+  {posts.length > 0 ? (
+    <ul class="posts-list">
+      {posts.map((post) => (
+        <li class="post-item">
+          <a href={`/posts/${post.id}/`} class="post-link">
+            <div class="post-thumb">
+              {post.data.image ? (
+                <img src={post.data.image} alt="" class="thumb-img" loading="lazy" />
+              ) : (
+                <span class="thumb-placeholder">{post.data.title.charAt(0)}</span>
+              )}
+            </div>
+            <div class="post-info">
+              <div class="post-meta">
+                <span class="badge">{post.data.category}</span>
+                <span class="text-muted text-xs">{fmtDate(post.data.date)}</span>
+              </div>
+              <strong class="post-title">{post.data.title}</strong>
+              {post.data.description && (
+                <p class="post-desc">{post.data.description}</p>
+              )}
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p class="text-muted text-sm">No posts yet.</p>
+  )}
+</div>
+
+<style>
+  .posts-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .posts-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .posts-view-all {
+    font-size: var(--text-sm);
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .posts-view-all:hover {
+    text-decoration: underline;
+  }
+
+  .posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .post-item {
+    border-top: 1px solid var(--border);
+  }
+
+  .post-item:first-child {
+    border-top: none;
+  }
+
+  .post-link {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-2);
+    text-decoration: none;
+    color: inherit;
+    border-radius: var(--radius-sm);
+    transition: background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .post-link:hover {
+    background-color: var(--bg-surface-hover);
+  }
+
+  .post-thumb {
+    aspect-ratio: 3 / 2;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background-color: var(--bg-surface-hover);
+  }
+
+  .thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    transition: filter var(--duration-normal) var(--ease-out);
+  }
+
+  .post-link:hover .thumb-img {
+    filter: grayscale(0%);
+  }
+
+  .thumb-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: var(--text-muted);
+    opacity: 0.3;
+  }
+
+  .post-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+  }
+
+  .post-title {
+    font-size: var(--text-base);
+    color: var(--text);
+    display: block;
+  }
+
+  .post-desc {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    margin-top: var(--space-1);
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Profile-Readme-WakaTime",
+    "owner": "avinal",
+    "description": "Generate coding activity graph tracked by WakaTime to embed in Readme(s) and webpages.",
+    "url": "https://github.com/avinal/Profile-Readme-WakaTime",
+    "stars": 86,
+    "forks": 30,
+    "languages": [
+      { "name": "Python", "color": "#3572A5" },
+      { "name": "Shell", "color": "#89e051" }
+    ]
+  },
+  {
+    "name": "builds",
+    "owner": "shipwright-io",
+    "description": "Shipwright - a framework for building container images on Kubernetes.",
+    "url": "https://github.com/shipwright-io/builds",
+    "stars": 550,
+    "forks": 110,
+    "languages": [
+      { "name": "Go", "color": "#00ADD8" },
+      { "name": "Shell", "color": "#89e051" }
+    ]
+  },
+  {
+    "name": "cmake-tutorial",
+    "owner": "avinal",
+    "description": "A comprehensive guide to learning CMake — from basics to advanced packaging.",
+    "url": "https://github.com/avinal/cmake-tutorial",
+    "stars": 12,
+    "forks": 5,
+    "languages": [
+      { "name": "CMake", "color": "#DA3434" },
+      { "name": "C++", "color": "#f34b7d" }
+    ]
+  },
+  {
+    "name": "avinal.github.io",
+    "owner": "avinal",
+    "description": "Personal website and blog — built with Astro, minimal HTML & CSS.",
+    "url": "https://github.com/avinal/avinal.github.io",
+    "stars": 5,
+    "forks": 2,
+    "languages": [
+      { "name": "Astro", "color": "#ff5a03" },
+      { "name": "TypeScript", "color": "#3178c6" }
+    ]
+  },
+  {
+    "name": "fossology",
+    "owner": "fossology",
+    "description": "Open source license compliance software system and toolkit.",
+    "url": "https://github.com/fossology/fossology",
+    "stars": 1100,
+    "forks": 500,
+    "languages": [
+      { "name": "PHP", "color": "#4F5D95" },
+      { "name": "C++", "color": "#f34b7d" }
+    ]
+  },
+  {
+    "name": "dotfiles",
+    "owner": "avinal",
+    "description": "My personal configuration files — Neovim, Zsh, Tmux, and more.",
+    "url": "https://github.com/avinal/dotfiles",
+    "stars": 3,
+    "forks": 1,
+    "languages": [
+      { "name": "Shell", "color": "#89e051" },
+      { "name": "Lua", "color": "#000080" }
+    ]
+  }
+]
