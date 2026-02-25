@@ -1,0 +1,62 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer-inner">
+    <p class="footer-copy">
+      &copy; {year} Avinal Kumar
+    </p>
+    <div class="footer-links">
+      <a href="https://github.com/avinal" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <span class="footer-sep" aria-hidden="true">&middot;</span>
+      <a href="https://linkedin.com/in/avinal" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <span class="footer-sep" aria-hidden="true">&middot;</span>
+      <a href="/posts">Posts</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--border);
+    padding-block: var(--space-8);
+  }
+
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    max-width: var(--max-w-page);
+    margin-inline: auto;
+    padding-inline: var(--space-6);
+  }
+
+  .footer-copy {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+
+  .footer-links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+  }
+
+  .footer-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .footer-links a:hover {
+    color: var(--text);
+  }
+
+  .footer-sep {
+    color: var(--text-muted);
+  }
+</style>

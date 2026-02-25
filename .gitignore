@@ -1,14 +1,21 @@
-/dist
-/.elm-land
-/.env
-/elm-stuff
-/node_modules
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.astro/
+
+# Environment
+.env
+.env.local
+.env.production
+
+# IDE
+.idea/
+.vscode/
+
+# OS
 .DS_Store
-*.pem
-/static/main.css
-/temp
-/blog/public
-/blog/node_modules
-.idea
-.vscode
-public
+
+# Legacy Hugo
+public/

@@ -1,0 +1,60 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import HeroCard from "@/components/HeroCard.astro";
+import GameOfLife from "@/components/GameOfLife.astro";
+import ActivityRow from "@/components/ActivityRow.astro";
+import RepoList from "@/components/RepoList.astro";
+import RecentPosts from "@/components/RecentPosts.astro";
+
+import { fetchGitHubUser, fetchGitHubRepos, fetchContributions } from "@/lib/github";
+import { fetchWakaTimeData } from "@/lib/wakatime";
+import { mergeActivity } from "@/lib/activity";
+
+const [user, repos, contributions, wakatime, allPosts] = await Promise.all([
+  fetchGitHubUser(),
+  fetchGitHubRepos(),
+  fetchContributions(),
+  fetchWakaTimeData(),
+  getCollection("posts", ({ data }) => !data.draft),
+]);
+
+const activity = mergeActivity(contributions, wakatime);
+
+const recentPosts = allPosts
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 5);
+---
+
+<BaseLayout title="Home">
+  <div class="bento">
+    <!-- Row 1: Hero (profile+about+skills+links) | Game of Life widget -->
+    <div class="bento-8">
+      <HeroCard
+        name="Avinal Kumar"
+        role="Software Engineer II at Red Hat"
+        bio="I build things for hybrid cloud, contribute to open source, and self-host everything I can. GNU/Linux and free software are two of my favorite things."
+        avatarUrl={user?.avatar_url}
+      />
+    </div>
+
+    <div class="bento-4">
+      <GameOfLife />
+    </div>
+
+    <!-- Row 2: Activity graph + stats (side by side in one card) -->
+    <div class="bento-full">
+      <ActivityRow activity={activity} user={user} />
+    </div>
+
+    <!-- Row 3: Repos -->
+    <div class="bento-full">
+      <RepoList repos={repos} />
+    </div>
+
+    <!-- Row 4: Recent Posts -->
+    <div class="bento-full">
+      <RecentPosts posts={recentPosts} />
+    </div>
+  </div>
+</BaseLayout>

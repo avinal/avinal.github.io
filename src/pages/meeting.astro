@@ -1,0 +1,117 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const CALCOM_USER = "avinal";
+const CALCOM_LINK = `https://cal.com/${CALCOM_USER}`;
+---
+
+<BaseLayout title="Book a Meeting" description="Schedule a meeting with Avinal Kumar">
+  <div class="meeting-page">
+    <header class="meeting-header">
+      <h1>Book a Meeting</h1>
+      <p class="meeting-desc">
+        Want to chat about open source, collaboration, or just say hi?
+        Pick a time that works for you.
+      </p>
+    </header>
+
+    <div class="cal-inline" id="cal-inline"></div>
+
+    <noscript>
+      <div class="cal-noscript">
+        <p>
+          JavaScript is required to load the calendar.
+          <a href={CALCOM_LINK}>Book directly on Cal.com &rarr;</a>
+        </p>
+      </div>
+    </noscript>
+
+    <div class="cal-fallback">
+      <p>
+        Prefer a direct link? <a href={CALCOM_LINK}>Open Cal.com &rarr;</a>
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<!-- Cal.com official inline embed via their embed.js CDN script -->
+<script is:inline define:vars={{ CALCOM_USER }}>
+  (function(C,A,L){
+    let p=function(a,ar){a.q=a.q||[];a.q.push(ar)};
+    let d=C.document;
+    C.Cal=C.Cal||function(){p(C.Cal,arguments)};
+    C.Cal.ns={};C.Cal.loaded=!1;
+    let s=d.createElement("script");
+    s.src=A;s.async=!0;
+    d.head.appendChild(s);
+    C.Cal.q=C.Cal.q||[];
+    C.Cal("init",{origin:"https://cal.com"});
+    C.Cal("inline",{
+      elementOrSelector:"#cal-inline",
+      calLink:CALCOM_USER,
+      layout:"month_view",
+    });
+    C.Cal("ui",{
+      theme:d.documentElement.getAttribute("data-theme")==="dark"?"dark":"light",
+      styles:{branding:{brandColor:"#2563eb"}},
+    });
+  })(window,"https://app.cal.com/embed/embed.js");
+</script>
+
+<style>
+  .meeting-page {
+    max-width: var(--max-w-page);
+    margin-inline: auto;
+  }
+
+  .meeting-header {
+    margin-bottom: var(--space-8);
+  }
+
+  .meeting-header h1 {
+    margin-bottom: var(--space-3);
+  }
+
+  .meeting-desc {
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
+    line-height: var(--leading-relaxed);
+    max-width: var(--max-w-prose);
+  }
+
+  .cal-inline {
+    min-height: 500px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .cal-noscript {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    padding: var(--space-8);
+    border: 2px dashed var(--border);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    color: var(--text-muted);
+  }
+
+  .cal-noscript a {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .cal-fallback {
+    margin-top: var(--space-6);
+    text-align: center;
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+
+  .cal-fallback a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>

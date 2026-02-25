@@ -1,0 +1,295 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "basics": {
+    "name": "Avinal Kumar",
+    "label": "Software Engineer II (Team Lead) at Red Hat",
+    "image": "https://avatars.githubusercontent.com/u/74113200?v=4",
+    "url": "https://avinal.space",
+    "summary": "Software engineer building cloud-native developer tools at Red Hat. Leading OpenShift Builds based on the Shipwright project. Google Summer of Code alumnus and mentor. Passionate about open source, GNU/Linux, self-hosting, and developer tooling.",
+    "location": {
+      "city": "Bengaluru",
+      "countryCode": "IN",
+      "region": "Karnataka"
+    },
+    "profiles": [
+      {
+        "network": "GitHub",
+        "username": "avinal",
+        "url": "https://github.com/avinal"
+      },
+      {
+        "network": "LinkedIn",
+        "username": "avinal",
+        "url": "https://linkedin.com/in/avinal"
+      },
+      {
+        "network": "Twitter",
+        "username": "Avinal_",
+        "url": "https://twitter.com/Avinal_"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "Red Hat",
+      "position": "Software Engineer II (Team Lead)",
+      "url": "https://www.redhat.com",
+      "startDate": "2023-10-01",
+      "summary": "Builds for OpenShift & Developer Tools",
+      "location": "Bengaluru, India",
+      "highlights": [
+        "Serving as Team Lead for Builds for OpenShift — managing engineers, driving sprint planning, code reviews, and cross-functional collaboration",
+        "Working on Builds for OpenShift based on the upstream Shipwright project — designing, maintaining, and releasing build features",
+        "Maintainer of Tekton Results — contributing upstream to enhance observability and results storage for Tekton pipelines"
+      ]
+    },
+    {
+      "name": "Red Hat",
+      "position": "Associate Software Engineer",
+      "url": "https://www.redhat.com",
+      "startDate": "2022-07-01",
+      "endDate": "2023-09-30",
+      "summary": "Hybrid Cloud Engineering — Pipeline Service",
+      "location": "Bengaluru, India",
+      "highlights": [
+        "Worked on Pipeline Service — a SaaS for pipelines leveraging kcp, Kubernetes/OpenShift, Tekton, and Argo CD",
+        "Contributed to Tekton Results for long-term, efficient storage of PipelineRuns and TaskRuns",
+        "Maintained Source-to-Image (S2I) and Shared Resource CSI Driver components in OpenShift"
+      ]
+    },
+    {
+      "name": "Red Hat",
+      "position": "Software Engineering Intern",
+      "url": "https://www.redhat.com",
+      "startDate": "2022-01-01",
+      "endDate": "2022-06-30",
+      "summary": "Pipeline Service Team",
+      "location": "Bengaluru, India",
+      "highlights": [
+        "Designed and implemented the Minimal Tekton Server with unit tests — creates Tekton resources on Kubernetes/OpenShift clusters using the Tekton API",
+        "Built MKS Server, MKS CLI, and MKS Dashboard using Golang, Kubernetes, Tekton, and Redis"
+      ]
+    },
+    {
+      "name": "Apache APISIX — API7.ai",
+      "position": "Technical Writer",
+      "url": "https://apisix.apache.org",
+      "startDate": "2022-02-01",
+      "endDate": "2022-07-31",
+      "summary": "Developer Documentation",
+      "location": "Shenzhen, Remote",
+      "highlights": [
+        "Redesigned developer and user documentation for the Apache APISIX project",
+        "Created Katacoda tutorials for APISIX, collaborating with the community and integrating feedback"
+      ]
+    },
+    {
+      "name": "The FOSSology Project — Google Summer of Code 2021",
+      "position": "DevOps & Software Development Engineer Intern",
+      "url": "https://www.fossology.org",
+      "startDate": "2021-05-01",
+      "endDate": "2021-08-31",
+      "summary": "Build System & CI/CD Modernization",
+      "location": "Remote",
+      "highlights": [
+        "Upgraded the build system from Unix Makefile to CMake — build time reduced to 5–7 minutes (2× faster)",
+        "Migrated CI/CD from Travis CI to GitHub Actions — CI time reduced from 1–2 hours to 20–25 minutes",
+        "Refactored and fixed years-old unit and functional testing code in C/C++ and PHP"
+      ]
+    },
+    {
+      "name": "XResearch",
+      "position": "Java Software Developer",
+      "url": "",
+      "startDate": "2021-03-01",
+      "endDate": "2021-05-31",
+      "summary": "Inventory & Billing Management",
+      "location": "Bengaluru, Remote",
+      "highlights": [
+        "Designed and developed an Inventory and Billing Management App using Spring Boot and PostgreSQL",
+        "Created REST API endpoints according to functional requirements"
+      ]
+    },
+    {
+      "name": "VideoLAN — Google Season of Docs 2020",
+      "position": "Technical Writer",
+      "url": "https://www.videolan.org",
+      "startDate": "2020-09-01",
+      "endDate": "2020-11-30",
+      "summary": "VLC for Android Documentation",
+      "location": "Paris, Remote",
+      "highlights": [
+        "Documented VLC for Android using Sphinx, reStructuredText, Markdown, and shell scripting",
+        "Delivered user-friendly documentation with supporting screenshots and step-by-step tutorials"
+      ]
+    }
+  ],
+  "volunteer": [
+    {
+      "organization": "The FOSSology Project",
+      "position": "Google Summer of Code Mentor",
+      "url": "https://www.fossology.org",
+      "startDate": "2022-05-01",
+      "summary": "Mentoring GSoC students since 2022, guiding open source license compliance tooling projects"
+    },
+    {
+      "organization": "GNU C Library",
+      "position": "Contributor",
+      "url": "https://www.gnu.org/software/libc/",
+      "startDate": "2024-05-01",
+      "summary": "Submitting patches to the GNU C Library (glibc)"
+    },
+    {
+      "organization": "GitHub Education",
+      "position": "GitHub Campus Expert",
+      "url": "https://education.github.com/experts",
+      "startDate": "2021-05-01",
+      "endDate": "2023-09-30",
+      "summary": "Managing open-source communities, hosting webinars, workshops, and coding boot camps. Beta testing upcoming GitHub features and tools."
+    },
+    {
+      "organization": "GirlScript Summer of Code",
+      "position": "Mentor",
+      "url": "https://gssoc.girlscript.tech/",
+      "startDate": "2021-02-01",
+      "endDate": "2021-05-31",
+      "summary": "Guided beginners getting started with open source development"
+    },
+    {
+      "organization": "VideoLAN",
+      "position": "Open Source Contributor",
+      "url": "https://www.videolan.org",
+      "startDate": "2020-11-01",
+      "endDate": "2021-02-28",
+      "summary": "Contributed to VLC media player and related projects"
+    },
+    {
+      "organization": "CSEC, NIT Hamirpur",
+      "position": "President",
+      "url": "https://csec.nith.ac.in",
+      "startDate": "2021-07-01",
+      "endDate": "2022-06-30",
+      "summary": "Led the Computer Science Engineers Club — organized hackathons, workshops, and coding competitions"
+    },
+    {
+      "organization": "SRIJAN, NIT Hamirpur",
+      "position": "Executive Editor",
+      "url": "",
+      "startDate": "2020-07-01",
+      "endDate": "2022-09-30",
+      "summary": "Editorial work for the college's literary and technical magazine"
+    }
+  ],
+  "education": [
+    {
+      "institution": "National Institute of Technology, Hamirpur",
+      "url": "https://nith.ac.in",
+      "area": "Computer Science and Engineering",
+      "studyType": "Bachelor of Technology",
+      "startDate": "2018-07-01",
+      "endDate": "2022-06-30",
+      "score": "8.45/10",
+      "location": "Himachal Pradesh, India"
+    },
+    {
+      "institution": "The Coding School",
+      "url": "",
+      "area": "Introduction to Quantum Computing with IBM Quantum",
+      "studyType": "Certificate",
+      "startDate": "2020-01-01",
+      "endDate": "2021-01-01"
+    },
+    {
+      "institution": "Sri Chaitanya Junior Kalasala",
+      "url": "",
+      "area": "Mathematics, Physics, and Chemistry",
+      "studyType": "Intermediate",
+      "startDate": "2015-06-01",
+      "endDate": "2017-05-31"
+    },
+    {
+      "institution": "Simultala Awasiya Vidyalaya",
+      "url": "",
+      "area": "",
+      "studyType": "Matriculation",
+      "startDate": "2010-08-01",
+      "endDate": "2015-04-30"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Languages",
+      "keywords": ["C++", "Go", "C", "Python", "Bash", "Elm"]
+    },
+    {
+      "name": "Cloud & DevOps",
+      "keywords": ["Kubernetes", "OpenShift", "Docker", "TektonCD", "CI/CD", "kcp"]
+    },
+    {
+      "name": "Tools & Platforms",
+      "keywords": ["GNU/Linux", "Git", "CMake", "Fedora", "GitHub Actions", "Argo CD"]
+    },
+    {
+      "name": "Leadership",
+      "keywords": ["Sprint Planning", "Team Lead", "Code Review", "Mentoring"]
+    }
+  ],
+  "languages": [
+    {
+      "language": "Hindi",
+      "fluency": "Native"
+    },
+    {
+      "language": "English",
+      "fluency": "Full Professional"
+    }
+  ],
+  "certificates": [
+    {
+      "name": "Career Edge - Knockdown the Lockdown",
+      "issuer": "TCS iON"
+    },
+    {
+      "name": "IT Security: Defense against the digital dark arts",
+      "issuer": "Google"
+    },
+    {
+      "name": "Unordered Data Structures",
+      "issuer": "University of Illinois"
+    },
+    {
+      "name": "Object-Oriented Data Structures in C++",
+      "issuer": "University of Illinois"
+    },
+    {
+      "name": "Introduction to Artificial Intelligence",
+      "issuer": "IBM"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Automated WakaTime GitHub Actions App",
+      "url": "https://github.com/avinal/Profile-Readme-WakaTime",
+      "description": "Automated WakaTime coding statistics update system using Python, Docker, and GitHub Actions. Generates colorful bar graphs of weekly coding activity in SVG format.",
+      "highlights": [
+        "90+ stars on GitHub with 500+ active users worldwide",
+        "Generates embeddable SVG charts from WakaTime API data"
+      ]
+    },
+    {
+      "name": "Blowfish",
+      "url": "https://github.com/avinal/Blowfish",
+      "description": "C++ implementation of the Blowfish and Blowfish 2 symmetric block cipher with tests and APIs. Drop-in replacement for DES or IDEA."
+    },
+    {
+      "name": "Xeus-BASIC",
+      "url": "https://github.com/avinal/xeus-basic",
+      "description": "Jupyter Kernel for the BASIC language built using the Xeus Framework, C, and C++. Executes BASIC programs line by line in Jupyter Notebook."
+    }
+  ],
+  "meta": {
+    "canonical": "https://avinal.space/resume",
+    "version": "v1.0.0",
+    "lastModified": "2026-02-25"
+  }
+}

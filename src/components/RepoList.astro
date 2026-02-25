@@ -1,0 +1,199 @@
+---
+import type { GitHubRepo } from "@/lib/github";
+import configRepos from "@/data/repos.json";
+
+interface ConfigRepo {
+  name: string;
+  owner?: string;
+  description: string;
+  url: string;
+  stars: number;
+  forks: number;
+  languages: { name: string; color: string }[];
+}
+
+interface Props {
+  repos: GitHubRepo[];
+}
+
+const { repos: apiRepos } = Astro.props;
+
+const useConfig = configRepos.length > 0;
+const items: ConfigRepo[] = useConfig
+  ? (configRepos as ConfigRepo[])
+  : apiRepos.map((r) => ({
+      name: r.name,
+      owner: "avinal",
+      description: r.description || "",
+      url: r.html_url,
+      stars: r.stargazers_count,
+      forks: 0,
+      languages: r.language ? [{ name: r.language, color: "" }] : [],
+    }));
+---
+
+<div class="repos-section">
+  <h3 class="widget-title">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+    Repositories
+  </h3>
+  <div class="repo-grid">
+    {items.map((repo) => (
+      <a href={repo.url} class="repo-card card" target="_blank" rel="noopener noreferrer">
+        <div class="repo-top">
+          <div class="repo-name-row">
+            {repo.owner && <span class="repo-owner">{repo.owner}/</span>}
+            <span class="repo-name">{repo.name}</span>
+          </div>
+          <p class="repo-desc">{repo.description}</p>
+        </div>
+        <div class="repo-bottom">
+          <div class="repo-meta">
+            {repo.stars > 0 && (
+              <span class="meta-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                {repo.stars.toLocaleString()}
+              </span>
+            )}
+            {repo.forks > 0 && (
+              <span class="meta-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9"/><path d="M12 12v3"/></svg>
+                {repo.forks.toLocaleString()}
+              </span>
+            )}
+          </div>
+          <div class="repo-langs">
+            {repo.languages.slice(0, 2).map((lang) => (
+              <span class="lang-tag">
+                <span class="lang-dot" style={lang.color ? `background:${lang.color}` : undefined} />
+                {lang.name}
+              </span>
+            ))}
+          </div>
+        </div>
+      </a>
+    ))}
+  </div>
+</div>
+
+<style>
+  .repos-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .repo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+
+  @media (max-width: 640px) {
+    .repo-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .repo-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: var(--space-4) var(--space-5);
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    transition: border-color var(--duration-fast) var(--ease-out),
+      box-shadow var(--duration-fast) var(--ease-out),
+      transform var(--duration-fast) var(--ease-out);
+  }
+
+  .repo-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 10%, transparent);
+    transform: translateY(-2px);
+  }
+
+  .repo-top {
+    margin-bottom: var(--space-4);
+  }
+
+  .repo-name-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0;
+    margin-bottom: var(--space-2);
+    font-size: var(--text-sm);
+  }
+
+  .repo-owner {
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .repo-name {
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .repo-desc {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: var(--leading-relaxed);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .repo-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border);
+  }
+
+  .repo-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .meta-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .meta-badge svg {
+    flex-shrink: 0;
+  }
+
+  .repo-langs {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .lang-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+  }
+
+  .lang-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+    display: inline-block;
+    background-color: var(--text-muted);
+  }
+</style>

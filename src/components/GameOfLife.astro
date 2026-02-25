@@ -1,0 +1,209 @@
+---
+/**
+ * Conway's Game of Life widget.
+ * Runs continuously; hovering over the canvas brings cells to life.
+ * Resumes simulation after hover interaction.
+ */
+---
+
+<div class="gol-card card">
+  <h3 class="widget-title">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    Game of Life
+  </h3>
+  <canvas id="gol-canvas"></canvas>
+  <p class="gol-hint text-muted text-xs">hover to bring cells alive</p>
+</div>
+
+<style>
+  .gol-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    height: 100%;
+    min-height: 220px;
+    overflow: hidden;
+  }
+
+  #gol-canvas {
+    flex: 1;
+    width: 100%;
+    min-height: 180px;
+    border-radius: var(--radius-sm);
+    cursor: crosshair;
+    image-rendering: pixelated;
+  }
+
+  @media (max-width: 900px) {
+    .gol-card {
+      min-height: 200px;
+    }
+  }
+
+  .gol-hint {
+    text-align: center;
+    font-style: italic;
+  }
+</style>
+
+<script>
+  const canvas = document.getElementById("gol-canvas") as HTMLCanvasElement;
+  if (canvas) {
+    const ctx = canvas.getContext("2d")!;
+    const CELL = 8;
+    const GAP = 1;
+    const STEP = CELL + GAP;
+
+    let cols = 0;
+    let rows = 0;
+    let grid: Uint8Array;
+    let next: Uint8Array;
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const newCols = Math.floor(rect.width / STEP);
+      const newRows = Math.floor(rect.height / STEP);
+
+      if (newCols !== cols || newRows !== rows) {
+        const oldGrid = grid;
+        const oldCols = cols;
+        const oldRows = rows;
+        cols = newCols;
+        rows = newRows;
+        grid = new Uint8Array(cols * rows);
+        next = new Uint8Array(cols * rows);
+
+        if (oldGrid) {
+          const mc = Math.min(oldCols, cols);
+          const mr = Math.min(oldRows, rows);
+          for (let r = 0; r < mr; r++) {
+            for (let c = 0; c < mc; c++) {
+              grid[r * cols + c] = oldGrid[r * oldCols + c];
+            }
+          }
+        } else {
+          seed();
+        }
+      }
+    }
+
+    function seed() {
+      for (let i = 0; i < grid.length; i++) {
+        grid[i] = Math.random() < 0.3 ? 1 : 0;
+      }
+    }
+
+    function idx(r: number, c: number) {
+      return ((r + rows) % rows) * cols + ((c + cols) % cols);
+    }
+
+    function step() {
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          let neighbors = 0;
+          for (let dr = -1; dr <= 1; dr++) {
+            for (let dc = -1; dc <= 1; dc++) {
+              if (dr === 0 && dc === 0) continue;
+              neighbors += grid[idx(r + dr, c + dc)];
+            }
+          }
+          const alive = grid[r * cols + c];
+          next[r * cols + c] =
+            alive ? (neighbors === 2 || neighbors === 3 ? 1 : 0) : (neighbors === 3 ? 1 : 0);
+        }
+      }
+      [grid, next] = [next, grid];
+    }
+
+    function getColors() {
+      const style = getComputedStyle(document.documentElement);
+      return {
+        bg: style.getPropertyValue("--bg-surface").trim() || "#f8f9fa",
+        alive: style.getPropertyValue("--accent").trim() || "#2563eb",
+        dim: style.getPropertyValue("--border").trim() || "#e5e7eb",
+      };
+    }
+
+    function draw() {
+      const colors = getColors();
+      const rect = canvas.getBoundingClientRect();
+      ctx.clearRect(0, 0, rect.width, rect.height);
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const x = c * STEP;
+          const y = r * STEP;
+          ctx.fillStyle = grid[r * cols + c] ? colors.alive : colors.dim;
+          ctx.globalAlpha = grid[r * cols + c] ? 0.85 : 0.15;
+          ctx.fillRect(x, y, CELL, CELL);
+        }
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    let animId: number;
+    let lastTick = 0;
+    const TICK_MS = 300;
+
+    function loop(ts: number) {
+      if (ts - lastTick >= TICK_MS) {
+        step();
+        draw();
+        lastTick = ts;
+      }
+      animId = requestAnimationFrame(loop);
+    }
+
+    function paintCells(e: MouseEvent | TouchEvent) {
+      const rect = canvas.getBoundingClientRect();
+      let clientX: number, clientY: number;
+      if ("touches" in e) {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+      } else {
+        clientX = e.clientX;
+        clientY = e.clientY;
+      }
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+      const c = Math.floor(x / STEP);
+      const r = Math.floor(y / STEP);
+
+      for (let dr = -1; dr <= 1; dr++) {
+        for (let dc = -1; dc <= 1; dc++) {
+          const nr = r + dr;
+          const nc = c + dc;
+          if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+            grid[nr * cols + nc] = 1;
+          }
+        }
+      }
+    }
+
+    let isDrawing = false;
+    canvas.addEventListener("mouseenter", () => { isDrawing = true; });
+    canvas.addEventListener("mouseleave", () => { isDrawing = false; });
+    canvas.addEventListener("mousemove", (e) => {
+      if (isDrawing) paintCells(e);
+    });
+    canvas.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+      paintCells(e);
+    }, { passive: false });
+    canvas.addEventListener("click", (e) => paintCells(e));
+
+    const resizeObs = new ResizeObserver(() => {
+      resize();
+      draw();
+    });
+    resizeObs.observe(canvas);
+
+    resize();
+    animId = requestAnimationFrame(loop);
+  }
+</script>
