@@ -84,8 +84,8 @@
       ]
     },
     {
-      "name": "The FOSSology Project — Google Summer of Code 2021",
-      "position": "DevOps & Software Development Engineer Intern",
+      "name": "The FOSSology Project",
+      "position": "Google Summer of Code Student",
       "url": "https://www.fossology.org",
       "startDate": "2021-05-01",
       "endDate": "2021-08-31",
@@ -122,23 +122,31 @@
         "Documented VLC for Android using Sphinx, reStructuredText, Markdown, and shell scripting",
         "Delivered user-friendly documentation with supporting screenshots and step-by-step tutorials"
       ]
-    }
-  ],
-  "volunteer": [
+    },
     {
-      "organization": "The FOSSology Project",
+      "name": "The FOSSology Project",
       "position": "Google Summer of Code Mentor",
       "url": "https://www.fossology.org",
       "startDate": "2022-05-01",
-      "summary": "Mentoring GSoC students since 2022, guiding open source license compliance tooling projects"
+      "summary": "Mentoring & Open Source",
+      "location": "Remote",
+      "highlights": [
+        "Mentoring GSoC students since 2022, guiding open source license compliance tooling projects"
+      ]
     },
     {
-      "organization": "GNU C Library",
+      "name": "GNU C Library",
       "position": "Contributor",
       "url": "https://www.gnu.org/software/libc/",
       "startDate": "2024-05-01",
-      "summary": "Submitting patches to the GNU C Library (glibc)"
-    },
+      "summary": "GNU Project",
+      "location": "Remote",
+      "highlights": [
+        "Submitting patches to the GNU C Library (glibc)"
+      ]
+    }
+  ],
+  "volunteer": [
     {
       "organization": "GitHub Education",
       "position": "GitHub Campus Expert",
@@ -154,6 +162,14 @@
       "startDate": "2021-02-01",
       "endDate": "2021-05-31",
       "summary": "Guided beginners getting started with open source development"
+    },
+    {
+      "organization": "Script Winter of Code",
+      "position": "Participant",
+      "url": "",
+      "startDate": "2020-12-01",
+      "endDate": "2021-02-28",
+      "summary": "Contributed to open source projects during the winter program"
     },
     {
       "organization": "VideoLAN",
@@ -172,12 +188,76 @@
       "summary": "Led the Computer Science Engineers Club — organized hackathons, workshops, and coding competitions"
     },
     {
+      "organization": "CSEC, NIT Hamirpur",
+      "position": "Coordinator",
+      "url": "https://csec.nith.ac.in",
+      "startDate": "2020-09-01",
+      "endDate": "2021-06-30",
+      "summary": "Coordinated events and activities for the Computer Science Engineers Club"
+    },
+    {
+      "organization": "CSEC, NIT Hamirpur",
+      "position": "Executive Member",
+      "url": "https://csec.nith.ac.in",
+      "startDate": "2019-08-01",
+      "endDate": "2020-08-31",
+      "summary": "Active executive member contributing to club events and technical initiatives"
+    },
+    {
+      "organization": "CSEC, NIT Hamirpur",
+      "position": "Volunteer",
+      "url": "https://csec.nith.ac.in",
+      "startDate": "2019-01-01",
+      "endDate": "2019-07-31",
+      "summary": "Volunteered for club events and technical workshops"
+    },
+    {
+      "organization": "SRIJAN, NIT Hamirpur",
+      "position": "Hindi Head Editor",
+      "url": "",
+      "startDate": "2022-02-01",
+      "endDate": "2022-09-30",
+      "summary": "Led the Hindi editorial team for the college's literary and technical magazine"
+    },
+    {
       "organization": "SRIJAN, NIT Hamirpur",
       "position": "Executive Editor",
       "url": "",
       "startDate": "2020-07-01",
-      "endDate": "2022-09-30",
+      "endDate": "2022-01-31",
       "summary": "Editorial work for the college's literary and technical magazine"
+    },
+    {
+      "organization": "SRIJAN, NIT Hamirpur",
+      "position": "Associate Editor",
+      "url": "",
+      "startDate": "2019-07-01",
+      "endDate": "2020-06-30",
+      "summary": "Associate editorial work for the college magazine"
+    },
+    {
+      "organization": "SRIJAN, NIT Hamirpur",
+      "position": "Hindi Editor",
+      "url": "",
+      "startDate": "2018-11-01",
+      "endDate": "2019-06-30",
+      "summary": "Hindi section editorial work for the college magazine"
+    },
+    {
+      "organization": "GNU/Linux Users Group, NIT Hamirpur",
+      "position": "Volunteer",
+      "url": "",
+      "startDate": "2018-11-01",
+      "endDate": "2022-07-31",
+      "summary": "Open-source community at NIT Hamirpur — shared knowledge about GNU/Linux and FOSS"
+    },
+    {
+      "organization": "SPIC MACAY, NIT Hamirpur",
+      "position": "Volunteer",
+      "url": "",
+      "startDate": "2018-09-01",
+      "endDate": "2022-05-31",
+      "summary": "Organized arts and culture events on campus"
     }
   ],
   "education": [
@@ -219,7 +299,7 @@
   "skills": [
     {
       "name": "Languages",
-      "keywords": ["C++", "Go", "C", "Python", "Bash", "Elm"]
+      "keywords": ["C++", "Go", "C", "Python", "Bash"]
     },
     {
       "name": "Cloud & DevOps",
@@ -246,12 +326,44 @@
   ],
   "certificates": [
     {
-      "name": "Career Edge - Knockdown the Lockdown",
-      "issuer": "TCS iON"
+      "name": "A Beginner's Guide to Linux Kernel Development (LFD103)",
+      "issuer": "The Linux Foundation"
+    },
+    {
+      "name": "Introduction to Artificial Intelligence",
+      "issuer": "IBM"
+    },
+    {
+      "name": "Google IT Support Professional Certificate",
+      "issuer": "Google"
     },
     {
       "name": "IT Security: Defense against the digital dark arts",
       "issuer": "Google"
+    },
+    {
+      "name": "System Administration and IT Infrastructure Services",
+      "issuer": "Google"
+    },
+    {
+      "name": "Operating Systems and You: Becoming a Power User",
+      "issuer": "Google"
+    },
+    {
+      "name": "The Bits and Bytes of Computer Networking",
+      "issuer": "Google"
+    },
+    {
+      "name": "Technical Support Fundamentals",
+      "issuer": "Google"
+    },
+    {
+      "name": "Build a Modern Computer from First Principles: Nand to Tetris",
+      "issuer": "Coursera"
+    },
+    {
+      "name": "Accelerated Computer Science Fundamentals",
+      "issuer": "Coursera"
     },
     {
       "name": "Unordered Data Structures",
@@ -262,8 +374,16 @@
       "issuer": "University of Illinois"
     },
     {
-      "name": "Introduction to Artificial Intelligence",
-      "issuer": "IBM"
+      "name": "Ordered Data Structures",
+      "issuer": "Coursera"
+    },
+    {
+      "name": "Workshop on Basic Programming using Python",
+      "issuer": "FOSSEE"
+    },
+    {
+      "name": "Career Edge - Knockdown the Lockdown",
+      "issuer": "TCS iON"
     }
   ],
   "projects": [

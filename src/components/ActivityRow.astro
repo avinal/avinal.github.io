@@ -18,10 +18,15 @@ const hasWaka = activity.wakatime.available;
 <div class="activity-card card">
   <div class="activity-header">
     <h3 class="widget-title">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span class="icon-trigger" id="gol-trigger">
+        <svg class="icon-heart" width="24" height="24" viewBox="0 0 24 24" fill="#e11d48" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+        <svg class="icon-signal" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </span>
       Activity
     </h3>
-    <span class="text-muted text-xs">past year</span>
+    <span class="text-muted text-xs" id="activity-subtitle">past year</span>
   </div>
 
   {activity.weeks.length > 0 ? (
@@ -43,18 +48,18 @@ const hasWaka = activity.wakatime.available;
 
               const hasGh = ghLevel > 0;
               const hasWk = wakaLvl > 0;
-              const isSplit = hasGh && hasWk;
 
-              if (isSplit) {
-                return (
-                  <div class="graph-cell split-cell" title={tip}>
-                    <div class="cell-gh" style={`background-color: var(--graph-${ghLevel})`}></div>
-                    <div class="cell-waka" style={`background-color: var(--waka-${wakaLvl})`}></div>
-                  </div>
-                );
+              let color: string;
+              if (hasGh && hasWk) {
+                const ghPct = Math.round((ghLevel / (ghLevel + wakaLvl)) * 100);
+                color = `color-mix(in oklch, var(--graph-${ghLevel}) ${ghPct}%, var(--waka-${wakaLvl}))`;
+              } else if (hasWk) {
+                color = `var(--waka-${wakaLvl})`;
+              } else {
+                color = `var(--graph-${ghLevel})`;
               }
-              const color = hasWk ? `var(--waka-${wakaLvl})` : `var(--graph-${ghLevel})`;
-              return <div class="graph-cell" style={`background-color: ${color}`} title={tip}></div>;
+              const isAlive = hasGh || hasWk;
+              return <div class="graph-cell" style={`background-color: ${color}`} title={tip} data-alive={isAlive ? "1" : "0"}></div>;
             })}
           </div>
         ))}
@@ -68,6 +73,13 @@ const hasWaka = activity.wakatime.available;
         <div class="legend-cell" style="background-color: var(--graph-3)"></div>
         <div class="legend-cell" style="background-color: var(--graph-4)"></div>
       </span>
+      {hasWaka && (
+        <span class="legend-group">
+          <span class="text-xs text-muted">Both</span>
+          <div class="legend-cell" style="background-color: color-mix(in oklch, var(--graph-2) 50%, var(--waka-2))"></div>
+          <div class="legend-cell" style="background-color: color-mix(in oklch, var(--graph-3) 50%, var(--waka-3))"></div>
+        </span>
+      )}
       {hasWaka && (
         <span class="legend-group">
           <div class="legend-cell" style="background-color: var(--waka-1)"></div>
@@ -162,15 +174,6 @@ const hasWaka = activity.wakatime.available;
     cursor: default;
   }
 
-  .split-cell {
-    display: flex;
-    overflow: hidden;
-    background: none;
-  }
-
-  .cell-gh  { width: 50%; height: 11px; border-radius: 2px 0 0 2px; }
-  .cell-waka { width: 50%; height: 11px; border-radius: 0 2px 2px 0; }
-
   .graph-legend {
     display: flex;
     align-items: center;
@@ -229,4 +232,214 @@ const hasWaka = activity.wakatime.available;
   .stat-item.waka dd {
     color: var(--waka-3);
   }
+
+  /* Easter egg: heart icon trigger */
+  .icon-trigger {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 26px;
+    height: 26px;
+  }
+
+  .icon-heart {
+    position: absolute;
+    opacity: 0;
+    transform: scale(0.6);
+    transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+    pointer-events: none;
+  }
+
+  .icon-signal {
+    position: relative;
+    z-index: 1;
+    transition: opacity 0.3s var(--ease-out);
+  }
+
+  .icon-trigger:hover .icon-heart {
+    opacity: 0.4;
+    transform: scale(1);
+    animation: heart-pulse 1.2s ease-in-out infinite;
+  }
+
+  .icon-trigger:hover .icon-signal {
+    opacity: 0.6;
+  }
+
+  :global(.gol-active) .icon-heart {
+    opacity: 0.5;
+    transform: scale(1);
+    animation: heart-pulse 1.2s ease-in-out infinite;
+  }
+
+  :global(.gol-active) .icon-signal {
+    opacity: 0.5;
+  }
+
+  @keyframes heart-pulse {
+    0%, 100% { opacity: 0.3; transform: scale(0.88); }
+    50% { opacity: 0.6; transform: scale(1.12); }
+  }
+
+  :global(.gol-active) .graph-cell {
+    cursor: crosshair;
+  }
 </style>
+
+<script>
+  const trigger = document.getElementById("gol-trigger");
+  const card = document.querySelector(".activity-card");
+  const graphGrid = document.querySelector(".graph-grid") as HTMLElement | null;
+  const subtitle = document.getElementById("activity-subtitle");
+
+  if (trigger && graphGrid && card) {
+    let active = false;
+    let tickId: number | null = null;
+    let grid: number[][] = [];
+    let saved: { bg: string; title: string }[][] = [];
+
+    const columns = () => graphGrid.querySelectorAll(".graph-col");
+
+    function readGrid(): number[][] {
+      return Array.from(columns()).map((col) =>
+        Array.from(col.querySelectorAll(".graph-cell")).map((c) => {
+          if (c.getAttribute("data-alive") !== "1") return 0;
+          return Math.random() < 0.45 ? 1 : 0;
+        }),
+      );
+    }
+
+    function saveState() {
+      saved = Array.from(columns()).map((col) =>
+        Array.from(col.querySelectorAll(".graph-cell")).map((c) => ({
+          bg: (c as HTMLElement).style.backgroundColor,
+          title: c.getAttribute("title") || "",
+        })),
+      );
+    }
+
+    function restoreState() {
+      const cols = columns();
+      cols.forEach((col, ci) => {
+        col.querySelectorAll(".graph-cell").forEach((c, ri) => {
+          const el = c as HTMLElement;
+          el.style.backgroundColor = saved[ci]?.[ri]?.bg || "";
+          el.setAttribute("title", saved[ci]?.[ri]?.title || "");
+        });
+      });
+    }
+
+    function countAlive(): number {
+      return grid.reduce((s, col) => s + col.reduce((a, v) => a + v, 0), 0);
+    }
+
+    function step() {
+      const numC = grid.length;
+      const numR = grid[0]?.length || 0;
+      const out = grid.map((col) => col.map(() => 0));
+
+      for (let c = 0; c < numC; c++) {
+        for (let r = 0; r < numR; r++) {
+          let n = 0;
+          for (let dc = -1; dc <= 1; dc++) {
+            for (let dr = -1; dr <= 1; dr++) {
+              if (dc === 0 && dr === 0) continue;
+              n += grid[(c + dc + numC) % numC][(r + dr + numR) % numR];
+            }
+          }
+          const a = grid[c][r];
+          out[c][r] = a ? (n === 2 || n === 3 ? 1 : 0) : n === 3 ? 1 : 0;
+        }
+      }
+      grid = out;
+    }
+
+    function render() {
+      const style = getComputedStyle(document.documentElement);
+      const deadColor = style.getPropertyValue("--graph-0").trim();
+      const fallbackAlive = style.getPropertyValue("--accent").trim();
+
+      const cols = columns();
+      cols.forEach((col, ci) => {
+        col.querySelectorAll(".graph-cell").forEach((c, ri) => {
+          const el = c as HTMLElement;
+          const alive = grid[ci]?.[ri];
+          const origColor = saved[ci]?.[ri]?.bg;
+          const isOrigAlive = origColor && origColor !== deadColor;
+          el.style.backgroundColor = alive
+            ? (isOrigAlive ? origColor : fallbackAlive)
+            : deadColor;
+          el.setAttribute("title", "");
+        });
+      });
+    }
+
+    function tick() {
+      step();
+      if (countAlive() === 0) {
+        stop();
+        return;
+      }
+      render();
+      tickId = window.setTimeout(tick, 280);
+    }
+
+    function start() {
+      saveState();
+      grid = readGrid();
+
+      if (countAlive() < 10) {
+        for (let c = 0; c < grid.length; c++) {
+          for (let r = 0; r < (grid[0]?.length || 0); r++) {
+            if (Math.random() < 0.3) grid[c][r] = 1;
+          }
+        }
+      }
+
+      active = true;
+      card.classList.add("gol-active");
+      if (subtitle) subtitle.textContent = "hover to bring cells alive";
+      render();
+      tickId = window.setTimeout(tick, 280);
+    }
+
+    function stop() {
+      if (tickId !== null) clearTimeout(tickId);
+      tickId = null;
+      active = false;
+      card.classList.remove("gol-active");
+      if (subtitle) subtitle.textContent = "past year";
+      restoreState();
+    }
+
+    trigger.addEventListener("click", () => {
+      active ? stop() : start();
+    });
+
+    graphGrid.addEventListener("mousemove", (e) => {
+      if (!active) return;
+      const target = e.target as HTMLElement;
+      if (!target.classList.contains("graph-cell")) return;
+
+      const col = target.parentElement;
+      if (!col) return;
+      const allCols = Array.from(columns());
+      const ci = allCols.indexOf(col);
+      const cells = Array.from(col.querySelectorAll(".graph-cell"));
+      const ri = cells.indexOf(target);
+
+      if (ci < 0 || ri < 0) return;
+      for (let dc = -1; dc <= 1; dc++) {
+        for (let dr = -1; dr <= 1; dr++) {
+          const nc = ci + dc;
+          const nr = ri + dr;
+          if (nc >= 0 && nc < grid.length && nr >= 0 && nr < (grid[0]?.length || 0)) {
+            grid[nc][nr] = 1;
+          }
+        }
+      }
+    });
+  }
+</script>

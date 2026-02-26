@@ -1,3 +1,6 @@
+const SHARE_URL =
+  "https://wakatime.com/share/@Avinal/13174f97-2646-484b-9644-bc3c07315068.json";
+
 export interface WakaTimeDaySummary {
   date: string;
   totalSeconds: number;
@@ -13,6 +16,26 @@ export interface WakaTimeData {
   topLangs: string[];
 }
 
+interface RawCategory {
+  name: string;
+  total: number;
+}
+
+interface RawDay {
+  date: string;
+  total: number;
+  categories?: RawCategory[];
+}
+
+const EXCLUDED_CATEGORIES = new Set(["Browsing"]);
+
+function codingSeconds(categories: RawCategory[] | undefined): number {
+  if (!categories) return 0;
+  return categories
+    .filter((c) => !EXCLUDED_CATEGORIES.has(c.name))
+    .reduce((sum, c) => sum + (c.total ?? 0), 0);
+}
+
 function formatSeconds(s: number): string {
   const h = Math.floor(s / 3600);
   const m = Math.floor((s % 3600) / 60);
@@ -21,65 +44,44 @@ function formatSeconds(s: number): string {
   return `${h}h ${m}m`;
 }
 
-function wakaAuth(): string | null {
-  const key = import.meta.env.WAKATIME_API_KEY;
-  if (!key) return null;
-  return `Basic ${btoa(key)}`;
-}
-
-async function fetchStats(auth: string) {
-  const res = await fetch(
-    "https://wakatime.com/api/v1/users/current/stats/last_year",
-    { headers: { Authorization: auth } },
-  );
-  if (!res.ok) return null;
-  return (await res.json()).data;
-}
-
-async function fetchSummaries(auth: string): Promise<Map<string, WakaTimeDaySummary>> {
-  const end = new Date();
-  const start = new Date();
-  start.setDate(end.getDate() - 14);
-  const fmt = (d: Date) => d.toISOString().slice(0, 10);
-
-  const days = new Map<string, WakaTimeDaySummary>();
+export async function fetchWakaTimeData(): Promise<WakaTimeData | null> {
   try {
-    const res = await fetch(
-      `https://wakatime.com/api/v1/users/current/summaries?start=${fmt(start)}&end=${fmt(end)}`,
-      { headers: { Authorization: auth } },
-    );
-    if (!res.ok) return days;
+    const res = await fetch(SHARE_URL);
+    if (!res.ok) return null;
     const json = await res.json();
-    for (const day of json.data ?? []) {
-      const secs = day.grand_total?.total_seconds ?? 0;
-      days.set(day.range.date, {
-        date: day.range.date,
-        totalSeconds: secs,
-        text: secs > 0 ? formatSeconds(secs) : "0m",
+
+    const rawDays: RawDay[] = json.days ?? [];
+    if (rawDays.length === 0) return null;
+
+    const days = new Map<string, WakaTimeDaySummary>();
+    let codingTotal = 0;
+    let fullTotal = 0;
+    let bestCodingDay = 0;
+    let codingActiveDays = 0;
+
+    for (const d of rawDays) {
+      const coding = codingSeconds(d.categories);
+      fullTotal += d.total ?? 0;
+      codingTotal += coding;
+      if (coding > bestCodingDay) bestCodingDay = coding;
+      if (coding > 0) codingActiveDays++;
+
+      days.set(d.date, {
+        date: d.date,
+        totalSeconds: coding,
+        text: coding > 0 ? formatSeconds(coding) : "0m",
       });
     }
-  } catch { /* graceful degrade */ }
-  return days;
-}
 
-export async function fetchWakaTimeData(): Promise<WakaTimeData | null> {
-  const auth = wakaAuth();
-  if (!auth) return null;
-
-  try {
-    const [stats, days] = await Promise.all([
-      fetchStats(auth),
-      fetchSummaries(auth),
-    ]);
-    if (!stats) return null;
+    const dailyAvg = codingActiveDays > 0 ? codingTotal / codingActiveDays : 0;
 
     return {
-      totalSeconds: stats.total_seconds ?? 0,
-      totalText: stats.human_readable_total ?? "—",
-      dailyAvgText: stats.human_readable_daily_average ?? "—",
-      bestDayText: stats.best_day?.text ?? "—",
+      totalSeconds: codingTotal,
+      totalText: formatSeconds(codingTotal),
+      dailyAvgText: formatSeconds(dailyAvg),
+      bestDayText: formatSeconds(bestCodingDay),
       days,
-      topLangs: (stats.languages ?? []).slice(0, 5).map((l: { name: string }) => l.name),
+      topLangs: [],
     };
   } catch {
     return null;

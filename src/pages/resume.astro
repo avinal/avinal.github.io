@@ -2,12 +2,20 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import resume from "@/data/resume.json";
 
-const { basics, work, volunteer, education, skills, projects, languages, certificates } = resume as any;
+const { basics, work, volunteer, education, skills, projects } = resume as any;
 
 function fmtDate(iso: string) {
   const d = new Date(iso);
   return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
 }
+
+type Role = {
+  title: string;
+  startDate: string;
+  endDate?: string;
+  summary?: string;
+  highlights?: string[];
+};
 
 type TimelineEntry = {
   type: "work" | "education" | "volunteer";
@@ -19,20 +27,105 @@ type TimelineEntry = {
   endDate?: string;
   summary?: string;
   highlights?: string[];
+  roles?: Role[];
 };
 
+type FlatEntry = {
+  key: string;
+  type: TimelineEntry["type"];
+  title: string;
+  subtitle: string;
+  url?: string;
+  location?: string;
+  startDate: string;
+  endDate?: string;
+  summary?: string;
+  highlights?: string[];
+};
+
+/**
+ * Groups flat entries by their `key` (organization/company name).
+ * Single-entry orgs stay flat; multi-entry orgs become grouped cards
+ * with nested roles sorted reverse-chronologically.
+ */
+function groupToTimeline(entries: FlatEntry[]): TimelineEntry[] {
+  const byKey = new Map<string, FlatEntry[]>();
+  for (const e of entries) {
+    if (!byKey.has(e.key)) byKey.set(e.key, []);
+    byKey.get(e.key)!.push(e);
+  }
+
+  const result: TimelineEntry[] = [];
+  for (const [, items] of byKey) {
+    const sorted = [...items].sort(
+      (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),
+    );
+    const latest = sorted[0];
+
+    if (sorted.length === 1) {
+      result.push({
+        type: latest.type,
+        title: latest.title,
+        subtitle: latest.subtitle,
+        url: latest.url,
+        location: latest.location,
+        startDate: latest.startDate,
+        endDate: latest.endDate,
+        summary: latest.summary,
+        highlights: latest.highlights,
+      });
+    } else {
+      const earliest = sorted[sorted.length - 1];
+      result.push({
+        type: latest.type,
+        title: latest.subtitle,
+        subtitle: latest.subtitle,
+        url: latest.url,
+        location: latest.location,
+        startDate: latest.startDate,
+        endDate: latest.endDate,
+        roles: sorted.map((e) => ({
+          title: e.title,
+          startDate: e.startDate,
+          endDate: e.endDate,
+          summary: e.summary,
+          highlights: e.highlights,
+        })),
+      });
+    }
+  }
+  return result;
+}
+
+const workFlat: FlatEntry[] = work.map((w: any) => ({
+  key: w.name,
+  type: "work" as const,
+  title: w.position,
+  subtitle: w.name,
+  url: w.url || undefined,
+  location: w.location,
+  startDate: w.startDate,
+  endDate: w.endDate,
+  summary: w.summary,
+  highlights: w.highlights,
+}));
+
+const volunteerFlat: FlatEntry[] = volunteer.map((v: any) => ({
+  key: v.organization,
+  type: "volunteer" as const,
+  title: v.position,
+  subtitle: v.organization,
+  url: v.url || undefined,
+  location: undefined,
+  startDate: v.startDate,
+  endDate: v.endDate,
+  summary: v.summary,
+  highlights: undefined as string[] | undefined,
+}));
+
 const timeline: TimelineEntry[] = [
-  ...work.map((w) => ({
-    type: "work" as const,
-    title: w.position,
-    subtitle: w.name,
-    url: w.url || undefined,
-    location: (w as any).location,
-    startDate: w.startDate,
-    endDate: w.endDate,
-    summary: w.summary,
-    highlights: w.highlights,
-  })),
+  ...groupToTimeline(workFlat),
+  ...groupToTimeline(volunteerFlat),
   ...education.map((e: any) => ({
     type: "education" as const,
     title: e.area ? `${e.studyType} in ${e.area}` : e.studyType,
@@ -44,23 +137,7 @@ const timeline: TimelineEntry[] = [
     summary: e.score ? `CGPA: ${e.score}` : undefined,
     highlights: undefined as string[] | undefined,
   })),
-  ...volunteer.map((v) => ({
-    type: "volunteer" as const,
-    title: v.position,
-    subtitle: v.organization,
-    url: v.url || undefined,
-    startDate: v.startDate || "2022-01-01",
-    endDate: v.endDate,
-    summary: v.summary,
-    highlights: undefined as string[] | undefined,
-  })),
 ].sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
-
-const typeIcons: Record<string, string> = {
-  work: "briefcase",
-  education: "graduation",
-  volunteer: "heart",
-};
 
 const typeLabels: Record<string, string> = {
   work: "Work",
@@ -101,34 +178,72 @@ const typeLabels: Record<string, string> = {
       <section class="timeline-section">
         <h2>Experience & Education</h2>
         <div class="timeline">
-          {timeline.map((entry) => (
+          {timeline.map((entry) => {
+            const isActive = !entry.endDate;
+            return (
             <div class={`tl-entry tl-${entry.type}`}>
               <div class="tl-label-cell">
                 <span class="tl-type-label">{typeLabels[entry.type]}</span>
               </div>
               <div class="tl-rail-cell">
-                <div class="tl-dot" />
+                <div class:list={["tl-dot", { "tl-dot-active": isActive }]} />
               </div>
               <div class="tl-card">
-                <div class="tl-card-header">
-                  <div class="tl-dates">
-                    {fmtDate(entry.startDate)} — {entry.endDate ? fmtDate(entry.endDate) : "Present"}
-                  </div>
-                  <h3 class="tl-title">{entry.title}</h3>
-                  <p class="tl-subtitle">
-                    {entry.url ? <a href={entry.url}>{entry.subtitle}</a> : entry.subtitle}
-                    {entry.location && <span class="tl-location"> · {entry.location}</span>}
-                  </p>
-                </div>
-                {entry.summary && <p class="tl-summary">{entry.summary}</p>}
-                {entry.highlights && entry.highlights.length > 0 && (
-                  <ul class="tl-highlights">
-                    {entry.highlights.map((h) => <li>{h}</li>)}
-                  </ul>
+                {entry.roles ? (
+                  /* Grouped card: multiple roles at the same org */
+                  <Fragment>
+                    <div class="tl-card-header">
+                      <div class="tl-dates">
+                        {fmtDate(entry.roles[entry.roles.length - 1].startDate)} — {entry.endDate ? fmtDate(entry.endDate) : "Present"}
+                      </div>
+                      <h3 class="tl-title tl-org-title">
+                        {entry.url ? <a href={entry.url}>{entry.subtitle}</a> : entry.subtitle}
+                      </h3>
+                      {entry.location && <p class="tl-subtitle"><span class="tl-location">{entry.location}</span></p>}
+                    </div>
+                    <div class="tl-roles">
+                      {entry.roles.map((role, i) => (
+                        <div class:list={["tl-role", { "tl-role-current": i === 0 }]}>
+                          <div class="tl-role-header">
+                            <h4 class="tl-role-title">{role.title}</h4>
+                            <span class="tl-role-dates">
+                              {fmtDate(role.startDate)} — {role.endDate ? fmtDate(role.endDate) : "Present"}
+                            </span>
+                          </div>
+                          {role.summary && <p class="tl-summary">{role.summary}</p>}
+                          {role.highlights && role.highlights.length > 0 && (
+                            <ul class="tl-highlights">
+                              {role.highlights.map((h) => <li>{h}</li>)}
+                            </ul>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </Fragment>
+                ) : (
+                  /* Single card */
+                  <Fragment>
+                    <div class="tl-card-header">
+                      <div class="tl-dates">
+                        {fmtDate(entry.startDate)} — {entry.endDate ? fmtDate(entry.endDate) : "Present"}
+                      </div>
+                      <h3 class="tl-title">{entry.title}</h3>
+                      <p class="tl-subtitle">
+                        {entry.url ? <a href={entry.url}>{entry.subtitle}</a> : entry.subtitle}
+                        {entry.location && <span class="tl-location"> · {entry.location}</span>}
+                      </p>
+                    </div>
+                    {entry.summary && <p class="tl-summary">{entry.summary}</p>}
+                    {entry.highlights && entry.highlights.length > 0 && (
+                      <ul class="tl-highlights">
+                        {entry.highlights.map((h) => <li>{h}</li>)}
+                      </ul>
+                    )}
+                  </Fragment>
                 )}
               </div>
             </div>
-          ))}
+          )})}
         </div>
       </section>
 
@@ -349,6 +464,40 @@ const typeLabels: Record<string, string> = {
   .tl-education .tl-dot { border-color: #10b981; background: #10b981; }
   .tl-volunteer .tl-dot { border-color: #f59e0b; }
 
+  .tl-dot-active {
+    animation: pulse-dot 2s ease-out infinite;
+  }
+
+  .tl-work .tl-dot-active {
+    background: var(--accent);
+    border-color: var(--accent);
+    --pulse-color: var(--accent);
+  }
+
+  .tl-education .tl-dot-active {
+    background: #10b981;
+    border-color: #10b981;
+    --pulse-color: #10b981;
+  }
+
+  .tl-volunteer .tl-dot-active {
+    background: #f59e0b;
+    border-color: #f59e0b;
+    --pulse-color: #f59e0b;
+  }
+
+  @keyframes pulse-dot {
+    0% {
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--pulse-color) 50%, transparent);
+    }
+    70% {
+      box-shadow: 0 0 0 8px color-mix(in srgb, var(--pulse-color) 0%, transparent);
+    }
+    100% {
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--pulse-color) 0%, transparent);
+    }
+  }
+
   .tl-card {
     padding: var(--space-4) var(--space-5);
     border: 1px solid var(--border);
@@ -424,6 +573,75 @@ const typeLabels: Record<string, string> = {
     left: 0;
     color: var(--accent);
     font-weight: 700;
+  }
+
+  /* ---- Grouped roles ---- */
+  .tl-org-title {
+    font-size: var(--text-lg);
+  }
+
+  .tl-org-title a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .tl-org-title a:hover {
+    text-decoration: underline;
+  }
+
+  .tl-roles {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: var(--space-4);
+  }
+
+  .tl-role {
+    padding: var(--space-3) 0 var(--space-3) var(--space-4);
+    border-left: 2px solid var(--border);
+    position: relative;
+  }
+
+  .tl-role::before {
+    content: "";
+    position: absolute;
+    left: -5px;
+    top: calc(var(--space-3) + 6px);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+
+  .tl-role-current::before {
+    background: var(--accent);
+  }
+
+  .tl-role-current {
+    border-left-color: var(--accent);
+  }
+
+  .tl-role-header {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .tl-role-title {
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  .tl-role-current .tl-role-title {
+    font-size: var(--text-base);
+    color: var(--text);
+  }
+
+  .tl-role-dates {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
   }
 
   /* ---- Two column: Skills + Projects ---- */

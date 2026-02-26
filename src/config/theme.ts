@@ -43,6 +43,7 @@ export interface ThemeConfig {
     url: string;
     author: string;
     logoText: string;
+    listenBrainzUser?: string;
   };
 
   fonts: {
@@ -102,6 +103,7 @@ const theme: ThemeConfig = {
     url: "https://avinal.space",
     author: "Avinal Kumar",
     logoText: "avinal.space",
+    listenBrainzUser: "avinal",
   },
 
   fonts: {
@@ -169,7 +171,7 @@ const theme: ThemeConfig = {
   spacing: {
     base: "0.25rem",
     navHeight: "3.5rem",
-    maxProse: "42rem",
+    maxProse: "48rem",
     maxPage: "64rem",
     sectionGap: "4rem",
     cardPadding: "1.5rem",
