@@ -17,5 +17,5 @@ dist/
 # OS
 .DS_Store
 
-# Legacy Hugo
-public/
+# Personal files
+Profile.pdf

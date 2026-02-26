@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Opportunity Open Source Conference 2024",
+    "date": "2024-08-25",
+    "location": "IIT Kanpur, India",
+    "role": "speaker",
+    "talk": "From First Commit to Mentor: Climbing the Open Source Ladder",
+    "description": "Presented at the Canonical/Ubuntu conference on the journey from first-time contributor to mentor in open source. Covered practical advice on starting out, staying motivated, transitioning to mentorship, and fostering stronger communities. Included a deep-dive into my GSoC experience at FOSSology.",
+    "links": [
+      { "label": "Event Page", "url": "https://events.canonical.com/event/89/contributions/485/" },
+      { "label": "Slides", "url": "https://www.canva.com/design/DAGNthYwrck/Gt7mv99p6zH-aVbx2AtEuQ/view" }
+    ]
+  },
+  {
+    "name": "Google Summer of Code Mentor Summit 2023",
+    "date": "2023-10-13",
+    "location": "Google, Sunnyvale, USA",
+    "role": "mentor",
+    "description": "Represented the FOSSology project at the annual GSoC Mentor Summit hosted at Google's Sunnyvale campus. Participated in unconference sessions on mentoring practices, community building, and project sustainability.",
+    "links": [
+      { "label": "GSoC", "url": "https://summerofcode.withgoogle.com/" },
+      { "label": "FOSSology", "url": "https://www.fossology.org" }
+    ]
+  },
+  {
+    "name": "Open Source Month (OSM)",
+    "date": "2021-10-09",
+    "location": "NIT Hamirpur, India",
+    "role": "organizer",
+    "description": "Organized and led a month-long series of talks and workshops as a GitHub Campus Expert. Topics ranged from introduction to open source, Git workflows, and writing GSoC proposals to lightning talks by contributors from projects like Julia and VideoLAN. Over 200 students participated across 7 sessions.",
+    "links": [
+      { "label": "Campus Expert Profile", "url": "https://githubcampus.expert/avinal/" }
+    ]
+  },
+  {
+    "name": "GitHub Universe 2021",
+    "date": "2021-10-27",
+    "location": "Virtual",
+    "role": "attendee",
+    "description": "Attended GitHub's annual developer conference as a GitHub Campus Expert. Explored new features including Copilot, Codespaces, and Actions improvements.",
+    "links": [
+      { "label": "GitHub Universe", "url": "https://githubuniverse.com/" }
+    ]
+  },
+  {
+    "name": "GCE Live India",
+    "date": "2021-08-27",
+    "location": "Banmankhi, India",
+    "role": "speaker",
+    "talk": "Campus Experts: Preparation, Application Tips, Perks & Benefits",
+    "description": "Delivered a live session on how to become a GitHub Campus Expert — covering the application process, preparation tips, community benefits, and what to expect from the program.",
+    "links": [
+      { "label": "Campus Expert Profile", "url": "https://githubcampus.expert/avinal/" }
+    ]
+  }
+]

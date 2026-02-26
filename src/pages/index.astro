@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import HeroCard from "@/components/HeroCard.astro";
-import GameOfLife from "@/components/GameOfLife.astro";
+import MusicPlayer from "@/components/MusicPlayer.astro";
 import ActivityRow from "@/components/ActivityRow.astro";
 import RepoList from "@/components/RepoList.astro";
 import RecentPosts from "@/components/RecentPosts.astro";
@@ -10,13 +10,15 @@ import RecentPosts from "@/components/RecentPosts.astro";
 import { fetchGitHubUser, fetchGitHubRepos, fetchContributions } from "@/lib/github";
 import { fetchWakaTimeData } from "@/lib/wakatime";
 import { mergeActivity } from "@/lib/activity";
+import { fetchListenBrainzData } from "@/lib/listenbrainz";
 
-const [user, repos, contributions, wakatime, allPosts] = await Promise.all([
+const [user, repos, contributions, wakatime, allPosts, listenBrainz] = await Promise.all([
   fetchGitHubUser(),
   fetchGitHubRepos(),
   fetchContributions(),
   fetchWakaTimeData(),
   getCollection("posts", ({ data }) => !data.draft),
+  fetchListenBrainzData(),
 ]);
 
 const activity = mergeActivity(contributions, wakatime);
@@ -28,7 +30,7 @@ const recentPosts = allPosts
 
 <BaseLayout title="Home">
   <div class="bento">
-    <!-- Row 1: Hero (profile+about+skills+links) | Game of Life widget -->
+    <!-- Row 1: Hero (profile+about+skills+links) | Now Playing widget -->
     <div class="bento-8">
       <HeroCard
         name="Avinal Kumar"
@@ -39,7 +41,7 @@ const recentPosts = allPosts
     </div>
 
     <div class="bento-4">
-      <GameOfLife />
+      <MusicPlayer lb={listenBrainz} />
     </div>
 
     <!-- Row 2: Activity graph + stats (side by side in one card) -->

@@ -13,11 +13,12 @@ Personal website and blog built with [Astro](https://astro.build). Minimal, fast
 
 | Route | Description |
 |-------|-------------|
-| `/` | Homepage with hero card, GitHub/WakaTime activity graph, Game of Life widget, recent posts, and pinned repos |
+| `/` | Homepage with hero card, GitHub/WakaTime activity graph, ListenBrainz music widget, recent posts, and pinned repos |
 | `/posts/` | Blog index with category filters and featured images |
 | `/posts/<category>/` | Category-filtered post listings |
 | `/posts/<category>/<slug>/` | Individual blog posts |
 | `/resume/` | Resume page (data driven from `src/data/resume.json`) |
+| `/events/` | Conferences and events timeline |
 | `/meeting/` | Book a meeting via [Cal.com](https://cal.com) embed |
 | `/setup/` | Hardware and software setup |
 | `/rss.xml` | RSS feed |
@@ -35,15 +36,12 @@ cd avinal.github.io
 make install
 ```
 
-Copy the example env file and add your keys:
+No environment variables are required. All external data is fetched from public APIs:
 
-```bash
-cp .env.example .env
-```
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `WAKATIME_API_KEY` | No | Enables WakaTime coding stats on the homepage activity graph. Get yours at [wakatime.com/settings/api-key](https://wakatime.com/settings/api-key) |
+- **GitHub** — contributions graph and user info (public API)
+- **WakaTime** — coding stats via public share URL
+- **ListenBrainz** — music listening activity (public API, username in `src/config/theme.ts`)
+- **Cal.com** — meeting booking (embedded via CDN)
 
 ## Development
 
@@ -64,7 +62,7 @@ src/
 ├── components/     # Reusable Astro components
 ├── config/         # Theme tokens and site config
 ├── content/posts/  # Blog posts (Markdown)
-├── data/           # JSON data (resume, repos)
+├── data/           # JSON data (resume, repos, events)
 ├── layouts/        # Page layouts
 ├── lib/            # Utilities and rehype plugins
 ├── pages/          # Route pages

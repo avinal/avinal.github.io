@@ -1,4 +1,4 @@
-import type { ContributionData, ContributionDay } from "./github";
+import type { ContributionData } from "./github";
 import type { WakaTimeData } from "./wakatime";
 
 export interface ActivityDay {
