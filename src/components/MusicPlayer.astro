@@ -7,7 +7,6 @@ interface Props {
 
 const { lb } = Astro.props;
 const profileUrl = `https://listenbrainz.org/user/${lb.username}`;
-const embedUrl = `https://listenbrainz.org/user/${lb.username}/embed/playing-now`;
 
 function timeAgo(ts?: number): string {
   if (!ts) return "";
@@ -17,137 +16,202 @@ function timeAgo(ts?: number): string {
   if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
   return `${Math.floor(diff / 86400)}d ago`;
 }
+
+const isLive = !!lb.nowPlaying;
+const hero = lb.nowPlaying ?? lb.recentTracks[0] ?? null;
 ---
 
-<div class="music-card card">
-  <div class="music-header">
+<div class="mc card" id="music-widget" data-user={lb.username} data-live={isLive ? "1" : "0"}>
+  <div class="mc-header">
     <h3 class="widget-title">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-      <a href={profileUrl} target="_blank" rel="noopener noreferrer" class="lb-title-link">Listening</a>
+      <a href={profileUrl} target="_blank" rel="noopener noreferrer" class="mc-link">Listening</a>
     </h3>
   </div>
 
-  {lb.available ? (
-    <div class="lb-content">
-      <div class="lb-now-embed">
-        <iframe
-          src={embedUrl}
-          title="Now playing on ListenBrainz"
-          frameborder="0"
-          scrolling="no"
-          loading="lazy"
-        ></iframe>
+  <div class="mc-body" id="mc-body">
+    {hero ? (
+      <>
+        <div class="mc-hero" id="mc-hero">
+          <div class="mc-art-wrap">
+            <img
+              class="mc-art"
+              src={hero.coverArtUrl ?? ""}
+              alt=""
+              onerror="this.style.display='none'"
+            />
+            <div class="mc-art-ph">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.25"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            </div>
+          </div>
+          <div class="mc-overlay">
+            <span class="mc-badge" id="mc-badge">
+              {isLive ? (<><span class="mc-dot"></span>playing</>) : "last played"}
+            </span>
+            <div class="mc-marquee-wrap">
+              <span class="mc-marquee" id="mc-marquee">{hero.trackName} &mdash; {hero.artistName}</span>
+            </div>
+          </div>
+        </div>
+
+        <ul class="mc-recent" id="mc-recent">
+          {lb.recentTracks.slice(0, 4).map((t) => (
+            <li class="mc-track">
+              <img
+                class="mc-thumb"
+                src={t.coverArtUrl ?? ""}
+                alt=""
+                loading="lazy"
+                onerror="this.classList.add('mc-thumb-hide')"
+              />
+              <div class="mc-track-info">
+                <span class="mc-track-name">{t.trackName}</span>
+                <span class="mc-track-artist">{t.artistName}</span>
+              </div>
+              <span class="mc-track-time">{timeAgo(t.listenedAt)}</span>
+            </li>
+          ))}
+        </ul>
+      </>
+    ) : (
+      <div class="mc-empty">
+        <span class="text-muted text-xs">No listening data yet</span>
       </div>
+    )}
+  </div>
 
-      {lb.recentTracks.length > 0 && (
-        <div class="lb-recent-section">
-          <span class="lb-recent-label">Recent</span>
-          <ul class="lb-recent">
-            {lb.recentTracks.slice(0, 4).map((t) => (
-              <li class="lb-track">
-                {t.coverArtUrl && (
-                  <img
-                    class="lb-cover"
-                    src={t.coverArtUrl}
-                    alt=""
-                    loading="lazy"
-                    onerror="this.style.display='none'"
-                  />
-                )}
-                <div class="lb-info">
-                  <span class="lb-name">
-                    {t.listenUrl ? (
-                      <a href={t.listenUrl} target="_blank" rel="noopener noreferrer">{t.trackName}</a>
-                    ) : t.trackName}
-                  </span>
-                  <span class="lb-artist">{t.artistName}</span>
-                </div>
-                <span class="lb-time">{timeAgo(t.listenedAt)}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {lb.recentTracks.length === 0 && (
-        <div class="lb-empty">
-          <span class="text-muted text-xs">No recent listens yet</span>
-        </div>
-      )}
-    </div>
-  ) : (
-    <div class="lb-empty">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.3"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-      <span class="text-muted text-xs">Connect ListenBrainz to see listening activity</span>
-    </div>
-  )}
+  <a href="https://listenbrainz.org" class="mc-powered" target="_blank" rel="noopener noreferrer">powered by ListenBrainz</a>
 </div>
 
-<style>
-  .music-card {
+<style is:global>
+  .mc {
     display: flex;
     flex-direction: column;
     height: 100%;
-    min-height: 220px;
     overflow: hidden;
   }
 
-  .music-header {
+  .mc-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 0;
   }
 
-  .lb-title-link {
-    color: inherit;
-    text-decoration: none;
+  .mc-header .widget-title {
+    margin-bottom: 0;
   }
 
-  .lb-title-link:hover {
-    color: var(--accent);
-  }
+  .mc-link { color: inherit; text-decoration: none; }
+  .mc-link:hover { color: var(--accent); }
 
-  .lb-content {
+  .mc-body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
+    gap: var(--space-2);
     overflow: hidden;
   }
 
-  .lb-now-embed {
+  /* ---- Hero: art + overlay ---- */
+  .mc-hero {
+    position: relative;
+    overflow: hidden;
     border-radius: var(--radius-sm);
-    overflow: hidden;
-    height: 85px;
     flex-shrink: 0;
-    background: var(--bg-surface-hover);
   }
 
-  .lb-now-embed iframe {
-    width: calc(100% + 2px);
-    height: 85px;
-    border: none;
+  .mc-art-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    max-height: 200px;
+    background: linear-gradient(135deg, var(--bg-surface-hover) 0%, var(--border) 100%);
+    overflow: hidden;
+  }
+
+  .mc-art {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
-    margin: -1px;
+    position: relative;
+    z-index: 1;
   }
 
-  .lb-recent-section {
-    flex: 1;
+  .mc-art-ph {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 0;
+  }
+
+  .mc-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--space-3) var(--space-2) var(--space-2);
+    background: linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.3) 65%, transparent 100%);
     display: flex;
     flex-direction: column;
-    gap: var(--space-1);
-    overflow: hidden;
+    gap: 3px;
+    z-index: 2;
   }
 
-  .lb-recent-label {
-    font-size: var(--text-xs);
-    color: var(--text-muted);
+  .mc-badge {
+    font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
     font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
 
-  .lb-recent {
+  .mc-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+    animation: mc-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes mc-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+
+  .mc-marquee-wrap {
+    overflow: hidden;
+    white-space: nowrap;
+    mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  }
+
+  .mc-marquee {
+    display: inline-block;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: #fff;
+    animation: mc-scroll 12s linear infinite;
+    padding-right: 3em;
+  }
+
+  @keyframes mc-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .mc[data-live="0"] .mc-marquee {
+    animation: none;
+  }
+
+  /* ---- Recent list ---- */
+  .mc-recent {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -158,80 +222,225 @@ function timeAgo(ts?: number): string {
     overflow: hidden;
   }
 
-  .lb-track {
+  .mc-track {
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    padding: var(--space-1) var(--space-2);
-    border-radius: var(--radius-sm);
-    transition: background var(--duration-fast) var(--ease-out);
+    padding: 3px 0;
   }
 
-  .lb-track:hover {
-    background: var(--bg-surface-hover);
-  }
-
-  .lb-cover {
-    width: 32px;
-    height: 32px;
+  .mc-thumb {
+    width: 28px;
+    height: 28px;
     border-radius: 3px;
     object-fit: cover;
     flex-shrink: 0;
     background: var(--border);
   }
 
-  .lb-info {
+  .mc-thumb-hide { display: none; }
+
+  .mc-track-info {
     flex: 1;
     min-width: 0;
     display: flex;
     flex-direction: column;
   }
 
-  .lb-name {
+  .mc-track-name {
     font-size: var(--text-xs);
-    font-weight: 600;
-    color: var(--text);
+    font-weight: 500;
+    color: var(--text-secondary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  .lb-name a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .lb-name a:hover {
-    color: var(--accent);
-  }
-
-  .lb-artist {
-    font-size: var(--text-xs);
+  .mc-track-artist {
+    font-size: 11px;
     color: var(--text-muted);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  .lb-time {
-    font-size: var(--text-xs);
+  .mc-track-time {
+    font-size: 11px;
     color: var(--text-muted);
     white-space: nowrap;
     flex-shrink: 0;
   }
 
-  .lb-empty {
+  .mc-empty {
     flex: 1;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: var(--space-2);
   }
 
-  @media (max-width: 900px) {
-    .music-card {
-      min-height: 180px;
+  .mc-powered {
+    display: block;
+    text-align: center;
+    font-size: 10px;
+    color: var(--text-muted);
+    text-decoration: none;
+    opacity: 0.6;
+    padding-top: var(--space-2);
+    margin-top: auto;
+    transition: opacity var(--duration-fast) var(--ease-out);
+  }
+
+  .mc-powered:hover {
+    opacity: 1;
+    color: var(--accent);
+  }
+
+  /* ---- Mid-size: side-by-side (art left, recents right) ---- */
+  @media (min-width: 600px) and (max-width: 1100px) {
+    .mc-body {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+
+    .mc-hero {
+      width: 150px;
+      flex-shrink: 0;
+    }
+
+    .mc-art-wrap {
+      width: 150px;
+      height: 150px;
+      max-height: none;
+      aspect-ratio: 1;
+    }
+
+    .mc-recent {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+
+  /* ---- Mobile: column, smaller art ---- */
+  @media (max-width: 599px) {
+    .mc-art-wrap {
+      max-height: 160px;
     }
   }
 </style>
+
+<script>
+  const API = "https://api.listenbrainz.org/1";
+  const widget = document.getElementById("music-widget");
+
+  if (widget) {
+    const user = widget.dataset.user;
+    const body = document.getElementById("mc-body")!;
+
+    function timeAgo(ts: number): string {
+      const diff = Math.floor(Date.now() / 1000) - ts;
+      if (diff < 60) return "just now";
+      if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+      if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+      return `${Math.floor(diff / 86400)}d ago`;
+    }
+
+    function coverUrl(listen: any): string {
+      const mbids = listen.track_metadata?.mbid_mapping ?? {};
+      return mbids.release_mbid
+        ? `https://coverartarchive.org/release/${mbids.release_mbid}/front-250`
+        : "";
+    }
+
+    function esc(s: string): string {
+      const d = document.createElement("div");
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    function renderHero(listen: any, isLive: boolean): string {
+      const meta = listen.track_metadata ?? {};
+      const cover = coverUrl(listen);
+      const track = esc(meta.track_name ?? "Unknown");
+      const artist = esc(meta.artist_name ?? "Unknown");
+      const marqueeText = `${track} &mdash; ${artist}`;
+
+      const badge = isLive
+        ? `<span class="mc-dot"></span>playing`
+        : "last played";
+
+      return `
+        <div class="mc-hero">
+          <div class="mc-art-wrap">
+            ${cover ? `<img class="mc-art" src="${cover}" alt="" onerror="this.style.display='none'" />` : ""}
+            <div class="mc-art-ph">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.25"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            </div>
+          </div>
+          <div class="mc-overlay">
+            <span class="mc-badge">${badge}</span>
+            <div class="mc-marquee-wrap">
+              <span class="mc-marquee">${marqueeText}${isLive ? `&nbsp;&nbsp;&nbsp;&nbsp;${marqueeText}` : ""}</span>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function renderRecent(listens: any[]): string {
+      return listens.slice(0, 4).map((l) => {
+        const meta = l.track_metadata ?? {};
+        const cover = coverUrl(l);
+        const ago = l.listened_at ? timeAgo(l.listened_at) : "";
+        const thumb = cover
+          ? `<img class="mc-thumb" src="${cover}" alt="" loading="lazy" onerror="this.classList.add('mc-thumb-hide')" />`
+          : "";
+        return `<li class="mc-track">
+          ${thumb}
+          <div class="mc-track-info">
+            <span class="mc-track-name">${esc(meta.track_name ?? "Unknown")}</span>
+            <span class="mc-track-artist">${esc(meta.artist_name ?? "Unknown")}</span>
+          </div>
+          <span class="mc-track-time">${ago}</span>
+        </li>`;
+      }).join("");
+    }
+
+    async function refresh() {
+      try {
+        const [npRes, recRes] = await Promise.all([
+          fetch(`${API}/user/${user}/playing-now`),
+          fetch(`${API}/user/${user}/listens?count=5`),
+        ]);
+
+        let np: any = null;
+        if (npRes.ok) {
+          const d = await npRes.json();
+          np = d?.payload?.listens?.[0] ?? null;
+        }
+
+        let listens: any[] = [];
+        if (recRes.ok) {
+          const d = await recRes.json();
+          listens = d?.payload?.listens ?? [];
+        }
+
+        const isLive = !!np;
+        const hero = np ?? listens[0] ?? null;
+
+        widget.setAttribute("data-live", isLive ? "1" : "0");
+
+        if (!hero) {
+          body.innerHTML = `<div class="mc-empty"><span class="text-muted text-xs">No listening data yet</span></div>`;
+          return;
+        }
+
+        body.innerHTML = renderHero(hero, isLive)
+          + `<ul class="mc-recent">${renderRecent(listens)}</ul>`;
+      } catch {
+        // keep existing content on error
+      }
+    }
+
+    refresh();
+    setInterval(refresh, 30_000);
+  }
+</script>
