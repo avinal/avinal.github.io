@@ -1,0 +1,8 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#111111"/>
+  <rect x="40" y="40" width="1120" height="550" rx="16" fill="#1a1a1a" stroke="#2e2e2e" stroke-width="2"/>
+  <text x="600" y="270" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="72" font-weight="800" fill="#e5e5e5">avinal.space</text>
+  <text x="600" y="340" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="28" fill="#a3a3a3">Software Engineer � Open Source Contributor</text>
+  <line x1="500" y1="380" x2="700" y2="380" stroke="#60a5fa" stroke-width="3" stroke-linecap="round"/>
+  <text x="600" y="430" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="22" fill="#737373">avinal.space</text>
+</svg>
