@@ -404,4 +404,23 @@
     white-space: nowrap;
     border-width: 0;
   }
+
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: var(--space-4);
+    z-index: 9999;
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: white;
+    background: var(--accent);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    text-decoration: none;
+    transition: top var(--duration-fast) var(--ease-out);
+  }
+
+  .skip-link:focus {
+    top: 0;
+  }
 }

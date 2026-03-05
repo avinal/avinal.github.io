@@ -75,7 +75,7 @@ const excerpt = (body?: string, len = 140) => {
           <a href={`/posts/${post.id}/`} class="post-row">
             <div class="post-thumb">
               {post.data.image ? (
-                <img src={post.data.image} alt="" class="thumb-img" loading="lazy" />
+                <img src={post.data.image} alt={post.data.title} class="thumb-img" loading="lazy" decoding="async" />
               ) : (
                 <span class="thumb-placeholder">{post.data.title.charAt(0)}</span>
               )}
