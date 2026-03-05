@@ -346,9 +346,32 @@ const hero = lb.nowPlaying ?? lb.recentTracks[0] ?? null;
 
     function coverUrl(listen: any): string {
       const mbids = listen.track_metadata?.mbid_mapping ?? {};
-      return mbids.release_mbid
-        ? `https://coverartarchive.org/release/${mbids.release_mbid}/front-250`
-        : "";
+      const info = listen.track_metadata?.additional_info ?? {};
+      const rid = mbids.release_mbid ?? mbids.caa_release_mbid ?? info.release_mbid;
+      if (rid) return `https://coverartarchive.org/release/${rid}/front-250`;
+      const rgid = mbids.release_group_mbid;
+      if (rgid) return `https://coverartarchive.org/release-group/${rgid}/front-250`;
+      return "";
+    }
+
+    async function fetchItunesArt(track: string, artist: string): Promise<string> {
+      try {
+        const q = encodeURIComponent(`${track} ${artist}`);
+        const res = await fetch(`https://itunes.apple.com/search?term=${q}&media=music&limit=1`);
+        if (!res.ok) return "";
+        const data = await res.json();
+        const url = data.results?.[0]?.artworkUrl100;
+        return url ? url.replace("100x100", "250x250") : "";
+      } catch { return ""; }
+    }
+
+    function attachArtFallback(img: HTMLImageElement, track: string, artist: string) {
+      img.addEventListener("error", async () => {
+        if (img.dataset.fallbackTried) { img.style.display = "none"; return; }
+        img.dataset.fallbackTried = "1";
+        const alt = await fetchItunesArt(track, artist);
+        if (alt) { img.src = alt; } else { img.style.display = "none"; }
+      }, { once: false });
     }
 
     function esc(s: string): string {
@@ -371,7 +394,7 @@ const hero = lb.nowPlaying ?? lb.recentTracks[0] ?? null;
       return `
         <div class="mc-hero">
           <div class="mc-art-wrap">
-            ${cover ? `<img class="mc-art" src="${cover}" alt="" onerror="this.style.display='none'" />` : ""}
+            ${cover ? `<img class="mc-art" src="${cover}" alt="" data-track="${track}" data-artist="${artist}" />` : `<img class="mc-art" src="" alt="" data-track="${track}" data-artist="${artist}" data-no-cover="1" style="display:none" />`}
             <div class="mc-art-ph">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.25"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
             </div>
@@ -390,9 +413,7 @@ const hero = lb.nowPlaying ?? lb.recentTracks[0] ?? null;
         const meta = l.track_metadata ?? {};
         const cover = coverUrl(l);
         const ago = l.listened_at ? timeAgo(l.listened_at) : "";
-        const thumb = cover
-          ? `<img class="mc-thumb" src="${cover}" alt="" loading="lazy" onerror="this.classList.add('mc-thumb-hide')" />`
-          : "";
+        const thumb = `<img class="mc-thumb" src="${cover || ""}" alt="" loading="lazy" data-track="${esc(meta.track_name ?? "")}" data-artist="${esc(meta.artist_name ?? "")}" ${!cover ? 'data-no-cover="1" style="display:none"' : ""} />`;
         return `<li class="mc-track">
           ${thumb}
           <div class="mc-track-info">
@@ -435,6 +456,18 @@ const hero = lb.nowPlaying ?? lb.recentTracks[0] ?? null;
 
         body.innerHTML = renderHero(hero, isLive)
           + `<ul class="mc-recent">${renderRecent(listens)}</ul>`;
+
+        body.querySelectorAll<HTMLImageElement>("img[data-track]").forEach((img) => {
+          const t = img.dataset.track ?? "";
+          const a = img.dataset.artist ?? "";
+          if (img.dataset.noCover === "1") {
+            fetchItunesArt(t, a).then((url) => {
+              if (url) { img.src = url; img.style.display = ""; }
+            });
+          } else {
+            attachArtFallback(img, t, a);
+          }
+        });
       } catch {
         // keep existing content on error
       }

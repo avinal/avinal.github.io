@@ -24,10 +24,13 @@ function parseTrack(listen: any): LBTrack {
   const info = meta.additional_info ?? {};
   const mbids = meta.mbid_mapping ?? {};
 
-  const releaseMbid = mbids.release_mbid ?? info.release_mbid;
-  const coverArtUrl = releaseMbid
-    ? `https://coverartarchive.org/release/${releaseMbid}/front-250`
-    : undefined;
+  const releaseMbid = mbids.release_mbid ?? mbids.caa_release_mbid ?? info.release_mbid;
+  let coverArtUrl: string | undefined;
+  if (releaseMbid) {
+    coverArtUrl = `https://coverartarchive.org/release/${releaseMbid}/front-250`;
+  } else if (mbids.release_group_mbid) {
+    coverArtUrl = `https://coverartarchive.org/release-group/${mbids.release_group_mbid}/front-250`;
+  }
 
   const listenUrl =
     info.origin_url ??

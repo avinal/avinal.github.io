@@ -9,12 +9,15 @@ function fmtDate(iso: string) {
   return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
 }
 
+type ExtLink = { label: string; url: string };
+
 type Role = {
   title: string;
   startDate: string;
   endDate?: string;
   summary?: string;
   highlights?: string[];
+  links?: ExtLink[];
 };
 
 type TimelineEntry = {
@@ -27,6 +30,7 @@ type TimelineEntry = {
   endDate?: string;
   summary?: string;
   highlights?: string[];
+  links?: ExtLink[];
   roles?: Role[];
 };
 
@@ -41,6 +45,7 @@ type FlatEntry = {
   endDate?: string;
   summary?: string;
   highlights?: string[];
+  links?: ExtLink[];
 };
 
 /**
@@ -73,9 +78,9 @@ function groupToTimeline(entries: FlatEntry[]): TimelineEntry[] {
         endDate: latest.endDate,
         summary: latest.summary,
         highlights: latest.highlights,
+        links: latest.links,
       });
     } else {
-      const earliest = sorted[sorted.length - 1];
       result.push({
         type: latest.type,
         title: latest.subtitle,
@@ -90,6 +95,7 @@ function groupToTimeline(entries: FlatEntry[]): TimelineEntry[] {
           endDate: e.endDate,
           summary: e.summary,
           highlights: e.highlights,
+          links: e.links,
         })),
       });
     }
@@ -108,6 +114,7 @@ const workFlat: FlatEntry[] = work.map((w: any) => ({
   endDate: w.endDate,
   summary: w.summary,
   highlights: w.highlights,
+  links: w.links,
 }));
 
 const volunteerFlat: FlatEntry[] = volunteer.map((v: any) => ({
@@ -216,6 +223,16 @@ const typeLabels: Record<string, string> = {
                               {role.highlights.map((h) => <li>{h}</li>)}
                             </ul>
                           )}
+                          {role.links && role.links.length > 0 && (
+                            <div class="tl-links">
+                              {role.links.map((lnk) => (
+                                <a href={lnk.url} class="tl-ext-link" target="_blank" rel="noopener noreferrer">
+                                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                  {lnk.label}
+                                </a>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -238,6 +255,16 @@ const typeLabels: Record<string, string> = {
                       <ul class="tl-highlights">
                         {entry.highlights.map((h) => <li>{h}</li>)}
                       </ul>
+                    )}
+                    {entry.links && entry.links.length > 0 && (
+                      <div class="tl-links">
+                        {entry.links.map((lnk) => (
+                          <a href={lnk.url} class="tl-ext-link" target="_blank" rel="noopener noreferrer">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                            {lnk.label}
+                          </a>
+                        ))}
+                      </div>
                     )}
                   </Fragment>
                 )}
@@ -573,6 +600,38 @@ const typeLabels: Record<string, string> = {
     left: 0;
     color: var(--accent);
     font-weight: 700;
+  }
+
+  /* ---- External links ---- */
+  .tl-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+  }
+
+  .tl-ext-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 2px var(--space-2);
+    border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+    border-radius: var(--radius-full);
+    transition: all var(--duration-fast) var(--ease-out);
+  }
+
+  .tl-ext-link:hover {
+    background: var(--accent-subtle);
+    border-color: var(--accent);
+  }
+
+  .tl-ext-link svg {
+    flex-shrink: 0;
+    opacity: 0.7;
   }
 
   /* ---- Grouped roles ---- */

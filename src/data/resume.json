@@ -38,9 +38,15 @@
       "summary": "Builds for OpenShift & Developer Tools",
       "location": "Bengaluru, India",
       "highlights": [
-        "Serving as Team Lead for Builds for OpenShift — managing engineers, driving sprint planning, code reviews, and cross-functional collaboration",
-        "Working on Builds for OpenShift based on the upstream Shipwright project — designing, maintaining, and releasing build features",
-        "Maintainer of Tekton Results — contributing upstream to enhance observability and results storage for Tekton pipelines"
+        "Leading the Builds for OpenShift team — managing a group of engineers, owning sprint planning, backlog grooming, and cross-functional alignment with product and QE",
+        "Architecting and shipping features for Builds for OpenShift (based on the upstream Shipwright project) — from design proposals through implementation, testing, and GA releases",
+        "Driving Tekton Results upstream as a maintainer — improving observability, long-term storage, and query performance for Tekton pipeline results at scale",
+        "Representing the team in OpenShift-wide architecture discussions, coordinating with platform, CLI, and console teams on build-related integrations",
+        "Mentoring junior engineers through 1:1s, design reviews, and pair programming sessions to grow team capability"
+      ],
+      "links": [
+        { "label": "Shipwright", "url": "https://shipwright.io" },
+        { "label": "Tekton Results", "url": "https://github.com/tektoncd/results" }
       ]
     },
     {
@@ -52,9 +58,14 @@
       "summary": "Hybrid Cloud Engineering — Pipeline Service",
       "location": "Bengaluru, India",
       "highlights": [
-        "Worked on Pipeline Service — a SaaS for pipelines leveraging kcp, Kubernetes/OpenShift, Tekton, and Argo CD",
-        "Contributed to Tekton Results for long-term, efficient storage of PipelineRuns and TaskRuns",
-        "Maintained Source-to-Image (S2I) and Shared Resource CSI Driver components in OpenShift"
+        "Built and maintained Pipeline Service — a multi-tenant SaaS pipeline platform leveraging kcp, Kubernetes/OpenShift, Tekton, and Argo CD for managed CI/CD",
+        "Contributed to Tekton Results for efficient long-term storage of PipelineRuns and TaskRuns, improving query latency and reliability for large-scale clusters",
+        "Maintained Source-to-Image (S2I) and Shared Resource CSI Driver components in OpenShift, triaging bugs and shipping quarterly releases",
+        "Participated in on-call rotations, resolving production incidents across the pipeline stack and authoring runbooks for recurring issues",
+        "Collaborated with upstream Tekton community on design proposals and contributed patches accepted into the core project"
+      ],
+      "links": [
+        { "label": "Tekton", "url": "https://tekton.dev" }
       ]
     },
     {
@@ -66,8 +77,9 @@
       "summary": "Pipeline Service Team",
       "location": "Bengaluru, India",
       "highlights": [
-        "Designed and implemented the Minimal Tekton Server with unit tests — creates Tekton resources on Kubernetes/OpenShift clusters using the Tekton API",
-        "Built MKS Server, MKS CLI, and MKS Dashboard using Golang, Kubernetes, Tekton, and Redis"
+        "Designed and implemented the Minimal Tekton Server (MKS) from scratch — a lightweight server that creates and manages Tekton resources on Kubernetes/OpenShift clusters",
+        "Built the MKS CLI and MKS Dashboard in Golang, providing a developer-friendly interface for pipeline operations backed by Redis for state management",
+        "Wrote comprehensive unit and integration tests achieving high coverage, following test-driven development practices across the full stack"
       ]
     },
     {
@@ -79,8 +91,11 @@
       "summary": "Developer Documentation",
       "location": "Shenzhen, Remote",
       "highlights": [
-        "Redesigned developer and user documentation for the Apache APISIX project",
-        "Created Katacoda tutorials for APISIX, collaborating with the community and integrating feedback"
+        "Redesigned the developer and user documentation for Apache APISIX, improving information architecture and discoverability for a fast-growing API gateway project",
+        "Created interactive Katacoda tutorials that guided users through real APISIX deployments, collaborating closely with the community and incorporating feedback from maintainers"
+      ],
+      "links": [
+        { "label": "Apache APISIX", "url": "https://apisix.apache.org" }
       ]
     },
     {
@@ -92,9 +107,13 @@
       "summary": "Build System & CI/CD Modernization",
       "location": "Remote",
       "highlights": [
-        "Upgraded the build system from Unix Makefile to CMake — build time reduced to 5–7 minutes (2× faster)",
-        "Migrated CI/CD from Travis CI to GitHub Actions — CI time reduced from 1–2 hours to 20–25 minutes",
-        "Refactored and fixed years-old unit and functional testing code in C/C++ and PHP"
+        "Migrated the entire build system from legacy Unix Makefiles to modern CMake — cutting build time from 10–15 minutes down to 5–7 minutes (2× improvement)",
+        "Replaced Travis CI with GitHub Actions for the CI/CD pipeline — reducing CI run time from 1–2 hours to 20–25 minutes with parallel job execution and caching",
+        "Refactored and fixed years-old unit and functional testing code across C/C++ and PHP, restoring test suites that had been broken or skipped for multiple releases"
+      ],
+      "links": [
+        { "label": "GSoC Project", "url": "https://summerofcode.withgoogle.com" },
+        { "label": "Blog Series", "url": "https://avinal.space/posts/gsoc/gsoc-fossology" }
       ]
     },
     {
@@ -106,8 +125,8 @@
       "summary": "Inventory & Billing Management",
       "location": "Bengaluru, Remote",
       "highlights": [
-        "Designed and developed an Inventory and Billing Management App using Spring Boot and PostgreSQL",
-        "Created REST API endpoints according to functional requirements"
+        "Designed and developed a full-stack Inventory and Billing Management application using Spring Boot, PostgreSQL, and Thymeleaf for a small-business client",
+        "Implemented RESTful API endpoints for CRUD operations on inventory items, invoices, and customer records according to functional specifications"
       ]
     },
     {
@@ -119,8 +138,12 @@
       "summary": "VLC for Android Documentation",
       "location": "Paris, Remote",
       "highlights": [
-        "Documented VLC for Android using Sphinx, reStructuredText, Markdown, and shell scripting",
-        "Delivered user-friendly documentation with supporting screenshots and step-by-step tutorials"
+        "Authored comprehensive documentation for VLC for Android using Sphinx and reStructuredText, covering build instructions, architecture overview, and contributor guidelines",
+        "Produced step-by-step tutorials with annotated screenshots, making the project accessible to new contributors and end users alike"
+      ],
+      "links": [
+        { "label": "GSoD Case Study", "url": "https://developers.google.com/season-of-docs" },
+        { "label": "VideoLAN", "url": "https://www.videolan.org" }
       ]
     },
     {
@@ -131,18 +154,26 @@
       "summary": "Mentoring & Open Source",
       "location": "Remote",
       "highlights": [
-        "Mentoring GSoC students since 2022, guiding open source license compliance tooling projects"
+        "Mentoring Google Summer of Code students since 2022 — guiding contributors on open-source license compliance tooling, code review practices, and upstream collaboration",
+        "Helping students navigate the FOSSology codebase, define project milestones, and deliver production-quality patches accepted by the maintainer community"
+      ],
+      "links": [
+        { "label": "FOSSology", "url": "https://www.fossology.org" }
       ]
     },
     {
       "name": "GNU C Library",
       "position": "Contributor",
-      "url": "https://www.gnu.org/software/libc/",
+      "url": "https://sourceware.org/glibc/",
       "startDate": "2024-05-01",
       "summary": "GNU Project",
       "location": "Remote",
       "highlights": [
-        "Submitting patches to the GNU C Library (glibc)"
+        "Contributing patches to glibc — one of the most critical pieces of the GNU/Linux ecosystem, used by virtually every Linux distribution",
+        "Working on bug fixes and improvements submitted via the Sourceware mailing list and reviewed by core glibc maintainers"
+      ],
+      "links": [
+        { "label": "Patches", "url": "https://sourceware.org/cgit/glibc/log/?qt=author&q=avinal" }
       ]
     }
   ],
