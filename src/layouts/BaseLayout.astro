@@ -8,17 +8,20 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  jsonLd?: Record<string, unknown>;
 }
 
 const {
   title,
   description = theme.site.description,
   ogImage,
+  jsonLd,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const siteName = theme.site.title;
 const themeCSS = generateThemeCSS(theme);
+const resolvedOgImage = ogImage || new URL("/og-default.svg", Astro.site).href;
 ---
 
 <!doctype html>
@@ -38,15 +41,31 @@ const themeCSS = generateThemeCSS(theme);
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content={siteName} />
-    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta property="og:image" content={resolvedOgImage} />
 
-    <!-- Favicon -->
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={resolvedOgImage} />
+    <meta name="twitter:site" content="@Avinal_" />
+
+    <!-- Favicon & Manifest -->
     <link rel="icon" type="image/svg+xml" href="/logo-static.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="application/rss+xml" title="Avinal Kumar" href="/rss.xml" />
 
+    <!-- Font preloads -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
     <!-- Design tokens generated from theme config -->
     <style set:html={themeCSS} />
+
+    <!-- JSON-LD structured data -->
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
 
     <!-- Theme: prevent flash by reading preference before paint -->
     <script is:inline>
@@ -61,9 +80,10 @@ const themeCSS = generateThemeCSS(theme);
     </script>
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
     <div class="page-wrapper">
       <Nav />
-      <main class="main-content">
+      <main id="main-content" class="main-content">
         <slot />
       </main>
       <Footer />

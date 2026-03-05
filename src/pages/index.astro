@@ -26,9 +26,24 @@ const activity = mergeActivity(contributions, wakatime);
 const recentPosts = allPosts
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 5);
+
+const personLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Avinal Kumar",
+  url: "https://avinal.space",
+  image: user?.avatar_url,
+  jobTitle: "Software Engineer II (Team Lead)",
+  worksFor: { "@type": "Organization", name: "Red Hat", url: "https://www.redhat.com" },
+  sameAs: [
+    "https://github.com/avinal",
+    "https://linkedin.com/in/avinal",
+    "https://twitter.com/Avinal_",
+  ],
+};
 ---
 
-<BaseLayout title="Home">
+<BaseLayout title="Home" jsonLd={personLd}>
   <div class="bento">
     <!-- Row 1: Hero (profile+about+skills+links) | Now Playing widget -->
     <div class="bento-8">

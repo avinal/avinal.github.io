@@ -29,13 +29,30 @@ const fmtDate = (d: Date) =>
     month: "long",
     day: "numeric",
   });
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const blogPostingLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: title,
+  description: description ?? "",
+  datePublished: date.toISOString(),
+  ...(modified && { dateModified: modified.toISOString() }),
+  ...(image && { image }),
+  url: canonicalURL,
+  author: {
+    "@type": "Person",
+    name: "Avinal Kumar",
+    url: "https://avinal.space",
+  },
+};
 ---
 
-<BaseLayout title={title} description={description} ogImage={image || undefined}>
+<BaseLayout title={title} description={description} ogImage={image || undefined} jsonLd={blogPostingLd}>
   <article class="post-page">
     {image && (
       <div class="post-hero-img">
-        <img src={image} alt={title} />
+        <img src={image} alt={title} decoding="async" />
       </div>
     )}
 
