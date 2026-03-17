@@ -23,16 +23,15 @@ const hero = lb.nowPlaying ?? lb.recentTracks[0] ?? null;
 
 <div class="mc card" id="music-widget" data-user={lb.username} data-live={isLive ? "1" : "0"}>
   <div class="mc-header">
-    <h3 class="widget-title">
+    <a href={profileUrl} target="_blank" rel="noopener noreferrer" class="widget-title mc-link" aria-label="ListenBrainz profile">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-      <a href={profileUrl} target="_blank" rel="noopener noreferrer" class="mc-link">Listening</a>
-    </h3>
+    </a>
   </div>
 
   <div class="mc-body" id="mc-body">
     {hero ? (
       <>
-        <div class="mc-hero" id="mc-hero">
+        <a href={profileUrl} target="_blank" rel="noopener noreferrer" class="mc-hero" id="mc-hero">
           <div class="mc-art-wrap">
             <img
               class="mc-art"
@@ -52,7 +51,7 @@ const hero = lb.nowPlaying ?? lb.recentTracks[0] ?? null;
               <span class="mc-marquee" id="mc-marquee">{hero.trackName} &mdash; {hero.artistName}</span>
             </div>
           </div>
-        </div>
+        </a>
 
         <ul class="mc-recent" id="mc-recent">
           {lb.recentTracks.slice(0, 4).map((t) => (
@@ -115,9 +114,13 @@ const hero = lb.nowPlaying ?? lb.recentTracks[0] ?? null;
 
   /* ---- Hero: art + overlay ---- */
   .mc-hero {
+    display: block;
+    text-decoration: none;
+    color: inherit;
     position: relative;
     overflow: hidden;
     border-radius: var(--radius-sm);
+    cursor: pointer;
     flex-shrink: 0;
   }
 
@@ -391,8 +394,9 @@ const hero = lb.nowPlaying ?? lb.recentTracks[0] ?? null;
         ? `<span class="mc-dot"></span>playing`
         : "last played";
 
+      const profileHref = `https://listenbrainz.org/user/${widget.dataset.user}`;
       return `
-        <div class="mc-hero">
+        <a class="mc-hero" href="${profileHref}" target="_blank" rel="noopener noreferrer">
           <div class="mc-art-wrap">
             ${cover ? `<img class="mc-art" src="${cover}" alt="" data-track="${track}" data-artist="${artist}" />` : `<img class="mc-art" src="" alt="" data-track="${track}" data-artist="${artist}" data-no-cover="1" style="display:none" />`}
             <div class="mc-art-ph">
@@ -405,7 +409,7 @@ const hero = lb.nowPlaying ?? lb.recentTracks[0] ?? null;
               <span class="mc-marquee">${marqueeText}${isLive ? `&nbsp;&nbsp;&nbsp;&nbsp;${marqueeText}` : ""}</span>
             </div>
           </div>
-        </div>`;
+        </a>`;
     }
 
     function renderRecent(listens: any[]): string {

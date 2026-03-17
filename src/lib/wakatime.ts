@@ -27,13 +27,8 @@ interface RawDay {
   categories?: RawCategory[];
 }
 
-const EXCLUDED_CATEGORIES = new Set(["Browsing"]);
-
-function codingSeconds(categories: RawCategory[] | undefined): number {
-  if (!categories) return 0;
-  return categories
-    .filter((c) => !EXCLUDED_CATEGORIES.has(c.name))
-    .reduce((sum, c) => sum + (c.total ?? 0), 0);
+function totalSeconds(day: RawDay): number {
+  return day.total ?? 0;
 }
 
 function formatSeconds(s: number): string {
@@ -54,32 +49,30 @@ export async function fetchWakaTimeData(): Promise<WakaTimeData | null> {
     if (rawDays.length === 0) return null;
 
     const days = new Map<string, WakaTimeDaySummary>();
-    let codingTotal = 0;
-    let fullTotal = 0;
-    let bestCodingDay = 0;
-    let codingActiveDays = 0;
+    let total = 0;
+    let bestDay = 0;
+    let activeDays = 0;
 
     for (const d of rawDays) {
-      const coding = codingSeconds(d.categories);
-      fullTotal += d.total ?? 0;
-      codingTotal += coding;
-      if (coding > bestCodingDay) bestCodingDay = coding;
-      if (coding > 0) codingActiveDays++;
+      const secs = totalSeconds(d);
+      total += secs;
+      if (secs > bestDay) bestDay = secs;
+      if (secs > 0) activeDays++;
 
       days.set(d.date, {
         date: d.date,
-        totalSeconds: coding,
-        text: coding > 0 ? formatSeconds(coding) : "0m",
+        totalSeconds: secs,
+        text: secs > 0 ? formatSeconds(secs) : "0m",
       });
     }
 
-    const dailyAvg = codingActiveDays > 0 ? codingTotal / codingActiveDays : 0;
+    const dailyAvg = activeDays > 0 ? total / activeDays : 0;
 
     return {
-      totalSeconds: codingTotal,
-      totalText: formatSeconds(codingTotal),
+      totalSeconds: total,
+      totalText: formatSeconds(total),
       dailyAvgText: formatSeconds(dailyAvg),
-      bestDayText: formatSeconds(bestCodingDay),
+      bestDayText: formatSeconds(bestDay),
       days,
       topLangs: [],
     };
