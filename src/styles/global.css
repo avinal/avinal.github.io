@@ -415,7 +415,7 @@
     font-weight: 600;
     color: white;
     background: var(--accent);
-    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    border-radius: 0;
     text-decoration: none;
     transition: top var(--duration-fast) var(--ease-out);
   }

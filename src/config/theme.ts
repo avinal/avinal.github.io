@@ -178,10 +178,10 @@ const theme: ThemeConfig = {
   },
 
   radius: {
-    sm: "0.375rem",
-    md: "0.5rem",
-    lg: "0.75rem",
-    full: "9999px",
+    sm: "0",
+    md: "0",
+    lg: "0",
+    full: "0",
   },
 
   typography: {

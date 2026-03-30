@@ -243,8 +243,12 @@ const excerpt = (body?: string, len = 140) => {
 
   @media (max-width: 600px) {
     .post-row {
-      grid-template-columns: 100px 1fr;
+      grid-template-columns: 1fr;
       gap: var(--space-3);
+    }
+
+    .post-thumb {
+      aspect-ratio: 16 / 9;
     }
 
     .post-title {
