@@ -2,73 +2,95 @@
   {
     "name": "Profile-Readme-WakaTime",
     "owner": "avinal",
-    "description": "Generate coding activity graph tracked by WakaTime to embed in Readme(s) and webpages.",
+    "description": "Generate coding activity graph tracked by WakaTime to embed in Readme(s) and webpages. 90+ stars, 500+ active users worldwide.",
     "url": "https://github.com/avinal/Profile-Readme-WakaTime",
-    "stars": 86,
-    "forks": 30,
+    "stars": 91,
+    "forks": 43,
     "languages": [
       { "name": "Python", "color": "#3572A5" },
       { "name": "Shell", "color": "#89e051" }
     ]
   },
   {
-    "name": "builds",
-    "owner": "shipwright-io",
-    "description": "Shipwright - a framework for building container images on Kubernetes.",
-    "url": "https://github.com/shipwright-io/builds",
-    "stars": 550,
-    "forks": 110,
+    "name": "resume",
+    "owner": "avinal",
+    "description": "Compact and minimal LaTeX resume template with custom commands, XeLaTeX support, and Roboto fonts. 76 stars.",
+    "url": "https://github.com/avinal/resume",
+    "stars": 76,
+    "forks": 29,
+    "languages": [
+      { "name": "TeX", "color": "#3D6117" }
+    ]
+  },
+  {
+    "name": "Blowfish",
+    "owner": "avinal",
+    "description": "C++ implementation of Blowfish and Blowfish 2 symmetric block cipher with tests and APIs. Drop-in replacement for DES or IDEA.",
+    "url": "https://github.com/avinal/blowfish",
+    "stars": 8,
+    "forks": 6,
+    "languages": [
+      { "name": "C++", "color": "#f34b7d" },
+      { "name": "CMake", "color": "#DA3434" }
+    ]
+  },
+  {
+    "name": "memodav",
+    "owner": "avinal",
+    "description": "Bidirectional task sync between Memos and CalDAV. Write tasks in Memos, check them off in any CalDAV client.",
+    "url": "https://github.com/avinal/memodav",
+    "stars": 0,
+    "forks": 0,
     "languages": [
       { "name": "Go", "color": "#00ADD8" },
       { "name": "Shell", "color": "#89e051" }
     ]
   },
   {
-    "name": "cmake-tutorial",
+    "name": "xeus-basic",
     "owner": "avinal",
-    "description": "A comprehensive guide to learning CMake — from basics to advanced packaging.",
-    "url": "https://github.com/avinal/cmake-tutorial",
-    "stars": 12,
-    "forks": 5,
+    "description": "Jupyter Kernel for the BASIC language built using the Xeus Framework, C, and C++. Run BASIC programs in Jupyter Notebook.",
+    "url": "https://github.com/avinal/xeus-basic",
+    "stars": 1,
+    "forks": 2,
+    "languages": [
+      { "name": "C", "color": "#555555" },
+      { "name": "C++", "color": "#f34b7d" }
+    ]
+  },
+  {
+    "name": "badger2040-boilerplate",
+    "owner": "avinal",
+    "description": "Boilerplate project for developing Badger 2040 C++ programs with Pimoroni libraries, Pico SDK, and devcontainer support.",
+    "url": "https://github.com/avinal/badger2040-boilerplate",
+    "stars": 6,
+    "forks": 0,
     "languages": [
       { "name": "CMake", "color": "#DA3434" },
       { "name": "C++", "color": "#f34b7d" }
     ]
   },
   {
-    "name": "avinal.github.io",
+    "name": "The-Icosian-Game",
     "owner": "avinal",
-    "description": "Personal website and blog — built with Astro, minimal HTML & CSS.",
-    "url": "https://github.com/avinal/avinal.github.io",
-    "stars": 5,
-    "forks": 2,
+    "description": "Icosian Game developed from scratch in the JACK programming language (Nand2Tetris).",
+    "url": "https://github.com/avinal/The-Icosian-Game",
+    "stars": 1,
+    "forks": 0,
     "languages": [
-      { "name": "Astro", "color": "#ff5a03" },
-      { "name": "TypeScript", "color": "#3178c6" }
+      { "name": "JACK", "color": "#2c2c2c" }
     ]
   },
   {
-    "name": "fossology",
-    "owner": "fossology",
-    "description": "Open source license compliance software system and toolkit.",
-    "url": "https://github.com/fossology/fossology",
-    "stars": 1100,
-    "forks": 500,
-    "languages": [
-      { "name": "PHP", "color": "#4F5D95" },
-      { "name": "C++", "color": "#f34b7d" }
-    ]
-  },
-  {
-    "name": "dotfiles",
+    "name": "FITS-Image",
     "owner": "avinal",
-    "description": "My personal configuration files — Neovim, Zsh, Tmux, and more.",
-    "url": "https://github.com/avinal/dotfiles",
-    "stars": 3,
-    "forks": 1,
+    "description": "Extract images from FITS astronomy files using Boost.GIL and CFITSIO. Supports BITPIX 8, 16, and 32.",
+    "url": "https://github.com/avinal/FITS-Image",
+    "stars": 0,
+    "forks": 0,
     "languages": [
-      { "name": "Shell", "color": "#89e051" },
-      { "name": "Lua", "color": "#000080" }
+      { "name": "C++", "color": "#f34b7d" },
+      { "name": "CMake", "color": "#DA3434" }
     ]
   }
 ]
