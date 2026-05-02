@@ -142,8 +142,9 @@
         "Produced step-by-step tutorials with annotated screenshots, making the project accessible to new contributors and end users alike"
       ],
       "links": [
-        { "label": "GSoD Case Study", "url": "https://developers.google.com/season-of-docs" },
-        { "label": "VideoLAN", "url": "https://www.videolan.org" }
+        { "label": "Docs Website", "url": "https://docs.videolan.me/vlc-user/android/3.X/en/index.html" },
+        { "label": "Docs Repository", "url": "https://code.videolan.org/docs/vlc-user/-/tree/android/3.X?ref_type=heads" },
+        { "label": "GSoD Report", "url": "/posts/blogs/gsod2020-report" }
       ]
     },
     {
@@ -162,18 +163,34 @@
       ]
     },
     {
-      "name": "GNU C Library",
+      "name": "GNU Toolchain",
       "position": "Contributor",
-      "url": "https://sourceware.org/glibc/",
+      "url": "https://gcc.gnu.org/",
       "startDate": "2024-05-01",
-      "summary": "GNU Project",
+      "summary": "GNU Project — GCC & GNU C Library",
       "location": "Remote",
       "highlights": [
-        "Contributing patches to glibc — one of the most critical pieces of the GNU/Linux ecosystem, used by virtually every Linux distribution",
-        "Working on bug fixes and improvements submitted via the Sourceware mailing list and reviewed by core glibc maintainers"
+        "Contributing patches to GCC and GNU C Library — two of the most critical pieces of the GNU/Linux ecosystem, used by virtually every Linux distribution",
+        "Working on compiler internals (tree-ssa-strlen optimizations) and C library bug fixes submitted via Sourceware and reviewed by core maintainers"
       ],
       "links": [
-        { "label": "Patches", "url": "https://sourceware.org/cgit/glibc/log/?qt=author&q=avinal" }
+        { "label": "GNU C Library Patches", "url": "https://sourceware.org/cgit/glibc/log/?qt=author&q=avinal" },
+        { "label": "GCC Patches", "url": "https://gitlab.com/gnutools/gcc/-/commits/master?author=Avinal%20Kumar" }
+      ]
+    },
+    {
+      "name": "Linux Kernel",
+      "position": "Contributor",
+      "url": "https://kernel.org/",
+      "startDate": "2026-04-01",
+      "summary": "DRM Subsystem",
+      "location": "Remote",
+      "highlights": [
+        "Contributing patches to the Linux kernel DRM subsystem — adding new MIPI DSI helper functions and migrating panel drivers to improved APIs",
+        "Patches reviewed and merged via the freedesktop.org GitLab DRM tree"
+      ],
+      "links": [
+        { "label": "Patches", "url": "https://gitlab.freedesktop.org/drm/misc/kernel/-/commits/drm-misc-next?author=Avinal%20Kumar" }
       ]
     }
   ],
