@@ -1,0 +1,390 @@
+[
+  {
+    "title": "The Pragmatic Programmer",
+    "author": "David Thomas, Andrew Hunt",
+    "type": "book",
+    "year": 2019,
+    "url": "https://www.goodreads.com/book/show/4099.The_Pragmatic_Programmer",
+    "image": "/images/bookmarks/the-pragmatic-programmer.jpg"
+  },
+  {
+    "title": "Designing Data-Intensive Applications",
+    "author": "Martin Kleppmann",
+    "type": "book",
+    "year": 2017,
+    "url": "https://www.goodreads.com/book/show/23463279-designing-data-intensive-applications",
+    "image": "/images/bookmarks/designing-data-intensive-applications.jpg"
+  },
+  {
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "type": "book",
+    "year": 2008,
+    "url": "https://www.goodreads.com/book/show/3735293-clean-code",
+    "image": "/images/bookmarks/clean-code.jpg"
+  },
+  {
+    "title": "The Shawshank Redemption",
+    "author": "Frank Darabont",
+    "type": "movie",
+    "year": 1994,
+    "url": "https://www.imdb.com/title/tt0111161/",
+    "image": "/images/bookmarks/the-shawshank-redemption.jpg"
+  },
+  {
+    "title": "Schindler's List",
+    "author": "Steven Spielberg",
+    "type": "movie",
+    "year": 1993,
+    "url": "https://www.imdb.com/title/tt0108052/",
+    "image": "/images/bookmarks/schindlers-list.jpg"
+  },
+  {
+    "title": "Forrest Gump",
+    "author": "Robert Zemeckis",
+    "type": "movie",
+    "year": 1994,
+    "url": "https://www.imdb.com/title/tt0109830/",
+    "image": "/images/bookmarks/forrest-gump.jpg"
+  },
+  {
+    "title": "The Green Mile",
+    "author": "Frank Darabont",
+    "type": "movie",
+    "year": 1999,
+    "url": "https://www.imdb.com/title/tt0120689/",
+    "image": "/images/bookmarks/the-green-mile.jpg"
+  },
+  {
+    "title": "Interstellar",
+    "author": "Christopher Nolan",
+    "type": "movie",
+    "year": 2014,
+    "url": "https://www.imdb.com/title/tt0816692/",
+    "image": "/images/bookmarks/interstellar.jpg"
+  },
+  {
+    "title": "Oppenheimer",
+    "author": "Christopher Nolan",
+    "type": "movie",
+    "year": 2023,
+    "url": "https://www.imdb.com/title/tt15398776/",
+    "image": "/images/bookmarks/oppenheimer.jpg"
+  },
+  {
+    "title": "The Social Network",
+    "author": "David Fincher",
+    "type": "movie",
+    "year": 2010,
+    "url": "https://www.imdb.com/title/tt1285016/",
+    "image": "/images/bookmarks/the-social-network.jpg"
+  },
+  {
+    "title": "A Beautiful Mind",
+    "author": "Ron Howard",
+    "type": "movie",
+    "year": 2001,
+    "url": "https://www.imdb.com/title/tt0268978/",
+    "image": "/images/bookmarks/a-beautiful-mind.jpg"
+  },
+  {
+    "title": "The Truman Show",
+    "author": "Peter Weir",
+    "type": "movie",
+    "year": 1998,
+    "url": "https://www.imdb.com/title/tt0120382/",
+    "image": "/images/bookmarks/the-truman-show.jpg"
+  },
+  {
+    "title": "The Grand Budapest Hotel",
+    "author": "Wes Anderson",
+    "type": "movie",
+    "year": 2014,
+    "url": "https://www.imdb.com/title/tt2278388/",
+    "image": "/images/bookmarks/the-grand-budapest-hotel.jpg"
+  },
+  {
+    "title": "Joker",
+    "author": "Todd Phillips",
+    "type": "movie",
+    "year": 2019,
+    "url": "https://www.imdb.com/title/tt7286456/",
+    "image": "/images/bookmarks/joker.jpg"
+  },
+  {
+    "title": "WALL-E",
+    "author": "Andrew Stanton",
+    "type": "movie",
+    "year": 2008,
+    "url": "https://www.imdb.com/title/tt0910970/",
+    "image": "/images/bookmarks/wall-e.jpg"
+  },
+  {
+    "title": "The Aviator",
+    "author": "Martin Scorsese",
+    "type": "movie",
+    "year": 2004,
+    "url": "https://www.imdb.com/title/tt0338751/",
+    "image": "/images/bookmarks/the-aviator.jpg"
+  },
+  {
+    "title": "Erin Brockovich",
+    "author": "Steven Soderbergh",
+    "type": "movie",
+    "year": 2000,
+    "url": "https://www.imdb.com/title/tt0195685/",
+    "image": "/images/bookmarks/erin-brockovich.jpg"
+  },
+  {
+    "title": "Green Book",
+    "author": "Peter Farrelly",
+    "type": "movie",
+    "year": 2018,
+    "url": "https://www.imdb.com/title/tt6966692/",
+    "image": "/images/bookmarks/green-book.jpg"
+  },
+  {
+    "title": "Hachi: A Dog's Tale",
+    "author": "Lasse Hallström",
+    "type": "movie",
+    "year": 2009,
+    "url": "https://www.imdb.com/title/tt1028532/",
+    "image": "/images/bookmarks/hachi-a-dog-s-tale.jpg"
+  },
+  {
+    "title": "Léon: The Professional",
+    "author": "Luc Besson",
+    "type": "movie",
+    "year": 1994,
+    "url": "https://www.imdb.com/title/tt0110413/",
+    "image": "/images/bookmarks/l-on-the-professional.jpg"
+  },
+  {
+    "title": "The Terminator",
+    "author": "James Cameron",
+    "type": "movie",
+    "year": 1984,
+    "url": "https://www.imdb.com/title/tt0088247/",
+    "image": "/images/bookmarks/the-terminator.jpg"
+  },
+  {
+    "title": "X-Men: First Class",
+    "author": "Matthew Vaughn",
+    "type": "movie",
+    "year": 2011,
+    "url": "https://www.imdb.com/title/tt1270798/",
+    "image": "/images/bookmarks/x-men-first-class.jpg"
+  },
+  {
+    "title": "Now You See Me",
+    "author": "Louis Leterrier",
+    "type": "movie",
+    "year": 2013,
+    "url": "https://www.imdb.com/title/tt1670345/",
+    "image": "/images/bookmarks/now-you-see-me.jpg"
+  },
+  {
+    "title": "Special 26",
+    "author": "Neeraj Pandey",
+    "type": "movie",
+    "year": 2013,
+    "url": "https://www.imdb.com/title/tt2377938/",
+    "image": "/images/bookmarks/special-26.jpg"
+  },
+  {
+    "title": "Drishyam",
+    "author": "Nishikant Kamat",
+    "type": "movie",
+    "year": 2015,
+    "url": "https://www.imdb.com/title/tt4430212/",
+    "image": "/images/bookmarks/drishyam.jpg"
+  },
+  {
+    "title": "Drishyam 2",
+    "author": "Abhishek Pathak",
+    "type": "movie",
+    "year": 2022,
+    "url": "https://www.imdb.com/title/tt15501640/",
+    "image": "/images/bookmarks/drishyam-2.jpg"
+  },
+  {
+    "title": "Bumblebee",
+    "author": "Travis Knight",
+    "type": "movie",
+    "year": 2018,
+    "url": "https://www.imdb.com/title/tt4701182/",
+    "image": "/images/bookmarks/bumblebee.jpg"
+  },
+  {
+    "title": "The Ministry of Ungentlemanly Warfare",
+    "author": "Guy Ritchie",
+    "type": "movie",
+    "year": 2024,
+    "url": "https://www.imdb.com/title/tt14128670/",
+    "image": "/images/bookmarks/the-ministry-of-ungentlemanly-warfare.jpg"
+  },
+  {
+    "title": "The Raid",
+    "author": "Gareth Evans",
+    "type": "movie",
+    "year": 2011,
+    "url": "https://www.imdb.com/title/tt1899353/",
+    "image": "/images/bookmarks/the-raid.jpg"
+  },
+  {
+    "title": "The Raid 2",
+    "author": "Gareth Evans",
+    "type": "movie",
+    "year": 2014,
+    "url": "https://www.imdb.com/title/tt2265171/",
+    "image": "/images/bookmarks/the-raid-2.jpg"
+  },
+  {
+    "title": "Einstein and Eddington",
+    "author": "Philip Martin",
+    "type": "movie",
+    "year": 2008,
+    "url": "https://www.imdb.com/title/tt0995036/",
+    "image": "/images/bookmarks/einstein-and-eddington.jpg"
+  },
+  {
+    "title": "Nuremberg",
+    "author": "Yves Simoneau",
+    "type": "movie",
+    "year": 2000,
+    "url": "https://www.imdb.com/title/tt0208629/",
+    "image": "/images/bookmarks/nuremberg.jpg"
+  },
+  {
+    "title": "The Fast and the Furious",
+    "author": "Rob Cohen",
+    "type": "movie",
+    "year": 2001,
+    "url": "https://www.imdb.com/title/tt0232500/",
+    "image": "/images/bookmarks/the-fast-and-the-furious.jpg"
+  },
+  {
+    "title": "Chainsaw Man the Movie: Reze Arc",
+    "author": "MAPPA",
+    "type": "anime",
+    "year": 2025,
+    "image": "/images/bookmarks/chainsaw-man-the-movie-reze-arc.jpg"
+  },
+  {
+    "title": "Mr. Robot",
+    "author": "Sam Esmail",
+    "type": "show",
+    "year": 2015,
+    "url": "https://www.imdb.com/title/tt4158110/",
+    "image": "/images/bookmarks/mr-robot.jpg"
+  },
+  {
+    "title": "Silicon Valley",
+    "author": "Mike Judge",
+    "type": "show",
+    "year": 2014,
+    "url": "https://www.imdb.com/title/tt2575988/",
+    "image": "/images/bookmarks/silicon-valley.jpg"
+  },
+  {
+    "title": "Masters of the Air",
+    "author": "John Shiban, John Orloff",
+    "type": "show",
+    "year": 2024,
+    "url": "https://www.imdb.com/title/tt2640044/",
+    "image": "/images/bookmarks/masters-of-the-air.jpg"
+  },
+  {
+    "title": "Blue Eye Samurai",
+    "author": "Amber Noizumi, Michael Green",
+    "type": "anime",
+    "year": 2023,
+    "url": "https://www.imdb.com/title/tt13309742/",
+    "image": "/images/bookmarks/blue-eye-samurai.jpg"
+  },
+  {
+    "title": "My Love from the Star",
+    "author": "Jang Tae-yoo",
+    "type": "show",
+    "year": 2013,
+    "url": "https://www.imdb.com/title/tt3199438/",
+    "image": "/images/bookmarks/my-love-from-the-star.jpg"
+  },
+  {
+    "title": "When Life Gives You Tangerines",
+    "author": "Im Hyun-wook",
+    "type": "show",
+    "year": 2025,
+    "image": "/images/bookmarks/when-life-gives-you-tangerines.jpg"
+  },
+  {
+    "title": "Midnight Diner",
+    "author": "Joji Matsuoka",
+    "type": "show",
+    "year": 2009,
+    "url": "https://www.imdb.com/title/tt5765544/",
+    "image": "/images/bookmarks/midnight-diner.jpg"
+  },
+  {
+    "title": "Panchayat",
+    "author": "Deepak Kumar Mishra",
+    "type": "show",
+    "year": 2020,
+    "url": "https://www.imdb.com/title/tt11247028/",
+    "image": "/images/bookmarks/panchayat.jpg"
+  },
+  {
+    "title": "Attack on Titan",
+    "author": "Hajime Isayama",
+    "type": "anime",
+    "year": 2013,
+    "url": "https://www.imdb.com/title/tt2560140/",
+    "image": "/images/bookmarks/attack-on-titan.jpg"
+  },
+  {
+    "title": "Death Note",
+    "author": "Tsugumi Ohba, Takeshi Obata",
+    "type": "anime",
+    "year": 2006,
+    "url": "https://www.imdb.com/title/tt0877057/",
+    "image": "/images/bookmarks/death-note.jpg"
+  },
+  {
+    "title": "Demon Slayer",
+    "author": "Koyoharu Gotouge",
+    "type": "anime",
+    "year": 2019,
+    "url": "https://www.imdb.com/title/tt9335498/",
+    "image": "/images/bookmarks/demon-slayer.jpg"
+  },
+  {
+    "title": "Solo Leveling",
+    "author": "Chugong",
+    "type": "anime",
+    "year": 2024,
+    "url": "https://www.imdb.com/title/tt21209876/",
+    "image": "/images/bookmarks/solo-leveling.jpg"
+  },
+  {
+    "title": "Sakamoto Days",
+    "author": "Yuto Suzuki",
+    "type": "anime",
+    "year": 2025,
+    "image": "/images/bookmarks/sakamoto-days.jpg"
+  },
+  {
+    "title": "One Punch Man",
+    "author": "ONE",
+    "type": "anime",
+    "year": 2015,
+    "url": "https://www.imdb.com/title/tt4508902/",
+    "image": "/images/bookmarks/one-punch-man.jpg"
+  },
+  {
+    "title": "Orb: On the Movements of the Earth",
+    "author": "Uoto",
+    "type": "anime",
+    "year": 2024,
+    "image": "/images/bookmarks/orb-on-the-movements-of-the-earth.jpg"
+  }
+]
