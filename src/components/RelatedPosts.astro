@@ -1,0 +1,157 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  posts: CollectionEntry<"posts">[];
+}
+
+const { posts } = Astro.props;
+
+const fmtDate = (d: Date) =>
+  d.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+---
+
+<aside class="related" aria-label="Related posts">
+  <h2 class="related-heading">Related Posts</h2>
+  <ul class="related-list">
+    {posts.map((post) => (
+      <li class="related-item">
+        <a href={`/posts/${post.id}/`} class="related-link">
+          <div class="related-thumb">
+            {post.data.image ? (
+              <img src={post.data.image} alt={post.data.title} class="thumb-img" loading="lazy" decoding="async" />
+            ) : (
+              <span class="thumb-placeholder">{post.data.title.charAt(0)}</span>
+            )}
+          </div>
+          <div class="related-info">
+            <div class="related-meta">
+              <span class="badge">{post.data.category}</span>
+              <span class="text-muted text-xs">{fmtDate(post.data.date)}</span>
+            </div>
+            <strong class="related-title">{post.data.title}</strong>
+            {post.data.description && (
+              <p class="related-desc">{post.data.description}</p>
+            )}
+          </div>
+        </a>
+      </li>
+    ))}
+  </ul>
+</aside>
+
+<style>
+  .related {
+    border-top: 1px solid var(--border);
+    padding-top: var(--space-8);
+    margin-top: var(--space-10);
+  }
+
+  .related-heading {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-4);
+  }
+
+  .related-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .related-item {
+    border-top: 1px solid var(--border);
+  }
+
+  .related-item:first-child {
+    border-top: none;
+  }
+
+  .related-link {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-2);
+    text-decoration: none;
+    color: inherit;
+    transition: background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .related-link:hover {
+    background-color: var(--bg-surface-hover);
+  }
+
+  .related-thumb {
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background-color: var(--bg-surface-hover);
+  }
+
+  .thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    transition: filter var(--duration-normal) var(--ease-out);
+  }
+
+  .related-link:hover .thumb-img {
+    filter: grayscale(0%);
+  }
+
+  .thumb-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: var(--text-muted);
+    opacity: 0.3;
+  }
+
+  .related-info {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .related-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+  }
+
+  .related-title {
+    font-size: var(--text-base);
+    color: var(--text);
+    display: block;
+  }
+
+  .related-desc {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    margin-top: var(--space-1);
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  @media (max-width: 600px) {
+    .related-link {
+      grid-template-columns: 1fr;
+      gap: var(--space-3);
+    }
+
+    .related-thumb {
+      aspect-ratio: 16 / 9;
+    }
+  }
+</style>

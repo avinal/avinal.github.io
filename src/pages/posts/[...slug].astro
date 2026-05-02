@@ -11,11 +11,26 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 const wordCount = post.body?.split(/\s+/).length ?? 0;
 const minutes = Math.max(1, Math.round(wordCount / 220));
 const readingTime = `${minutes} min read`;
+
+const allPosts = await getCollection("posts", ({ data }) => !data.draft);
+const relatedPosts = allPosts
+  .filter((p) => p.id !== post.id)
+  .map((p) => {
+    let score = 0;
+    if (p.data.category === post.data.category) score += 10;
+    score += p.data.tags.filter((t) => post.data.tags.includes(t)).length * 3;
+    return { post: p, score };
+  })
+  .filter((s) => s.score > 0)
+  .sort((a, b) => b.score - a.score || b.post.data.date.getTime() - a.post.data.date.getTime())
+  .slice(0, 3)
+  .map((s) => s.post);
 ---
 
 <PostLayout
@@ -27,6 +42,8 @@ const readingTime = `${minutes} min read`;
   tags={post.data.tags}
   image={post.data.image}
   readingTime={readingTime}
+  headings={tocHeadings}
+  relatedPosts={relatedPosts}
 >
   <Content />
 </PostLayout>

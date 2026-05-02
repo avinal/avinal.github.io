@@ -1,0 +1,88 @@
+---
+interface Props {
+  headings: { depth: number; slug: string; text: string }[];
+}
+
+const { headings } = Astro.props;
+---
+
+<details class="toc">
+  <summary class="toc-toggle">
+    <span class="toc-label">Table of Contents</span>
+    <svg class="toc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </summary>
+  <nav class="toc-nav" aria-label="Table of contents">
+    <ol class="toc-list">
+      {headings.map((h) => (
+        <li class:list={[`toc-depth-${h.depth}`]}>
+          <a href={`#${h.slug}`} class="toc-link">{h.text}</a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+</details>
+
+<style>
+  .toc {
+    border: 1px solid var(--border);
+    padding: var(--space-4) var(--space-5);
+    margin-bottom: var(--space-8);
+    background-color: var(--bg-surface);
+  }
+
+  .toc-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    list-style: none;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+  }
+
+  .toc-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .toc-chevron {
+    transform: rotate(-90deg);
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  .toc[open] .toc-chevron {
+    transform: rotate(0deg);
+  }
+
+  .toc-nav {
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border);
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .toc-list li {
+    padding: var(--space-1) 0;
+  }
+
+  .toc-depth-3 {
+    padding-left: var(--space-4);
+  }
+
+  .toc-link {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .toc-link:hover {
+    color: var(--accent);
+  }
+</style>

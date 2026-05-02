@@ -1,5 +1,8 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
+import TableOfContents from "@/components/TableOfContents.astro";
+import RelatedPosts from "@/components/RelatedPosts.astro";
+import type { CollectionEntry } from "astro:content";
 
 interface Props {
   title: string;
@@ -10,6 +13,8 @@ interface Props {
   tags?: string[];
   image?: string;
   readingTime: string;
+  headings?: { depth: number; slug: string; text: string }[];
+  relatedPosts?: CollectionEntry<"posts">[];
 }
 
 const {
@@ -21,6 +26,8 @@ const {
   tags = [],
   image,
   readingTime,
+  headings = [],
+  relatedPosts = [],
 } = Astro.props;
 
 const fmtDate = (d: Date) =>
@@ -49,6 +56,7 @@ const blogPostingLd = {
 ---
 
 <BaseLayout title={title} description={description} ogImage={image || undefined} jsonLd={blogPostingLd}>
+  <div class="reading-progress" aria-hidden="true"></div>
   <article class="post-page">
     {image && (
       <div class="post-hero-img">
@@ -83,9 +91,13 @@ const blogPostingLd = {
       )}
     </header>
 
+    {headings.length > 0 && <TableOfContents headings={headings} />}
+
     <div class="prose">
       <slot />
     </div>
+
+    {relatedPosts.length > 0 && <RelatedPosts posts={relatedPosts} />}
   </article>
 </BaseLayout>
 
@@ -114,6 +126,7 @@ const blogPostingLd = {
     margin-bottom: var(--space-10);
     padding-bottom: var(--space-6);
     border-bottom: 1px solid var(--border);
+    text-align: center;
   }
 
   .post-category {
@@ -136,6 +149,7 @@ const blogPostingLd = {
   .post-meta-row {
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-wrap: wrap;
     gap: var(--space-2);
     font-size: var(--text-sm);
@@ -153,6 +167,7 @@ const blogPostingLd = {
   .post-tags {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: var(--space-2);
     margin-top: var(--space-3);
   }
@@ -165,4 +180,30 @@ const blogPostingLd = {
     border-radius: var(--radius-sm);
     border: 1px solid var(--border);
   }
+
+  .reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background-color: var(--accent);
+    z-index: 200;
+    pointer-events: none;
+  }
 </style>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('.reading-progress');
+  const article = document.querySelector('.post-page');
+  if (bar && article) {
+    const update = () => {
+      const total = article.scrollHeight - window.innerHeight;
+      const scrolled = window.scrollY - (article as HTMLElement).offsetTop;
+      const pct = Math.min(100, Math.max(0, (scrolled / total) * 100));
+      bar.style.width = `${pct}%`;
+    };
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  }
+</script>
