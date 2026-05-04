@@ -35,15 +35,14 @@
     ]
   },
   {
-    "name": "memodav",
+    "name": "sciezka",
     "owner": "avinal",
-    "description": "Bidirectional task sync between Memos and CalDAV. Write tasks in Memos, check them off in any CalDAV client.",
-    "url": "https://github.com/avinal/memodav",
+    "description": "A browser extension for fuzzy searching tabs, history and bookmarks.",
+    "url": "https://github.com/avinal/sciezka",
     "stars": 0,
     "forks": 0,
     "languages": [
-      { "name": "Go", "color": "#00ADD8" },
-      { "name": "Shell", "color": "#89e051" }
+      { "name": "TypeScript", "color": "#3178C6" }
     ]
   },
   {

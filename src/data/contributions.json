@@ -29,6 +29,18 @@
     "platform": "sourceware",
     "type": "code",
     "kind": "patch",
+    "title": "match.pd: Optimize A > B ? ABS(A) : B to MAX(A, B) when B >= 0 [PR116700]",
+    "url": "https://gitlab.com/gnutools/gcc/-/commit/e0c4c4cb02382b37a41da098aab3a2446d3cdf3e",
+    "date": "2026-05-03",
+    "status": "merged",
+    "description": "Added pattern to simplify conditional ABS to MAX when the else branch is non-negative, fixing a missed optimization at -O1"
+  },
+  {
+    "project": "GCC",
+    "projectUrl": "https://gcc.gnu.org/",
+    "platform": "sourceware",
+    "type": "code",
+    "kind": "patch",
     "title": "tree-ssa-strlen: Use gimple_build/gimple_convert_to_ptrofftype [PR122989]",
     "url": "https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=2985e0bd9b2aee03a932e5ab406523a95c04de5f",
     "date": "2026-04-23",

@@ -450,9 +450,9 @@
       "description": "C++ implementation of the Blowfish and Blowfish 2 symmetric block cipher with tests and APIs. Drop-in replacement for DES or IDEA."
     },
     {
-      "name": "Xeus-BASIC",
-      "url": "https://github.com/avinal/xeus-basic",
-      "description": "Jupyter Kernel for the BASIC language built using the Xeus Framework, C, and C++. Executes BASIC programs line by line in Jupyter Notebook."
+      "name": "Sciezka",
+      "url": "https://github.com/avinal/sciezka",
+      "description": "Browser extension for fuzzy searching tabs, history and bookmarks. Built with TypeScript."
     }
   ],
   "meta": {
