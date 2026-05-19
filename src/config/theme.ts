@@ -107,8 +107,8 @@ const theme: ThemeConfig = {
   },
 
   fonts: {
-    sans: '"Inter", "Segoe UI", system-ui, -apple-system, sans-serif',
-    mono: '"JetBrains Mono", "Fira Code", ui-monospace, monospace',
+    sans: '"Iosevka Aile", system-ui, sans-serif',
+    mono: '"Iosevka", ui-monospace, monospace',
   },
 
   colors: {

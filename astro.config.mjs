@@ -8,6 +8,7 @@ export default defineConfig({
   site: "https://avinal.space",
   output: "static",
   integrations: [sitemap()],
+  prefetch: true,
   markdown: {
     shikiConfig: {
       theme: "github-dark-default",
