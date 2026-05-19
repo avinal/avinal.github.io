@@ -1,5 +1,71 @@
 [
   {
+    "project": "GNU C Library",
+    "projectUrl": "https://sourceware.org/glibc/",
+    "platform": "sourceware",
+    "type": "code",
+    "kind": "patch",
+    "title": "intl: Remove pre-C99 fallbacks from plural-exp.c",
+    "url": "https://sourceware.org/cgit/glibc/commit/?id=5ce8201bf5c38e84d0c65e51d9acdd743e69d483",
+    "date": "2026-05-05",
+    "status": "merged"
+  },
+  {
+    "project": "GNU C Library",
+    "projectUrl": "https://sourceware.org/glibc/",
+    "platform": "sourceware",
+    "type": "code",
+    "kind": "patch",
+    "title": "intl: Remove PRI_MACROS_BROKEN from loadmsgcat.c",
+    "url": "https://sourceware.org/cgit/glibc/commit/?id=9985b162d86b636b8ca55ce1ff0744dc58717498",
+    "date": "2026-05-05",
+    "status": "merged"
+  },
+  {
+    "project": "GNU C Library",
+    "projectUrl": "https://sourceware.org/glibc/",
+    "platform": "sourceware",
+    "type": "code",
+    "kind": "patch",
+    "title": "intl: Remove IN_LIBGLOCALE dead code",
+    "url": "https://sourceware.org/cgit/glibc/commit/?id=6f837cdeddb2b2e4e9260b659a9e69e1e4c9f79a",
+    "date": "2026-05-05",
+    "status": "merged"
+  },
+  {
+    "project": "GNU C Library",
+    "projectUrl": "https://sourceware.org/glibc/",
+    "platform": "sourceware",
+    "type": "code",
+    "kind": "patch",
+    "title": "intl: Fix memory leak in _nl_find_domain on allocation failure",
+    "url": "https://sourceware.org/cgit/glibc/commit/?id=bb91c88af78e9f862728623b60fb68d3610a4b79",
+    "date": "2026-05-05",
+    "status": "merged"
+  },
+  {
+    "project": "GNU C Library",
+    "projectUrl": "https://sourceware.org/glibc/",
+    "platform": "sourceware",
+    "type": "code",
+    "kind": "patch",
+    "title": "intl: Add tests for plural expression hardening",
+    "url": "https://sourceware.org/cgit/glibc/commit/?id=ba305d8268530a20eb537b9880e744c6eed233f9",
+    "date": "2026-05-04",
+    "status": "merged"
+  },
+  {
+    "project": "GNU C Library",
+    "projectUrl": "https://sourceware.org/glibc/",
+    "platform": "sourceware",
+    "type": "code",
+    "kind": "patch",
+    "title": "intl: Import plural expression hardening from GNU gettext",
+    "url": "https://sourceware.org/cgit/glibc/commit/?id=e7f5359db75ac4713b8c45bd4213264c0a26bc06",
+    "date": "2026-05-04",
+    "status": "merged"
+  },
+  {
     "project": "Linux Kernel",
     "projectUrl": "https://kernel.org/",
     "platform": "gitlab",
