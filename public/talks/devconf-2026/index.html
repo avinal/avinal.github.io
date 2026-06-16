@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lost in Transliteration: Why strlen("Dvořák") Returns 8</title>
+  <meta name="description" content="DevConf.CZ 2026 talk by Avinal Kumar — character encoding, Unicode, and glibc's iconv internals" />
+  <meta name="author" content="Avinal Kumar" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/black.min.css" id="theme" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+
+    /* ============================================
+       IBM Carbon Design System — Color Tokens
+       ============================================ */
+    :root {
+      /* Carbon Gray 80 background */
+      --r-background-color: #2f2f2f;
+      /* Carbon typography */
+      --r-main-font: 'IBM Plex Sans', system-ui, sans-serif;
+      --r-main-font-size: 34px;
+      --r-heading-font: 'IBM Plex Sans', system-ui, sans-serif;
+      --r-heading-color: #f4f4f4;
+      --r-heading-font-weight: 600;
+      --r-main-color: #c6c6c6;
+      --r-link-color: #78a9ff;
+      --r-link-color-hover: #a6c8ff;
+      --r-code-font: 'IBM Plex Mono', monospace;
+      --r-heading-text-transform: none;
+      --r-heading-letter-spacing: -0.01em;
+      /* Carbon color palette */
+      --carbon-blue-40: #78a9ff;
+      --carbon-blue-60: #0f62fe;
+      --carbon-purple-40: #be95ff;
+      --carbon-teal-20: #9ef0f0;
+      --carbon-teal-40: #08bdba;
+      --carbon-magenta-40: #ff7eb6;
+      --carbon-red-40: #ff8389;
+      --carbon-green-40: #42be65;
+      --carbon-yellow-30: #f1c21b;
+      --carbon-gray-10: #f4f4f4;
+      --carbon-gray-30: #c6c6c6;
+      --carbon-gray-50: #8d8d8d;
+      --carbon-gray-60: #6f6f6f;
+      --carbon-gray-70: #525252;
+      --carbon-gray-80: #393939;
+      --carbon-gray-90: #262626;
+      --carbon-gray-100: #161616;
+    }
+
+    .reveal {
+      font-weight: 400;
+      letter-spacing: 0;
+    }
+
+    .reveal h1, .reveal h2, .reveal h3 {
+      line-height: 1.2;
+      margin-bottom: 0.6em;
+    }
+
+    .reveal h2 { font-size: 2em; font-weight: 600; }
+    .reveal h3 { font-size: 1.4em; font-weight: 600; }
+
+    /* ---- Code blocks: Carbon snippet style ---- */
+    .reveal pre {
+      width: 100%;
+      font-size: 0.52em;
+      box-shadow: none;
+      border-radius: 0;
+      border: none;
+      background: var(--carbon-gray-100);
+    }
+    .reveal pre code {
+      padding: 1.2em 1.4em;
+      border-radius: 0;
+      max-height: 480px;
+      line-height: 1.65;
+      background: var(--carbon-gray-100);
+      color: #fff;
+      font-weight: 400;
+    }
+    .reveal code {
+      font-family: var(--r-code-font);
+      font-weight: 500;
+    }
+    .reveal p code, .reveal li code {
+      background: var(--carbon-gray-80);
+      border: none;
+      padding: 0.15em 0.45em;
+      border-radius: 0;
+      font-size: 0.88em;
+      color: var(--carbon-magenta-40);
+    }
+
+    /* ---- Carbon syntax highlighting (overrides highlight.js) ---- */
+    .reveal pre code .hljs-keyword,
+    .reveal pre code .hljs-type,
+    .reveal pre code .hljs-built_in { color: var(--carbon-purple-40); }
+    .reveal pre code .hljs-string,
+    .reveal pre code .hljs-doctag { color: var(--carbon-magenta-40); }
+    .reveal pre code .hljs-number,
+    .reveal pre code .hljs-literal { color: var(--carbon-blue-40); }
+    .reveal pre code .hljs-comment { color: var(--carbon-gray-60); font-style: normal; }
+    .reveal pre code .hljs-function,
+    .reveal pre code .hljs-title { color: var(--carbon-teal-20); }
+    .reveal pre code .hljs-variable,
+    .reveal pre code .hljs-attr { color: #fff; }
+    .reveal pre code .hljs-params { color: var(--carbon-gray-30); }
+    .reveal pre code .hljs-meta,
+    .reveal pre code .hljs-preprocessor { color: #569CD6; }
+    .reveal pre code .hljs-regexp { color: #D16969; }
+    .reveal pre code .hljs-symbol,
+    .reveal pre code .hljs-template-variable { color: var(--carbon-red-40); }
+    .hljs { background: var(--carbon-gray-100); color: #fff; }
+
+    /* ---- Utility classes: Carbon palette ---- */
+    .reveal .dim { opacity: 0.45; }
+    .reveal .accent { color: var(--carbon-blue-40); }
+    .reveal .green { color: var(--carbon-green-40); }
+    .reveal .yellow { color: var(--carbon-yellow-30); }
+    .reveal .orange { color: #f0883e; }
+    .reveal .red { color: var(--carbon-red-40); }
+    .reveal .purple { color: var(--carbon-purple-40); }
+    .reveal .teal { color: var(--carbon-teal-20); }
+    .reveal .magenta { color: var(--carbon-magenta-40); }
+    .reveal .big { font-size: 1.6em; font-weight: 600; letter-spacing: -0.02em; }
+    .reveal .medium { font-size: 1.15em; font-weight: 500; }
+    .reveal .small { font-size: 0.7em; }
+    .reveal .tiny {
+      font-size: 0.45em;
+      color: var(--carbon-gray-60);
+      font-family: var(--r-code-font);
+      letter-spacing: 0.02em;
+    }
+
+    /* ---- Tables ---- */
+    .reveal table { font-size: 0.72em; border-collapse: collapse; border-spacing: 0; }
+    .reveal table th {
+      color: var(--carbon-gray-10);
+      font-weight: 600;
+      background: var(--carbon-gray-80);
+      padding: 0.6em 1em;
+      border-bottom: 2px solid var(--carbon-gray-70);
+      text-align: left;
+    }
+    .reveal table td {
+      padding: 0.5em 1em;
+      border-bottom: 1px solid var(--carbon-gray-70);
+    }
+    .reveal table tr:hover td { background: rgba(255,255,255,0.04); }
+
+    /* ---- Custom blocks: Carbon surface style ---- */
+    .reveal .hex-display {
+      font-family: var(--r-code-font);
+      font-size: 0.62em;
+      background: var(--carbon-gray-100);
+      padding: 1em 1.4em;
+      border-radius: 0;
+      border: none;
+      display: inline-block;
+      line-height: 1.9;
+      color: #fff;
+    }
+    .reveal .diagram {
+      background: var(--carbon-gray-100);
+      border: none;
+      border-radius: 0;
+      padding: 1.2em 1.4em;
+      font-family: var(--r-code-font);
+      font-size: 0.58em;
+      line-height: 1.7;
+      color: #fff;
+    }
+
+    /* ---- Section label ---- */
+    .reveal .slide-title {
+      font-size: 0.45em;
+      color: var(--carbon-blue-40);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-weight: 600;
+      margin-bottom: 0.3em;
+      opacity: 0.8;
+    }
+
+    /* ---- Blockquotes ---- */
+    .reveal blockquote {
+      background: var(--carbon-gray-80);
+      border-left: 4px solid var(--carbon-blue-60);
+      padding: 0.8em 1.2em;
+      font-style: italic;
+      width: 85%;
+      border-radius: 0;
+    }
+
+    /* ---- Grid layouts ---- */
+    .reveal .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2em;
+      text-align: left;
+    }
+    .reveal .three-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5em;
+      text-align: left;
+      font-size: 0.8em;
+    }
+
+    /* ---- Cards: Carbon tile style ---- */
+    .reveal .card {
+      background: var(--carbon-gray-80);
+      border: none;
+      border-radius: 0;
+      padding: 1.2em;
+    }
+    .reveal .card h4 {
+      margin-bottom: 0.5em;
+    }
+
+    /* ---- Lists ---- */
+    .reveal ul, .reveal ol { display: block; }
+    .reveal li {
+      margin-bottom: 0.5em;
+      line-height: 1.5;
+    }
+    .reveal ul li::marker { color: var(--carbon-blue-40); }
+    .reveal ol li::marker { color: var(--carbon-blue-40); font-weight: 600; }
+
+    /* ---- Glow effects for emphasis ---- */
+    .reveal .glow-blue {
+      text-shadow: 0 0 40px rgba(120,169,255,0.4), 0 0 80px rgba(120,169,255,0.15);
+      color: var(--carbon-blue-40);
+    }
+    .reveal .glow-red {
+      text-shadow: 0 0 40px rgba(255,131,137,0.4), 0 0 80px rgba(255,131,137,0.15);
+      color: var(--carbon-red-40);
+    }
+    .reveal .glow-green {
+      text-shadow: 0 0 40px rgba(66,190,101,0.4), 0 0 80px rgba(66,190,101,0.15);
+      color: var(--carbon-green-40);
+    }
+
+    /* ---- Badges: Carbon tag style ---- */
+    .reveal .badge {
+      display: inline-block;
+      font-size: 0.55em;
+      font-weight: 500;
+      padding: 0.15em 0.7em;
+      border-radius: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .reveal .badge-blue { background: rgba(120,169,255,0.2); color: var(--carbon-blue-40); }
+    .reveal .badge-red { background: rgba(255,131,137,0.2); color: var(--carbon-red-40); }
+    .reveal .badge-green { background: rgba(66,190,101,0.2); color: var(--carbon-green-40); }
+    .reveal .badge-yellow { background: rgba(241,194,27,0.2); color: var(--carbon-yellow-30); }
+    .reveal .badge-purple { background: rgba(190,149,255,0.2); color: var(--carbon-purple-40); }
+
+    /* ---- HR ---- */
+    .reveal hr {
+      border: none;
+      height: 1px;
+      background: var(--carbon-gray-70);
+      margin: 1em 0;
+    }
+
+    /* ---- Progress bar ---- */
+    .reveal .progress span { background: var(--carbon-blue-60); }
+
+    /* ---- Auto-animate transitions ---- */
+    .reveal [data-auto-animate] .hex-display,
+    .reveal [data-auto-animate] .diagram,
+    .reveal [data-auto-animate] pre {
+      transition: all 0.6s ease;
+    }
+
+    /* ---- Slide number ---- */
+    .reveal .slide-number {
+      font-family: var(--r-code-font);
+      font-size: 0.5em;
+      color: var(--carbon-gray-60);
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section
+        data-markdown="slides.md"
+        data-separator="^---$"
+        data-separator-vertical="^--$"
+        data-separator-notes="^Note:"
+        data-charset="utf-8">
+      </section>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/markdown/markdown.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/notes/notes.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/zoom/zoom.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js-mermaid-plugin@11.15.0/plugin/mermaid/mermaid.js"></script>
+  <script>
+    Reveal.initialize({
+      mermaid: {
+        theme: 'dark',
+        themeVariables: {
+          darkMode: true,
+          background: '#2f2f2f',
+          primaryColor: '#393939',
+          primaryTextColor: '#c6c6c6',
+          primaryBorderColor: '#525252',
+          lineColor: '#78a9ff',
+          secondaryColor: '#262626',
+          tertiaryColor: '#161616',
+          fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
+          fontSize: '18px',
+        },
+      },
+      hash: true,
+      slideNumber: 'c/t',
+      showSlideNumber: 'speaker',
+      transition: 'fade',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      center: true,
+      width: 1280,
+      height: 720,
+      margin: 0.08,
+      autoAnimateEasing: 'ease-in-out',
+      autoAnimateDuration: 0.8,
+      autoAnimateUnmatched: true,
+      zoomKey: 'alt',
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealZoom, RevealMermaid],
+    });
+  </script>
+</body>
+</html>
