@@ -1,5 +1,23 @@
 [
   {
+    "name": "DevConf.CZ 2026",
+    "date": "2026-06-18",
+    "location": "Brno, Czech Republic",
+    "role": "speaker",
+    "talk": "Lost in Transliteration: Why strlen(\"Dvořák\") Returns 8",
+    "description": "A deep dive into character encoding, Unicode, and how glibc's iconv handles text conversion internally — from the ASCII era through code pages to the gconv pipeline.",
+    "links": [
+      {
+        "label": "Slides",
+        "url": "/talks/devconf-2026/"
+      },
+      {
+        "label": "Event Page",
+        "url": "https://pretalx.devconf.info/devconf-cz-2026/talk/review/JVY7TPFMDDAPWUKHAPDH3MDKVZUXLDEW"
+      }
+    ]
+  },
+  {
     "name": "Opportunity Open Source Conference 2024",
     "date": "2024-08-25",
     "location": "IIT Kanpur, India",
