@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/avinal/avinal.github.io#readme",
   "dependencies": {
-    "@astrojs/rss": "^4.0.18",
+    "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.2",
     "@fontsource/iosevka": "^5.2.5",
     "@fontsource/iosevka-aile": "^5.2.5",
